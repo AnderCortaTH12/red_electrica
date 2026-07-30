@@ -23,6 +23,28 @@ para el plan completo.
 - [ ] Fase 6 — Servir el modelo (FastAPI + Docker)
 - [ ] Fase 7 — Automatización y monitorización
 
+### Diseño planeado: dashboard público (Fase 6/7)
+
+Aún no implementado; documentado aquí para no perder el diseño acordado.
+
+Página estática en GitHub Pages, servida desde **`main:/docs`** (carpeta
+`docs/` en la rama `main`, no una rama `gh-pages` separada — menos piezas
+que gestionar en un proyecto en solitario), en
+`https://andercortath12.github.io/red_electrica/`.
+
+Flujo diario (GitHub Actions cron, ver Fase 7):
+1. El Action ejecuta el pipeline: ingesta del día → predicción 24h →
+   métricas de error reciente (MAE 7 días, comparativa vs demanda
+   prevista oficial de ESIOS).
+2. Exporta el resultado a un **JSON pequeño y estable** en `docs/` (no la
+   base de datos entera): precio real reciente, predicción, métricas.
+3. `docs/index.html` (HTML + Chart.js vía CDN, sin build tool) lee ese
+   JSON y pinta: precio real vs. predicho (últimas 48-72h), predicción
+   próximas 24h, MAE 7 días, generación por tecnología del día, y fecha
+   de última actualización.
+4. El propio Action hace commit y push de `docs/` (HTML + JSON) a `main`
+   tras generarlos.
+
 ## Estructura
 
 ```
