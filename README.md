@@ -164,3 +164,10 @@ la base de datos.
   ratio en vez del precio absoluto, reentrenamiento periódico con
   ventana móvil, o un modelo que sí extrapole). Ver
   `models/lightgbm_metrics.json`.
+  **Decisión (2026-07-30): se deja así por ahora a propósito.** El
+  objetivo inmediato es que el flujo de punta a punta funcione (Fases
+  6-7: servir el modelo, reentrenamiento e ingesta diaria automáticos),
+  no la calidad del modelo. `scripts/train_lightgbm.py` es un
+  placeholder — el modelo/features/target cambiarán más adelante, y el
+  pipeline de reentrenamiento tiene que funcionar igual sea cual sea el
+  modelo de turno.
