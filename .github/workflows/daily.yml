@@ -1,6 +1,8 @@
 name: daily-pipeline
 
-# Cron diario: ingesta incremental -> reentreno -> prediccion -> monitorizacion.
+# Cron diario: ingesta incremental -> reentreno -> prediccion -> monitorizacion
+# -> exportar datos del dashboard (docs/data/*.json, servido por GitHub Pages
+# desde main:/docs).
 #
 # Limitacion conocida y asumida a proposito: los runners de GitHub Actions
 # son efimeros (sin estado propio entre ejecuciones), y electricidad.db
@@ -57,10 +59,20 @@ jobs:
       - name: Monitorización (calidad de datos + error real)
         run: python -m scripts.monitor
 
-      - name: Commit de resultados (metadata del modelo + informe de monitorización)
+      - name: Exportar datos del dashboard (docs/data/*.json)
+        id: export_dashboard
+        continue-on-error: true # un fallo aqui no debe tumbar el resto del pipeline
+        run: python -m scripts.export_dashboard_data
+
+      - name: Commit de resultados (metadata del modelo + informe de monitorización + dashboard)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add models/model_metadata.json models/lightgbm_metrics.json data/monitoring_report.json
+          if [ "${{ steps.export_dashboard.outcome }}" = "success" ]; then
+            git add docs/data/
+          else
+            echo "::warning::La exportacion del dashboard fallo, no se comitean docs/data/ en este run"
+          fi
           git diff --cached --quiet || git commit -m "Actualizacion diaria automatica [skip ci]"
           git push

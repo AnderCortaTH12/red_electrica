@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forecasting Eléctrico — Dashboard</title>
+    <meta
+      name="description"
+      content="Precio del mercado eléctrico español: real, predicho por el modelo, y comparado contra un baseline naive."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <header class="status-bar" id="status-bar">
+      <span class="brand">Forecasting Eléctrico</span>
+      <span class="status-item">Cargando estado…</span>
+    </header>
+
+    <main>
+      <section id="price-section">
+        <h2>Precio y predicción</h2>
+        <p class="section-note">
+          Últimas 72h de precio real, comparado con el modelo y con el baseline naive (precio de
+          ayer a la misma hora). La zona sombreada a la derecha es predicción, no dato ya
+          ocurrido.
+        </p>
+        <div id="price-chart" class="chart"></div>
+      </section>
+
+      <section id="day-section">
+        <h2>Selector de día</h2>
+        <div class="day-controls">
+          <input type="date" id="day-picker" min="2019-01-01" />
+          <div class="quick-buttons">
+            <button data-quick="hoy">Hoy</button>
+            <button data-quick="ayer">Ayer</button>
+            <button data-quick="7d">Hace 7 días</button>
+            <button data-quick="año">Mismo día año pasado</button>
+          </div>
+          <span class="day-loading" id="day-loading" hidden>Cargando…</span>
+        </div>
+
+        <div class="day-grid">
+          <div>
+            <div id="day-chart" class="chart"></div>
+          </div>
+          <div class="day-side">
+            <div class="kpi-row" id="day-kpis"></div>
+            <div id="mix-donut" class="chart chart-small"></div>
+            <p class="demand-note">
+              La escala de demanda de esta fuente no es comparable 1:1 a la red eléctrica española
+              real (~6-10x mayor de forma consistente en todo el histórico) — ver "Limitaciones
+              conocidas" en el README del proyecto. Los ejes se ajustan a los datos, no a cifras
+              reales de España.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="longterm-section">
+        <h2>Vista de largo plazo (2019 → hoy)</h2>
+        <div id="longterm-chart" class="chart"></div>
+        <div class="regime-legend">
+          <span><span class="swatch" style="background: rgba(79, 163, 255, 0.35)"></span>Normal (hasta 2022-06-14)</span>
+          <span><span class="swatch" style="background: rgba(245, 169, 35, 0.45)"></span>Tope al gas (2022-06-15 a 2023-12-31)</span>
+          <span><span class="swatch" style="background: rgba(239, 68, 68, 0.35)"></span>Post-tope (desde 2024-01-01)</span>
+        </div>
+      </section>
+
+      <section id="performance-section">
+        <h2>Rendimiento del modelo</h2>
+        <div class="perf-grid">
+          <div>
+            <p class="section-note">MAE por año: baseline vs modelo</p>
+            <div id="error-chart" class="chart chart-small"></div>
+          </div>
+          <div>
+            <p class="section-note">Predicho vs real (predicciones ya verificadas)</p>
+            <div id="scatter-chart" class="chart chart-small"></div>
+          </div>
+        </div>
+        <div class="honesty-block" id="honesty-block">Cargando evaluación del modelo…</div>
+      </section>
+    </main>
+
+    <footer>
+      <a href="https://github.com/AnderCortaTH12/red_electrica" target="_blank" rel="noopener"
+        >red_electrica</a
+      >
+      — datos de la API de ESIOS (Red Eléctrica de España). Generado automáticamente por el job
+      diario.
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

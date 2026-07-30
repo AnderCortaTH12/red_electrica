@@ -4,12 +4,15 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from src.storage.db import get_connection, init_db, insert_observations, insert_predictions
+
 from scripts.export_dashboard_data import (
     GEN_COLUMNS,
     _iso_z,
     _round,
     build_horas_72h,
     build_kpis,
+    build_model_performance,
     build_status,
     build_summary_rows,
     export_monthly_files,
@@ -199,3 +202,56 @@ def test_export_monthly_files_does_not_overwrite_past_months(tmp_path, monkeypat
     assert past_month_path.stat().st_mtime == original_mtime
     assert past_month_path.read_text(encoding="utf-8") == original_content
     assert current_month_path.exists()
+
+
+def test_build_model_performance_without_metrics_files(tmp_path, monkeypatch):
+    import scripts.export_dashboard_data as mod
+
+    monkeypatch.setattr(mod, "BASELINE_METRICS_PATH", tmp_path / "nope1.json")
+    monkeypatch.setattr(mod, "LIGHTGBM_METRICS_PATH", tmp_path / "nope2.json")
+
+    conn = get_connection(str(tmp_path / "test.db"))
+    init_db(conn)
+
+    result = build_model_performance(conn)
+
+    assert result["baseline_por_anio"] == []
+    assert result["modelo_por_anio"] == []
+    assert result["scatter"] == []
+    conn.close()
+
+
+def test_build_model_performance_scatter_from_verified_predictions(tmp_path, monkeypatch):
+    import scripts.export_dashboard_data as mod
+
+    monkeypatch.setattr(mod, "BASELINE_METRICS_PATH", tmp_path / "nope1.json")
+    monkeypatch.setattr(mod, "LIGHTGBM_METRICS_PATH", tmp_path / "nope2.json")
+
+    conn = get_connection(str(tmp_path / "test.db"))
+    init_db(conn)
+
+    target = "2026-07-01T10:00:00Z"
+    insert_observations(
+        conn,
+        pd.DataFrame(
+            {
+                "source": ["esios"], "indicator_id": [600], "datetime_utc": [target],
+                "geo_id": [3], "value": [55.5],
+            }
+        ),
+    )
+    insert_predictions(
+        conn,
+        pd.DataFrame(
+            {
+                "model_version": ["v1"], "target_datetime_utc": [target],
+                "predicted_price": [50.0], "made_at": [target],
+            }
+        ),
+    )
+
+    result = build_model_performance(conn)
+
+    assert len(result["scatter"]) == 1
+    assert result["scatter"][0] == {"actual": 55.5, "predicted": 50.0}
+    conn.close()

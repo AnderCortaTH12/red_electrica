@@ -14,6 +14,9 @@ Tres ficheros:
 - docs/data/summary.json: series diarias 2019-hoy. Formato particular
   (objeto {columns, rows} con cada fila en su propia línea) para que
   el diff diario sean 1-2 líneas, no el fichero entero (~200KB).
+- docs/data/model_performance.json: MAE por año (2014-hoy) del baseline
+  y del modelo, más el scatter predicho-vs-real de las predicciones ya
+  verificadas -- crece día a día según se conocen los precios reales.
 
 Reutilizable a mano:
     python -m scripts.export_dashboard_data
@@ -311,6 +314,67 @@ def export_monthly_files(
     return written
 
 
+BASELINE_METRICS_PATH = Path("models/baseline_metrics.json")
+LIGHTGBM_METRICS_PATH = Path("models/lightgbm_metrics.json")
+MAX_SCATTER_POINTS = 500
+
+
+def build_model_performance(conn: sqlite3.Connection) -> dict:
+    """Rendimiento del modelo a lo largo del tiempo: MAE por año (2014-hoy
+    para el baseline, régimen post_tope para el modelo -- ver Fase 5) y
+    el scatter predicho-vs-real de las predicciones ya verificadas
+    (crece día a día según se van conociendo los precios reales).
+    """
+    baseline_por_anio, lightgbm_por_anio, holdout = [], [], {}
+
+    if BASELINE_METRICS_PATH.exists():
+        with open(BASELINE_METRICS_PATH, encoding="utf-8") as f:
+            baseline_metrics = json.load(f)
+        baseline_por_anio = [
+            {"periodo": r["periodo"], "mae": _round(r["mae"]), "n": r["n"]}
+            for r in baseline_metrics.get("por_anio", [])
+            if r["periodo"] != "total"
+        ]
+
+    if LIGHTGBM_METRICS_PATH.exists():
+        with open(LIGHTGBM_METRICS_PATH, encoding="utf-8") as f:
+            lgbm_metrics = json.load(f)
+        lightgbm_por_anio = [
+            {"periodo": r["periodo"], "mae": _round(r["mae"]), "n": r["n"]}
+            for r in lgbm_metrics.get("lightgbm_por_anio", [])
+            if r["periodo"] != "total"
+        ]
+        holdout = {
+            "modelo_tipo": lgbm_metrics.get("modelo"),
+            "regimen": lgbm_metrics.get("regimen"),
+            "test_start": lgbm_metrics.get("test_start"),
+            "mae_modelo": _round(lgbm_metrics.get("lightgbm_mae")),
+            "mae_baseline": _round(lgbm_metrics.get("baseline_mae")),
+        }
+
+    query = """
+        SELECT o.value AS actual, p.predicted_price AS predicted, p.target_datetime_utc
+        FROM predictions p
+        JOIN observations o
+          ON o.source = 'esios' AND o.indicator_id = 600 AND o.geo_id = 3
+             AND o.datetime_utc = p.target_datetime_utc
+        ORDER BY p.target_datetime_utc DESC
+        LIMIT ?
+    """
+    scatter_df = pd.read_sql_query(query, conn, params=(MAX_SCATTER_POINTS,))
+    scatter = [
+        {"actual": _round(row.actual), "predicted": _round(row.predicted)}
+        for row in scatter_df.itertuples()
+    ]
+
+    return {
+        "baseline_por_anio": baseline_por_anio,
+        "modelo_por_anio": lightgbm_por_anio,
+        "holdout": holdout,
+        "scatter": scatter,
+    }
+
+
 def build_summary_rows(df: pd.DataFrame) -> list[list]:
     start_ts = pd.Timestamp(SUMMARY_START, tz="UTC")
     window = df.loc[df.index >= start_ts]
@@ -404,6 +468,11 @@ def run() -> None:
     summary_rows = build_summary_rows(df)
     write_summary_json(summary_rows)
     print(f"summary.json generado con {len(summary_rows)} días")
+
+    performance_payload = build_model_performance(conn)
+    with open(DOCS_DATA_DIR / "model_performance.json", "w", encoding="utf-8") as f:
+        json.dump(performance_payload, f, ensure_ascii=False, indent=2)
+    print(f"model_performance.json generado ({len(performance_payload['scatter'])} puntos de scatter)")
 
     conn.close()
 

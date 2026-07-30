@@ -32,28 +32,53 @@ para el plan completo.
 - [x] Fase 7 — Automatización y monitorización — job diario en GitHub
       Actions (ingesta incremental, reentreno, predicción, monitorización);
       badge arriba muestra el estado del último run
+- [x] Fase 8 — Dashboard público en GitHub Pages
 
-### Diseño planeado: dashboard público (Fase 6/7)
+## Dashboard (Fase 8)
 
-Aún no implementado; documentado aquí para no perder el diseño acordado.
+Página estática en GitHub Pages, servida desde **`main:/docs`** (no una
+rama `gh-pages` separada — menos piezas que gestionar en un proyecto en
+solitario): **https://andercortath12.github.io/red_electrica/**
 
-Página estática en GitHub Pages, servida desde **`main:/docs`** (carpeta
-`docs/` en la rama `main`, no una rama `gh-pages` separada — menos piezas
-que gestionar en un proyecto en solitario), en
-`https://andercortath12.github.io/red_electrica/`.
+Sin build step (HTML + CSS + JS vanilla con ES modules nativos,
+[Apache ECharts](https://echarts.apache.org/) vía CDN) — cero
+dependencias que puedan romper el Action dentro de seis meses. GitHub
+Pages es estático (sin Python en runtime), así que todo lo que se
+muestra viene precalculado por `scripts/export_dashboard_data.py`
+(último paso del job diario, con `continue-on-error` para no tumbar el
+resto del pipeline si falla):
 
-Flujo diario (GitHub Actions cron, ver Fase 7):
-1. El Action ejecuta el pipeline: ingesta del día → predicción 24h →
-   métricas de error reciente (MAE 7 días, comparativa vs demanda
-   prevista oficial de ESIOS).
-2. Exporta el resultado a un **JSON pequeño y estable** en `docs/` (no la
-   base de datos entera): precio real reciente, predicción, métricas.
-3. `docs/index.html` (HTML + Chart.js vía CDN, sin build tool) lee ese
-   JSON y pinta: precio real vs. predicho (últimas 48-72h), predicción
-   próximas 24h, MAE 7 días, generación por tecnología del día, y fecha
-   de última actualización.
-4. El propio Action hace commit y push de `docs/` (HTML + JSON) a `main`
-   tras generarlos.
+- `docs/data/latest.json` (~16KB, se carga siempre): últimas 72h de
+  precio real/modelo/baseline + generación, predicción de las próximas
+  horas, KPIs del día, estado del sistema (semáforo verde/ámbar según
+  los flags de `src/monitoring/`), y MAE rolling 7/30 días.
+- `docs/data/monthly/YYYY-MM.json` (91 ficheros, ~78KB cada uno,
+  2019-01 → hoy): cargado bajo demanda al navegar a una fecha. Los
+  meses **pasados son inmutables** — solo se regenera el mes en curso
+  en cada ejecución, para no inflar el historial de git.
+- `docs/data/summary.json` (~350KB, series diarias 2019-hoy): formato
+  `{columns, rows}` con cada fila en su propia línea de texto (no
+  `json.dumps` con indent normal), para que el diff diario sean 1-2
+  líneas, no el fichero entero.
+- `docs/data/model_performance.json`: MAE por año (2014-hoy) del
+  baseline y del modelo, y el scatter predicho-vs-real de las
+  predicciones ya verificadas — crece día a día.
+
+Probar en local (sirve `docs/` con un servidor estático simple; abrir
+`index.html` directamente con `file://` NO funciona por las
+restricciones CORS de los ES modules):
+
+```powershell
+cd docs
+python -m http.server 8000
+# abrir http://localhost:8000
+```
+
+Para regenerar los datos a mano sin lanzar todo el pipeline:
+
+```powershell
+python -m scripts.export_dashboard_data
+```
 
 ## Estructura
 

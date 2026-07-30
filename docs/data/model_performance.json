@@ -1,0 +1,99 @@
+{
+  "baseline_por_anio": [
+    {
+      "periodo": "2014",
+      "mae": 9.08,
+      "n": 8737
+    },
+    {
+      "periodo": "2015",
+      "mae": 7.49,
+      "n": 8760
+    },
+    {
+      "periodo": "2016",
+      "mae": 5.92,
+      "n": 8784
+    },
+    {
+      "periodo": "2017",
+      "mae": 5.42,
+      "n": 8760
+    },
+    {
+      "periodo": "2018",
+      "mae": 5.32,
+      "n": 8760
+    },
+    {
+      "periodo": "2019",
+      "mae": 5.26,
+      "n": 8760
+    },
+    {
+      "periodo": "2020",
+      "mae": 5.37,
+      "n": 8784
+    },
+    {
+      "periodo": "2021",
+      "mae": 16.07,
+      "n": 8760
+    },
+    {
+      "periodo": "2022",
+      "mae": 27.69,
+      "n": 8760
+    },
+    {
+      "periodo": "2023",
+      "mae": 20.56,
+      "n": 8760
+    },
+    {
+      "periodo": "2024",
+      "mae": 18.26,
+      "n": 8784
+    },
+    {
+      "periodo": "2025",
+      "mae": 36.61,
+      "n": 8758
+    },
+    {
+      "periodo": "2026",
+      "mae": 66.8,
+      "n": 5062
+    }
+  ],
+  "modelo_por_anio": [
+    {
+      "periodo": "2023",
+      "mae": 5.3,
+      "n": 1
+    },
+    {
+      "periodo": "2024",
+      "mae": 3.59,
+      "n": 8431
+    },
+    {
+      "periodo": "2025",
+      "mae": 45.87,
+      "n": 8061
+    },
+    {
+      "periodo": "2026",
+      "mae": 154.26,
+      "n": 4879
+    }
+  ],
+  "holdout": {
+    "modelo_tipo": "lightgbm",
+    "regimen": "post_tope",
+    "test_start": "2025-08-01T00:00",
+    "mae_modelo": 131.98,
+    "mae_baseline": 63.26
+  },
+  "scatter": []
+}
