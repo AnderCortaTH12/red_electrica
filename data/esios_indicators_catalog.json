@@ -5,7 +5,8 @@
     "categoria": "precio",
     "rol": "Precio mercado SPOT Diario -> TARGET a predecir",
     "disponible_desde_2014": true,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2014-01"
   },
   {
     "id": 1001,
@@ -13,7 +14,8 @@
     "categoria": "precio",
     "rol": "Término de facturación de energía activa del PVPC 2.0TD -> precio PVPC (regulado, distinto del spot)",
     "disponible_desde_2014": false,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2021-06"
   },
   {
     "id": 544,
@@ -21,7 +23,8 @@
     "categoria": "demanda",
     "rol": "Demanda prevista -> feature (previsión, disponible antes de la hora H)",
     "disponible_desde_2014": true,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2014-01"
   },
   {
     "id": 1293,
@@ -29,7 +32,8 @@
     "categoria": "demanda",
     "rol": "Demanda real -> solo como lag (real, no disponible a priori en la hora H)",
     "disponible_desde_2014": true,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2014-01"
   },
   {
     "id": 551,
@@ -37,7 +41,8 @@
     "categoria": "generacion_real",
     "rol": "Generación T.Real eólica -> lag / feature de mix energético",
     "disponible_desde_2014": true,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2014-01"
   },
   {
     "id": 1295,
@@ -45,7 +50,8 @@
     "categoria": "generacion_real",
     "rol": "Generación T.Real Solar fotovoltaica -> lag / feature de mix energético",
     "disponible_desde_2014": false,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2015-07"
   },
   {
     "id": 1294,
@@ -53,7 +59,8 @@
     "categoria": "generacion_real",
     "rol": "Generación T.Real Solar térmica -> lag / feature de mix energético",
     "disponible_desde_2014": false,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2015-07"
   },
   {
     "id": 549,
@@ -61,7 +68,8 @@
     "categoria": "generacion_real",
     "rol": "Generación T.Real nuclear -> lag / feature de mix energético (muy estable)",
     "disponible_desde_2014": true,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2014-01"
   },
   {
     "id": 546,
@@ -69,7 +77,8 @@
     "categoria": "generacion_real",
     "rol": "Generación T.Real hidráulica -> lag / feature de mix energético",
     "disponible_desde_2014": true,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2014-01"
   },
   {
     "id": 2041,
@@ -77,7 +86,8 @@
     "categoria": "generacion_real",
     "rol": "Generación T.Real ciclo combinado nacional -> lag / feature de mix energético",
     "disponible_desde_2014": false,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2019-01"
   },
   {
     "id": 547,
@@ -85,7 +95,8 @@
     "categoria": "generacion_real",
     "rol": "Generación T.Real carbón -> lag / feature de mix energético",
     "disponible_desde_2014": true,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2014-01"
   },
   {
     "id": 1777,
@@ -93,7 +104,8 @@
     "categoria": "prevision_generacion",
     "rol": "Previsión diaria D+1 eólica -> feature (disponible antes de la hora H)",
     "disponible_desde_2014": false,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2019-01"
   },
   {
     "id": 1779,
@@ -101,6 +113,7 @@
     "categoria": "prevision_generacion",
     "rol": "Previsión diaria D+1 fotovoltaica -> feature (disponible antes de la hora H)",
     "disponible_desde_2014": false,
-    "disponible_reciente": true
+    "disponible_reciente": true,
+    "cobertura_desde": "2019-01"
   }
 ]
