@@ -145,3 +145,22 @@ la base de datos.
   más volátil — cualquier modelo hay que evaluarlo con esto en mente,
   y probablemente conviene evaluar/entrenar por separado el periodo
   reciente frente al histórico "tranquilo" 2014-2020.
+- **El salto de error SÍ coincide con un cambio de régimen regulatorio
+  real**, no es solo volatilidad acumulada: la std del precio en
+  `post_tope` (desde 2024-01-01, fin del tope al gas) es ~2.8x la de
+  `normal`. Ver `src/model/regimes.py`, `evaluate_by_regime()` en
+  `src/model/evaluate.py`, y la sección de régimen en
+  `notebooks/01_eda.ipynb`.
+- **Primer intento de LightGBM: pierde contra el baseline con claridad**
+  (MAE 131.97 vs 63.26 en el holdout, entrenado solo sobre el régimen
+  `post_tope`). Causa raíz identificada: los modelos de árboles no
+  pueden extrapolar más allá del rango del target visto en
+  entrenamiento (precio máximo en train: 240 EUR/MWh; en test llega a
+  1020). Las predicciones quedan ancladas cerca de ese techo mientras
+  el precio real sigue subiendo. No es un problema de la feature de
+  tendencia (se probó sin ella, mismo resultado) — es una limitación
+  estructural de los árboles de decisión ante una serie con tendencia
+  fuerte. Pendiente de decidir cómo abordarlo (predecir un residual/
+  ratio en vez del precio absoluto, reentrenamiento periódico con
+  ventana móvil, o un modelo que sí extrapole). Ver
+  `models/lightgbm_metrics.json`.

@@ -27,6 +27,7 @@ __pycache__/
 !/models/.gitkeep
 # Excepción: metricas del baseline (JSON pequeño, es documentación)
 !/models/baseline_metrics.json
+!/models/lightgbm_metrics.json
 
 # Notebooks: checkpoints de Jupyter
 .ipynb_checkpoints/

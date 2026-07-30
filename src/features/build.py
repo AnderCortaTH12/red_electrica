@@ -108,6 +108,22 @@ DEFAULT_EXCLUDE_COLUMNS = ("pvpc",)
 # Ver notebooks/01_eda.ipynb.
 
 
+def add_trend_feature(df: pd.DataFrame, reference_date: str = "2024-01-01") -> pd.DataFrame:
+    """Añade 'dias_desde_referencia': contador de tendencia temporal
+    simple (días desde `reference_date`, UTC, puede ser fraccionario).
+
+    Pensado para el régimen post_tope (desde 2024-01-01): el error del
+    baseline escala año a año dentro de ese régimen (MAE 18.3 en 2024 ->
+    36.6 en 2025 -> 66.8 en 2026, ver notebooks/01_eda.ipynb) — esta
+    feature le da al modelo una señal explícita de tendencia en vez de
+    depender de que la infiera sola de las features cíclicas de calendario.
+    """
+    df = df.copy()
+    ref = pd.Timestamp(reference_date, tz="UTC")
+    df["dias_desde_referencia"] = (df.index - ref).total_seconds() / 86400
+    return df
+
+
 def build_training_frame(
     df: pd.DataFrame,
     catalog: list[dict],

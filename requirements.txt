@@ -8,3 +8,6 @@ holidays>=0.45
 matplotlib>=3.8
 ipykernel>=6.29
 nbconvert>=7.16
+scikit-learn>=1.4
+lightgbm>=4.3
+joblib>=1.3

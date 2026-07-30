@@ -1,0 +1,133 @@
+{
+  "modelo": "lightgbm",
+  "regimen": "post_tope",
+  "test_start": "2025-08-01T00:00",
+  "n_train": 12990,
+  "n_test": 8381,
+  "lightgbm_mae": 131.96683435039583,
+  "lightgbm_rmse": 188.84138847689934,
+  "baseline_mae": 63.259940341248054,
+  "baseline_rmse": 98.70910812071676,
+  "mejora_pct_mae": -108.61043124371726,
+  "lightgbm_por_anio": [
+    {
+      "periodo": "2023",
+      "mae": 5.2966979345129985,
+      "rmse": 5.2966979345129985,
+      "n": 1
+    },
+    {
+      "periodo": "2024",
+      "mae": 3.594709386592493,
+      "rmse": 4.866069299041596,
+      "n": 8431
+    },
+    {
+      "periodo": "2025",
+      "mae": 45.867004663391356,
+      "rmse": 98.89280047244578,
+      "n": 8061
+    },
+    {
+      "periodo": "2026",
+      "mae": 154.24054951290864,
+      "rmse": 212.44010785141504,
+      "n": 4878
+    },
+    {
+      "periodo": "total",
+      "mae": 53.92502066594271,
+      "rmse": 118.31933297234733,
+      "n": 21371
+    }
+  ],
+  "baseline_por_anio": [
+    {
+      "periodo": "2023",
+      "mae": 45.12,
+      "rmse": 45.12,
+      "n": 1
+    },
+    {
+      "periodo": "2024",
+      "mae": 18.34724350610841,
+      "rmse": 27.87011775890351,
+      "n": 8431
+    },
+    {
+      "periodo": "2025",
+      "mae": 36.187172807344005,
+      "rmse": 65.0068981456987,
+      "n": 8061
+    },
+    {
+      "periodo": "2026",
+      "mae": 67.26980729807298,
+      "rmse": 102.80149016365861,
+      "n": 4878
+    },
+    {
+      "periodo": "total",
+      "mae": 36.244333442515554,
+      "rmse": 65.67130023214071,
+      "n": 21371
+    }
+  ],
+  "feature_importance": {
+    "prevision_eolica": 967,
+    "precio_spot_lag24h": 613,
+    "demanda_prevista": 603,
+    "precio_spot_rollmean24h": 583,
+    "precio_spot_lag168h": 426,
+    "gen_eolica_lag24h": 411,
+    "prevision_fv": 409,
+    "gen_eolica_lag168h": 382,
+    "gen_hidraulica_rollmean24h": 342,
+    "demanda_real_rollmean24h": 335,
+    "demanda_real_lag168h": 320,
+    "gen_eolica_rollmean24h": 310,
+    "gen_hidraulica_rollmean168h": 310,
+    "gen_hidraulica_lag168h": 307,
+    "gen_eolica_rollmean168h": 296,
+    "gen_ciclo_combinado_rollmean24h": 296,
+    "gen_solar_termica_rollmean24h": 290,
+    "hour": 285,
+    "precio_spot_lag48h": 282,
+    "gen_ciclo_combinado_rollmean168h": 280,
+    "dias_desde_referencia": 276,
+    "gen_solar_termica_rollmean168h": 270,
+    "gen_solar_fv_rollmean24h": 258,
+    "precio_spot_rollmean168h": 257,
+    "gen_carbon_rollmean24h": 256,
+    "gen_ciclo_combinado_lag24h": 250,
+    "gen_ciclo_combinado_lag168h": 247,
+    "gen_eolica_lag48h": 244,
+    "gen_hidraulica_lag24h": 238,
+    "gen_carbon_rollmean168h": 238,
+    "demanda_real_rollmean168h": 235,
+    "gen_ciclo_combinado_lag48h": 234,
+    "dayofweek": 231,
+    "gen_nuclear_lag168h": 222,
+    "gen_solar_termica_lag48h": 217,
+    "gen_solar_fv_lag48h": 215,
+    "gen_solar_fv_lag168h": 212,
+    "gen_nuclear_rollmean24h": 212,
+    "gen_carbon_lag168h": 207,
+    "demanda_real_lag48h": 198,
+    "gen_solar_termica_lag24h": 198,
+    "gen_solar_termica_lag168h": 196,
+    "gen_carbon_lag24h": 194,
+    "gen_solar_fv_lag24h": 190,
+    "gen_solar_fv_rollmean168h": 190,
+    "demanda_real_lag24h": 187,
+    "gen_nuclear_lag48h": 185,
+    "gen_nuclear_lag24h": 177,
+    "gen_hidraulica_lag48h": 169,
+    "ratio_renovables_lag24h": 169,
+    "gen_nuclear_rollmean168h": 155,
+    "gen_carbon_lag48h": 143,
+    "month": 65,
+    "is_holiday": 18,
+    "is_weekend": 0
+  }
+}

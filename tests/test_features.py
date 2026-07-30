@@ -12,6 +12,7 @@ from src.features.build import (
     add_lags,
     add_renewable_ratio_lag24h,
     add_rolling_means,
+    add_trend_feature,
     build_training_frame,
 )
 
@@ -165,6 +166,27 @@ def test_build_training_frame_excludes_pvpc_entirely_by_default(sample_df):
     train = build_training_frame(sample_df, catalog)
     pvpc_columns = [c for c in train.columns if c.startswith("pvpc")]
     assert pvpc_columns == []
+
+
+def test_add_trend_feature_counts_days_since_reference(sample_df):
+    out = add_trend_feature(sample_df, reference_date="2024-01-01")
+    ref = pd.Timestamp("2024-01-01", tz="UTC")
+    expected = (sample_df.index - ref).total_seconds() / 86400
+    assert np.allclose(out["dias_desde_referencia"].values, expected.values)
+
+
+def test_add_trend_feature_is_zero_at_reference_date():
+    idx = pd.date_range("2024-01-01", periods=5, freq="h", tz="UTC")
+    df = pd.DataFrame({"precio_spot": range(5)}, index=idx)
+    out = add_trend_feature(df, reference_date="2024-01-01")
+    assert out["dias_desde_referencia"].iloc[0] == pytest.approx(0.0)
+
+
+def test_add_trend_feature_is_negative_before_reference():
+    idx = pd.date_range("2023-12-30", periods=5, freq="h", tz="UTC")
+    df = pd.DataFrame({"precio_spot": range(5)}, index=idx)
+    out = add_trend_feature(df, reference_date="2024-01-01")
+    assert (out["dias_desde_referencia"] < 0).all()
 
 
 def test_build_training_frame_exclude_columns_is_configurable(sample_df):
