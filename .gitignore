@@ -8,6 +8,8 @@ venv/
 # Datos (se regeneran con los scripts de ingesta, no van al repo)
 /data/*
 !/data/.gitkeep
+# Excepción: catálogo de indicadores (pequeño, es documentación, caro de rehacer)
+!/data/esios_indicators_catalog.json
 
 # Bases de datos
 *.db
