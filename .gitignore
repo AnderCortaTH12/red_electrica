@@ -25,6 +25,8 @@ __pycache__/
 # Modelos entrenados (versionados aparte, no en git por peso)
 /models/*
 !/models/.gitkeep
+# Excepción: metricas del baseline (JSON pequeño, es documentación)
+!/models/baseline_metrics.json
 
 # Notebooks: checkpoints de Jupyter
 .ipynb_checkpoints/

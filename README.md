@@ -128,8 +128,20 @@ la base de datos.
   Bajos; el PVPC trae Canarias/Baleares/Ceuta/Melilla además de
   Península). `geo_id_objetivo` en el catálogo fija cuál se usa; el resto
   se descarta al pivotar a formato ancho (`src/features/load.py`).
-- Incluir `pvpc` como feature reduce la ventana de entrenamiento
-  utilizable a 2021-06 → hoy (~42.400 filas) en vez del histórico
-  completo desde 2014 (~110.000 filas), porque su cobertura empieza en
-  2021-06 y se usa en lag de hasta 168h. Ver `notebooks/01_eda.ipynb`
-  para el detalle — es una decisión pendiente de tomar en la Fase 5.
+- **Decisión tomada (Fase 5)**: `pvpc` se excluye del todo del dataset
+  de features (`DEFAULT_EXCLUDE_COLUMNS` en `src/features/build.py`),
+  no solo del lag 0 — es casi una derivada regulatoria del propio
+  precio spot (riesgo de leakage conceptual) y su cobertura desde
+  2021-06 habría recortado la ventana de entrenamiento a solo la
+  crisis energética 2021-2022. Aun así, la ventana de features usable
+  hoy es **2019-01 → hoy** (~62.300 filas), no el histórico completo
+  desde 2014: `gen_ciclo_combinado`, `prevision_eolica` y
+  `prevision_fv` tampoco tienen datos antes de 2019-01. El **baseline**
+  sí usa el histórico completo desde 2014 (solo necesita `precio_spot`).
+- **El error del baseline naive se ha multiplicado por ~7 desde 2020**:
+  MAE ~5 EUR/MWh en 2014-2020, pero 27.7 en 2022, 36.6 en 2025 y 66.8
+  en 2026 (ver `models/baseline_metrics.json`, generado por
+  `python -m scripts.train_baseline`). El mercado se ha vuelto mucho
+  más volátil — cualquier modelo hay que evaluarlo con esto en mente,
+  y probablemente conviene evaluar/entrenar por separado el periodo
+  reciente frente al histórico "tranquilo" 2014-2020.

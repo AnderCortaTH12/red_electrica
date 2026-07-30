@@ -156,3 +156,19 @@ def test_build_training_frame_has_target(sample_df):
     catalog = sample_catalog()
     train = build_training_frame(sample_df, catalog)
     assert "precio_spot" in train.columns
+
+
+def test_build_training_frame_excludes_pvpc_entirely_by_default(sample_df):
+    """pvpc se excluye del todo (ni lag 0 ni lags): decision explicita
+    para no recortar la ventana de entrenamiento a partir de 2021-06."""
+    catalog = sample_catalog()
+    train = build_training_frame(sample_df, catalog)
+    pvpc_columns = [c for c in train.columns if c.startswith("pvpc")]
+    assert pvpc_columns == []
+
+
+def test_build_training_frame_exclude_columns_is_configurable(sample_df):
+    catalog = sample_catalog()
+    train = build_training_frame(sample_df, catalog, exclude_columns=())
+    pvpc_columns = [c for c in train.columns if c.startswith("pvpc")]
+    assert len(pvpc_columns) > 0  # con exclude_columns=() si aparece

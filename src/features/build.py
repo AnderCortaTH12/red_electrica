@@ -98,16 +98,39 @@ def add_renewable_ratio_lag24h(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def build_training_frame(df: pd.DataFrame, catalog: list[dict]) -> pd.DataFrame:
+DEFAULT_EXCLUDE_COLUMNS = ("pvpc",)
+# pvpc excluida por decision explicita (no solo del lag 0, tambien de
+# los lags): es casi una derivada regulatoria del propio precio spot
+# (riesgo de leakage conceptual/multicolinealidad), y su cobertura
+# empieza en 2021-06 -- incluirla como lag habria recortado la ventana
+# de entrenamiento de ~110k filas (2014-hoy) a ~42k filas (2021-hoy),
+# quedandonos solo con la ventana de la crisis energetica 2021-2022.
+# Ver notebooks/01_eda.ipynb.
+
+
+def build_training_frame(
+    df: pd.DataFrame,
+    catalog: list[dict],
+    exclude_columns: tuple[str, ...] = DEFAULT_EXCLUDE_COLUMNS,
+) -> pd.DataFrame:
     """Construye el DataFrame final de features, respetando qué
     indicadores están disponibles en la propia hora H y cuáles solo
     como lag. `df` debe venir de `src.features.load.load_wide_dataframe`.
+
+    `exclude_columns` se descarta por completo (ni lag 0 ni lags):
+    por defecto excluye pvpc, ver DEFAULT_EXCLUDE_COLUMNS.
     """
-    forecast_columns = [e["columna"] for e in catalog if e["disponible_antes_de_hora_h"]]
+    forecast_columns = [
+        e["columna"]
+        for e in catalog
+        if e["disponible_antes_de_hora_h"] and e["columna"] not in exclude_columns
+    ]
     real_columns = [
         e["columna"]
         for e in catalog
-        if not e["disponible_antes_de_hora_h"] and e["columna"] != "precio_spot"
+        if not e["disponible_antes_de_hora_h"]
+        and e["columna"] != "precio_spot"
+        and e["columna"] not in exclude_columns
     ]
 
     out = add_calendar_features(df)
