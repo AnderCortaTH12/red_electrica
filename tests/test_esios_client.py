@@ -136,6 +136,42 @@ def test_missing_token_raises():
             os.environ["ESIOS_API_KEY"] = old
 
 
+def test_get_indicator_handles_dst_offset_change():
+    """Regresión: un rango que cruza el cambio de hora tiene filas con
+    offset +01:00 (invierno) y +02:00 (verano) en 'datetime'. pandas 2.x
+    no vectoriza offsets mixtos sin utc=True; get_indicator no debe romper."""
+    client = make_client()
+    payload = {
+        "indicator": {
+            "id": 600,
+            "name": "Precio mercado SPOT Diario",
+            "values": [
+                {
+                    "value": 45.0,
+                    "datetime": "2019-03-31T01:00:00.000+01:00",
+                    "datetime_utc": "2019-03-31T00:00:00Z",
+                    "geo_id": 3,
+                    "geo_name": "España",
+                },
+                {
+                    "value": 46.0,
+                    "datetime": "2019-03-31T03:00:00.000+02:00",
+                    "datetime_utc": "2019-03-31T01:00:00Z",
+                    "geo_id": 3,
+                    "geo_name": "España",
+                },
+            ],
+        }
+    }
+    client.session.get = MagicMock(return_value=make_response(200, payload))
+
+    df = client.get_indicator(600, "2019-03-31T00:00", "2019-03-31T23:59")
+
+    assert len(df) == 2
+    assert str(df["datetime"].iloc[0].tzinfo) == "UTC+01:00"
+    assert str(df["datetime"].iloc[1].tzinfo) == "UTC+02:00"
+
+
 def test_search_indicators():
     client = make_client()
     payload = {"indicators": [{"id": 600, "name": "Precio mercado SPOT Diario"}]}

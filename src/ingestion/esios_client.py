@@ -13,10 +13,12 @@ from typing import Any
 import pandas as pd
 import requests
 
+from src.ingestion.base import OBSERVATION_COLUMNS, DataSource
+
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://api.esios.ree.es"
-DEFAULT_TIMEOUT = 30
+DEFAULT_TIMEOUT = 60
 MAX_RETRIES = 5
 BACKOFF_BASE_SECONDS = 2.0
 MIN_REQUEST_INTERVAL_SECONDS = 1.0
@@ -26,13 +28,21 @@ class ESIOSAPIError(Exception):
     """Error irrecuperable al consultar la API de ESIOS."""
 
 
-class ESIOSClient:
+class ESIOSClient(DataSource):
     """Cliente HTTP para la API de ESIOS con reintentos y auto-throttling.
+
+    Implementa la interfaz DataSource (método fetch()) además de
+    get_indicator(), que expone la respuesta cruda de ESIOS con más
+    detalle (datetime local, geo_name) para usos que no sean la
+    ingesta genérica a la tabla observations.
 
     Uso:
         client = ESIOSClient()  # lee ESIOS_API_KEY de .env / entorno
         df = client.get_indicator(600, "2019-01-01T00:00", "2019-01-31T23:59")
+        df = client.fetch(600, "2019-01-01T00:00", "2019-01-31T23:59")  # esquema estándar
     """
+
+    name = "esios"
 
     def __init__(
         self,
@@ -92,9 +102,44 @@ class ESIOSClient:
         )
         df.insert(0, "indicator_id", indicator_id)
         if not df.empty:
-            df["datetime"] = pd.to_datetime(df["datetime"], utc=False)
+            # "datetime" viene en hora local (Europe/Madrid) con offset propio
+            # por fila (+01:00 en invierno, +02:00 en verano). pandas 2.x no
+            # deja vectorizar offsets mixtos en una sola columna sin forzar
+            # utc=True (lo que perdería el offset local); se parsea fila a
+            # fila para conservarlo tal cual.
+            df["datetime"] = df["datetime"].apply(pd.Timestamp)
             df["datetime_utc"] = pd.to_datetime(df["datetime_utc"], utc=True)
         return df
+
+    def fetch(
+        self,
+        indicator_id: int,
+        start_date: str,
+        end_date: str,
+        time_trunc: str = "hour",
+        geo_agg: str | None = None,
+        geo_ids: list[int] | None = None,
+        **kwargs,
+    ) -> pd.DataFrame:
+        """Implementación de DataSource.fetch(): esquema estándar para storage.
+
+        Devuelve columnas: source, indicator_id, datetime_utc, geo_id, value.
+        geo_id se normaliza a 0 cuando la API no da uno (evita NULLs en la
+        clave primaria de la tabla observations).
+        """
+        raw = self.get_indicator(
+            indicator_id, start_date, end_date, time_trunc, geo_agg, geo_ids
+        )
+        df = pd.DataFrame(columns=OBSERVATION_COLUMNS)
+        if raw.empty:
+            return df
+
+        df["indicator_id"] = raw["indicator_id"]
+        df["datetime_utc"] = raw["datetime_utc"].dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+        df["geo_id"] = raw["geo_id"].fillna(0).astype(int)
+        df["value"] = raw["value"]
+        df["source"] = self.name
+        return df[OBSERVATION_COLUMNS]
 
     def search_indicators(self, text: str) -> pd.DataFrame:
         """Busca indicadores por texto libre. Útil para descubrir ids."""

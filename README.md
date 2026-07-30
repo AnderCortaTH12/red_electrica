@@ -54,7 +54,20 @@ copy .env.example .env
 Verificar que la autenticación contra la API de ESIOS funciona:
 
 ```powershell
-python scripts\test_esios_auth.py
+python -m scripts.test_esios_auth
+```
+
+> Los scripts de `scripts/` se ejecutan como módulo (`python -m scripts.nombre`,
+> no `python scripts\nombre.py`) porque importan código de `src/`, y `-m`
+> añade la raíz del proyecto al `sys.path` automáticamente.
+
+Descargar el histórico completo (2014 → hoy) de los indicadores del catálogo
+a `data/electricidad.db`. Es idempotente: si se corta a mitad, al
+relanzarlo continúa donde estaba sin duplicar datos ni repetir ventanas
+ya descargadas:
+
+```powershell
+python -m scripts.ingest_historical
 ```
 
 ## Fuente de datos

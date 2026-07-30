@@ -1,5 +1,6 @@
 [
   {
+    "source": "esios",
     "id": 600,
     "name": "Precio mercado SPOT Diario",
     "categoria": "precio",
@@ -9,6 +10,7 @@
     "cobertura_desde": "2014-01"
   },
   {
+    "source": "esios",
     "id": 1001,
     "name": "Término de facturación de energía activa del PVPC 2.0TD",
     "categoria": "precio",
@@ -18,6 +20,7 @@
     "cobertura_desde": "2021-06"
   },
   {
+    "source": "esios",
     "id": 544,
     "name": "Demanda prevista",
     "categoria": "demanda",
@@ -27,6 +30,7 @@
     "cobertura_desde": "2014-01"
   },
   {
+    "source": "esios",
     "id": 1293,
     "name": "Demanda real",
     "categoria": "demanda",
@@ -36,6 +40,7 @@
     "cobertura_desde": "2014-01"
   },
   {
+    "source": "esios",
     "id": 551,
     "name": "Generación T.Real eólica",
     "categoria": "generacion_real",
@@ -45,6 +50,7 @@
     "cobertura_desde": "2014-01"
   },
   {
+    "source": "esios",
     "id": 1295,
     "name": "Generación T.Real Solar fotovoltaica",
     "categoria": "generacion_real",
@@ -54,6 +60,7 @@
     "cobertura_desde": "2015-07"
   },
   {
+    "source": "esios",
     "id": 1294,
     "name": "Generación T.Real Solar térmica",
     "categoria": "generacion_real",
@@ -63,6 +70,7 @@
     "cobertura_desde": "2015-07"
   },
   {
+    "source": "esios",
     "id": 549,
     "name": "Generación T.Real nuclear",
     "categoria": "generacion_real",
@@ -72,6 +80,7 @@
     "cobertura_desde": "2014-01"
   },
   {
+    "source": "esios",
     "id": 546,
     "name": "Generación T.Real hidráulica",
     "categoria": "generacion_real",
@@ -81,6 +90,7 @@
     "cobertura_desde": "2014-01"
   },
   {
+    "source": "esios",
     "id": 2041,
     "name": "Generación T.Real ciclo combinado nacional",
     "categoria": "generacion_real",
@@ -90,6 +100,7 @@
     "cobertura_desde": "2019-01"
   },
   {
+    "source": "esios",
     "id": 547,
     "name": "Generación T.Real carbón",
     "categoria": "generacion_real",
@@ -99,6 +110,7 @@
     "cobertura_desde": "2014-01"
   },
   {
+    "source": "esios",
     "id": 1777,
     "name": "Previsión diaria D+1 eólica",
     "categoria": "prevision_generacion",
@@ -108,6 +120,7 @@
     "cobertura_desde": "2019-01"
   },
   {
+    "source": "esios",
     "id": 1779,
     "name": "Previsión diaria D+1 fotovoltaica",
     "categoria": "prevision_generacion",
