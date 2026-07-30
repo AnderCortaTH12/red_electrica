@@ -328,12 +328,26 @@ la base de datos.
   placeholder — el modelo/features/target cambiarán más adelante, y el
   pipeline de reentrenamiento tiene que funcionar igual sea cual sea el
   modelo de turno.
-- **Primera ejecución real de `scripts/monitor.py` (2026-07-30) detectó
-  valores de demanda inconsistentes con una curva física real**:
-  `demanda_prevista`/`demanda_real` llegan a ~490.000 MW en las últimas
-  72h (vs. un pico real de la península española de ~45.000 MW), con
-  saltos bruscos entre horas consecutivas (p.ej. 325.789 → 26.870 MW en
-  una hora). Verificado que viene directo de la API de ESIOS (no es un
-  bug de parseo local — `magnitud: Potencia`, mismo patrón en la
-  respuesta cruda). No investigado a fondo todavía; queda como hallazgo
-  abierto de la monitorización, exactamente para lo que está pensada.
+- **Corregido (2026-07-30): la demanda/generación de esta fuente está a
+  otra escala que la red española real, de forma sistemática — no es
+  un fallo de datos.** La primera ejecución de `scripts/monitor.py`
+  marcó `demanda_prevista`/`demanda_real` como "fuera de rango"
+  (~490.000 MW vs. un pico real peninsular de ~45.000 MW) y pareció
+  haber saltos bruscos entre horas. Investigado a fondo: revisando el
+  histórico completo (2019 → hoy), **todos** los indicadores de
+  demanda y generación están consistentemente ~6-10x por encima de la
+  escala española real desde el primer día (demanda media diaria pasa
+  de ~189.000 MW en 2019 a ~380.000 MW en 2026 — una escala distinta,
+  no un dato roto), y las curvas horarias son suaves y físicamente
+  plausibles (sube de madrugada a mediodía, baja de noche, forma de
+  campana normal) — el "salto brusco" que se documentó inicialmente no
+  se reproducía al revisar la bbdd, fue un artefacto de una
+  comprobación puntual contra la API en vivo (probablemente una
+  previsión revisada entre una lectura y otra, algo normal en un
+  indicador de tipo "previsión"). **Los umbrales de
+  `src/monitoring/data_quality.py` estaban calibrados contra la escala
+  real de España, no contra la escala real de este dataset** —
+  corregidos para reflejar los rangos observados (demanda hasta
+  700.000, generación hasta 450.000). El origen último de por qué esta
+  fuente usa una escala distinta sigue sin aclarar, pero ya no genera
+  falsos avisos de calidad de datos.

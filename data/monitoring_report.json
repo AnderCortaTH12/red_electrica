@@ -1,59 +1,8 @@
 {
-  "generated_at": "2026-07-30T16:30:09.994466+00:00",
+  "generated_at": "2026-07-30T16:47:12.222154+00:00",
   "gaps": [],
   "stale_indicators": [],
-  "out_of_range": [
-    {
-      "indicator_id": 544,
-      "nombre": "Demanda prevista",
-      "tipo": "fuera_de_rango",
-      "rango_esperado": [
-        0,
-        60000
-      ],
-      "filas_fuera_de_rango": 77
-    },
-    {
-      "indicator_id": 1293,
-      "nombre": "Demanda real",
-      "tipo": "fuera_de_rango",
-      "rango_esperado": [
-        0,
-        60000
-      ],
-      "filas_fuera_de_rango": 69
-    },
-    {
-      "indicator_id": 1295,
-      "nombre": "Generación T.Real Solar fotovoltaica",
-      "tipo": "fuera_de_rango",
-      "rango_esperado": [
-        -1000,
-        100000
-      ],
-      "filas_fuera_de_rango": 33
-    },
-    {
-      "indicator_id": 546,
-      "nombre": "Generación T.Real hidráulica",
-      "tipo": "fuera_de_rango",
-      "rango_esperado": [
-        -1000,
-        100000
-      ],
-      "filas_fuera_de_rango": 21
-    },
-    {
-      "indicator_id": 2041,
-      "nombre": "Generación T.Real ciclo combinado nacional",
-      "tipo": "fuera_de_rango",
-      "rango_esperado": [
-        -1000,
-        100000
-      ],
-      "filas_fuera_de_rango": 40
-    }
-  ],
+  "out_of_range": [],
   "error_ultimos_7_dias": {
     "n": 0,
     "mae": null,

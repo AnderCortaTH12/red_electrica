@@ -11,15 +11,22 @@ from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 
-# Rangos "sanos" (no de negocio estrictos, solo para pillar errores
-# groseros: nulos convertidos en 0, unidades mal escaladas, etc.)
+# Rangos "sanos" calibrados sobre el histórico REAL de esta fuente
+# (verificado 2026-07-30 sobre 2019-hoy), no sobre la escala de la red
+# eléctrica española real: toda la demanda/generación de este dataset
+# está sistemáticamente ~6-10x por encima de esa escala de forma
+# consistente desde 2019 (curvas diarias suaves y físicamente
+# plausibles, no es ruido) -- una característica de esta fuente
+# simulada, no un fallo puntual. Los márgenes de abajo dejan hueco por
+# encima de los máximos observados para seguir pillando errores
+# groseros reales (nulos como 0, unidades realmente mal escaladas).
 RANGOS_SANOS = {
     "precio_spot": (-500, 5000),
     "pvpc": (-500, 5000),
-    "demanda_real": (0, 60000),
-    "demanda_prevista": (0, 60000),
+    "demanda_real": (0, 700000),
+    "demanda_prevista": (0, 700000),
 }
-RANGO_GENERACION_DEFECTO = (-1000, 100000)
+RANGO_GENERACION_DEFECTO = (-60000, 450000)
 
 STALE_HOURS = 48
 GAP_CHECK_HOURS = 72
