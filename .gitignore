@@ -10,6 +10,8 @@ venv/
 !/data/.gitkeep
 # Excepción: catálogo de indicadores (pequeño, es documentación, caro de rehacer)
 !/data/esios_indicators_catalog.json
+# Excepción: informe de monitorización diaria (JSON pequeño, lo comitea el workflow)
+!/data/monitoring_report.json
 
 # Bases de datos
 *.db
@@ -28,6 +30,8 @@ __pycache__/
 # Excepción: metricas del baseline (JSON pequeño, es documentación)
 !/models/baseline_metrics.json
 !/models/lightgbm_metrics.json
+# Excepción: metadata del modelo activo (JSON pequeño, lo comitea el workflow diario)
+!/models/model_metadata.json
 
 # Notebooks: checkpoints de Jupyter
 .ipynb_checkpoints/

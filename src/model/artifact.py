@@ -14,14 +14,19 @@ modelo que me está sirviendo esto?" sin tener que mirar el código.
 from __future__ import annotations
 
 import json
+import logging
+import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Protocol
 
 import joblib
 
+logger = logging.getLogger(__name__)
+
 MODEL_PATH = Path("models/model.joblib")
 METADATA_PATH = Path("models/model_metadata.json")
+HISTORY_DIR = Path("models/history")
 
 
 class PredictiveModel(Protocol):
@@ -29,6 +34,26 @@ class PredictiveModel(Protocol):
     LightGBM, o un wrapper propio)."""
 
     def predict(self, X: Any) -> Any: ...
+
+
+def _archive_previous(model_path: Path, metadata_path: Path, history_dir: Path) -> None:
+    """Copia el modelo/metadata que va a ser reemplazado a
+    `history_dir`, nombrado por su propio model_version, antes de
+    sobrescribir. Si algo falla (metadata corrupta, etc.) se registra
+    un aviso y se continúa: archivar el histórico no debe bloquear
+    nunca el guardado del modelo nuevo.
+    """
+    if not model_path.exists() or not metadata_path.exists():
+        return
+    try:
+        with open(metadata_path, encoding="utf-8") as f:
+            prev_metadata = json.load(f)
+        prev_version = prev_metadata.get("model_version", "desconocida").replace(":", "-")
+        history_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(model_path, history_dir / f"model_{prev_version}.joblib")
+        shutil.copy2(metadata_path, history_dir / f"model_metadata_{prev_version}.json")
+    except Exception:
+        logger.warning("No se pudo archivar la versión anterior del modelo", exc_info=True)
 
 
 def save_model_artifact(
@@ -39,11 +64,20 @@ def save_model_artifact(
     target: str = "precio_spot",
     model_path: Path = MODEL_PATH,
     metadata_path: Path = METADATA_PATH,
+    history_dir: Path = HISTORY_DIR,
+    archive_previous: bool = True,
 ) -> dict:
     """Guarda el modelo + su metadata en el formato que espera la API.
 
+    Si ya había un modelo guardado y `archive_previous` es True (por
+    defecto), lo copia primero a `history_dir` para no perder el
+    rastro de versiones anteriores al sobrescribir.
+
     Devuelve la metadata guardada (útil para tests/logging).
     """
+    if archive_previous:
+        _archive_previous(model_path, metadata_path, history_dir)
+
     trained_at = datetime.now(timezone.utc).isoformat()
     metadata = {
         "model_type": model_type,

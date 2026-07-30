@@ -9,6 +9,7 @@ from src.storage.db import (
     get_connection,
     init_db,
     insert_observations,
+    insert_predictions,
     is_period_done,
     mark_period,
     upsert_catalog,
@@ -113,3 +114,44 @@ def test_upsert_catalog(conn):
         "SELECT name FROM indicators_catalog WHERE source = 'esios' AND indicator_id = 600"
     ).fetchone()
     assert row[0] == "Precio SPOT"
+
+
+def make_predictions_df(n=3, model_version="v1"):
+    return pd.DataFrame(
+        {
+            "model_version": [model_version] * n,
+            "target_datetime_utc": [f"2026-08-01T0{i}:00:00Z" for i in range(n)],
+            "predicted_price": [50.0 + i for i in range(n)],
+            "made_at": ["2026-07-31T12:00:00Z"] * n,
+        }
+    )
+
+
+def test_insert_predictions_inserts_rows(conn):
+    n_new = insert_predictions(conn, make_predictions_df(3))
+
+    assert n_new == 3
+    count = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
+    assert count == 3
+
+
+def test_insert_predictions_is_idempotent(conn):
+    insert_predictions(conn, make_predictions_df(3))
+    n_new_second_time = insert_predictions(conn, make_predictions_df(3))
+
+    assert n_new_second_time == 0
+
+
+def test_insert_predictions_empty_df_is_noop(conn):
+    empty = pd.DataFrame(
+        columns=["model_version", "target_datetime_utc", "predicted_price", "made_at"]
+    )
+    assert insert_predictions(conn, empty) == 0
+
+
+def test_different_model_versions_dont_collide(conn):
+    insert_predictions(conn, make_predictions_df(2, model_version="v1"))
+    insert_predictions(conn, make_predictions_df(2, model_version="v2"))
+
+    count = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
+    assert count == 4

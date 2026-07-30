@@ -1,0 +1,66 @@
+name: daily-pipeline
+
+# Cron diario: ingesta incremental -> reentreno -> prediccion -> monitorizacion.
+#
+# Limitacion conocida y asumida a proposito: los runners de GitHub Actions
+# son efimeros (sin estado propio entre ejecuciones), y electricidad.db
+# (~230MB) es demasiado grande para versionar en git sin Git LFS. Se usa
+# actions/cache para persistir data/ y models/ entre ejecuciones diarias.
+# No es almacenamiento "de verdad" (GitHub puede evictar caches poco usadas
+# o si se supera el limite de 10GB del repo) -- por eso ingest_incremental.py
+# esta preparado para autorepararse con un backfill completo si el cache se
+# pierde (ver src/ingestion/pipeline.py). Con una clave que incluye el
+# run_id + restore-keys por prefijo, cada ejecucion SIEMPRE guarda un cache
+# nuevo (si no, actions/cache no re-guarda cuando hay un hit exacto).
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # 06:00 UTC cada dia
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache de datos y modelo (persisten entre ejecuciones)
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/electricidad.db
+            models/
+          key: forecasting-electrico-state-${{ github.run_id }}
+          restore-keys: |
+            forecasting-electrico-state-
+
+      - run: pip install -r requirements.txt
+
+      - name: Ingesta incremental
+        env:
+          ESIOS_API_KEY: ${{ secrets.ESIOS_API_KEY }}
+        run: python -m scripts.ingest_incremental
+
+      - name: Reentrenar modelo
+        run: python -m scripts.train_lightgbm
+
+      - name: Generar y guardar predicción
+        run: python -m scripts.predict_and_log
+
+      - name: Monitorización (calidad de datos + error real)
+        run: python -m scripts.monitor
+
+      - name: Commit de resultados (metadata del modelo + informe de monitorización)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add models/model_metadata.json models/lightgbm_metrics.json data/monitoring_report.json
+          git diff --cached --quiet || git commit -m "Actualizacion diaria automatica [skip ci]"
+          git push

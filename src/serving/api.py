@@ -18,13 +18,11 @@ import sqlite3
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from src.features.build import add_trend_feature, build_training_frame
 from src.features.load import load_catalog, load_wide_dataframe
 from src.model.artifact import load_model_artifact
-from src.model.regimes import assign_regime
+from src.model.predict import latest_predictions
 
 DB_PATH = "data/electricidad.db"
-POST_TOPE_INICIO = "2024-01-01T00:00"
 
 app = FastAPI(
     title="Forecasting Eléctrico API",
@@ -98,35 +96,29 @@ def predict(hours: int = 24) -> PredictResponse:
     df = load_wide_dataframe(conn, catalog)
     conn.close()
 
-    frame = build_training_frame(df, catalog)
-    frame = add_trend_feature(frame, reference_date=POST_TOPE_INICIO)
-    regime = assign_regime(frame.index)
-    usable = frame[regime.values == "post_tope"].dropna()
-
-    if usable.empty:
-        raise HTTPException(
-            status_code=503, detail="No hay datos recientes suficientes para predecir."
-        )
-
     feature_columns = metadata["feature_columns"]
-    missing = set(feature_columns) - set(usable.columns)
-    if missing:
+    try:
+        preds_df = latest_predictions(df, catalog, model, feature_columns, hours=hours)
+    except KeyError as exc:
         raise HTTPException(
             status_code=500,
             detail=(
                 "El modelo espera columnas que ya no existen en el pipeline "
-                f"de features actual: {sorted(missing)}. Reentrena el modelo."
+                f"de features actual: {exc}. Reentrena el modelo."
             ),
-        )
+        ) from exc
 
-    recent = usable.tail(hours)
-    predictions = model.predict(recent[feature_columns])
+    if preds_df.empty:
+        raise HTTPException(
+            status_code=503, detail="No hay datos recientes suficientes para predecir."
+        )
 
     points = [
         PredictionPoint(
-            datetime_utc=timestamp.isoformat(), predicted_price_eur_mwh=float(value)
+            datetime_utc=row.datetime_utc.isoformat(),
+            predicted_price_eur_mwh=float(row.predicted_price),
         )
-        for timestamp, value in zip(recent.index, predictions)
+        for row in preds_df.itertuples()
     ]
 
     return PredictResponse(

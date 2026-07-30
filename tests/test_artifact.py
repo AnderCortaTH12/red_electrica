@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from src.model.artifact import load_model_artifact, save_model_artifact
@@ -72,6 +74,77 @@ def test_load_missing_artifact_raises_clear_error(tmp_path):
             model_path=tmp_path / "nope.joblib",
             metadata_path=tmp_path / "nope.json",
         )
+
+
+def test_second_save_archives_previous_version(artifact_paths, tmp_path):
+    model_path, metadata_path = artifact_paths
+    history_dir = tmp_path / "history"
+
+    first_metadata = save_model_artifact(
+        DummyModel(),
+        feature_columns=["hour"],
+        model_type="dummy",
+        metrics={"mae": 1.0},
+        model_path=model_path,
+        metadata_path=metadata_path,
+        history_dir=history_dir,
+    )
+
+    save_model_artifact(
+        DummyModel(),
+        feature_columns=["hour", "dayofweek"],
+        model_type="dummy",
+        metrics={"mae": 0.5},
+        model_path=model_path,
+        metadata_path=metadata_path,
+        history_dir=history_dir,
+    )
+
+    prev_version = first_metadata["model_version"].replace(":", "-")
+    archived_model = history_dir / f"model_{prev_version}.joblib"
+    archived_metadata = history_dir / f"model_metadata_{prev_version}.json"
+
+    assert archived_model.exists()
+    assert archived_metadata.exists()
+    with open(archived_metadata, encoding="utf-8") as f:
+        assert json.load(f)["metrics"]["mae"] == 1.0
+    # el "activo" (model_path/metadata_path) debe ser el nuevo, no el archivado
+    with open(metadata_path, encoding="utf-8") as f:
+        assert json.load(f)["metrics"]["mae"] == 0.5
+
+
+def test_first_save_does_not_fail_when_nothing_to_archive(artifact_paths, tmp_path):
+    model_path, metadata_path = artifact_paths
+    history_dir = tmp_path / "history"
+
+    save_model_artifact(
+        DummyModel(),
+        feature_columns=["hour"],
+        model_type="dummy",
+        metrics={},
+        model_path=model_path,
+        metadata_path=metadata_path,
+        history_dir=history_dir,
+    )
+
+    assert model_path.exists()
+    assert not history_dir.exists()
+
+
+def test_archive_previous_false_skips_archiving(artifact_paths, tmp_path):
+    model_path, metadata_path = artifact_paths
+    history_dir = tmp_path / "history"
+
+    save_model_artifact(
+        DummyModel(), ["hour"], "dummy", {}, model_path=model_path,
+        metadata_path=metadata_path, history_dir=history_dir,
+    )
+    save_model_artifact(
+        DummyModel(), ["hour"], "dummy", {}, model_path=model_path,
+        metadata_path=metadata_path, history_dir=history_dir, archive_previous=False,
+    )
+
+    assert not history_dir.exists()
 
 
 def test_default_target_is_precio_spot(artifact_paths):

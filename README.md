@@ -1,5 +1,8 @@
 # Forecasting Eléctrico
 
+[![daily pipeline](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/daily.yml/badge.svg)](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/daily.yml)
+[![docker build](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/docker-build.yml/badge.svg)](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/docker-build.yml)
+
 Sistema de predicción del precio eléctrico español (mercado diario/spot) en
 producción continua: ingesta automatizada de datos de la API de ESIOS (Red
 Eléctrica de España), almacenamiento en SQLite, modelo de forecasting con
@@ -26,7 +29,9 @@ para el plan completo.
       local; el `Dockerfile` se verifica vía GitHub Actions (Docker
       Desktop no instalado en este entorno de desarrollo), ver
       pestaña "Actions" del repo
-- [ ] Fase 7 — Automatización y monitorización
+- [x] Fase 7 — Automatización y monitorización — job diario en GitHub
+      Actions (ingesta incremental, reentreno, predicción, monitorización);
+      badge arriba muestra el estado del último run
 
 ### Diseño planeado: dashboard público (Fase 6/7)
 
@@ -54,15 +59,17 @@ Flujo diario (GitHub Actions cron, ver Fase 7):
 
 ```
 Forecasting-Electrico/
+├── .github/workflows/  # docker-build.yml (CI) y daily.yml (cron diario)
 ├── src/
-│   ├── ingestion/  # cliente ESIOS, DataSource abstracta, troceo de fechas
-│   ├── storage/    # esquema y acceso a SQLite
+│   ├── ingestion/  # cliente ESIOS, DataSource abstracta, backfill + incremental
+│   ├── storage/    # esquema y acceso a SQLite (observations, predictions...)
 │   ├── features/   # carga wide-format + feature engineering leakage-safe
 │   ├── model/      # baseline, LightGBM, metricas, regimenes, artefacto agnostico
+│   ├── monitoring/ # calidad de datos + tracking de error real
 │   └── serving/    # API FastAPI (src/serving/api.py)
-├── scripts/        # scripts ejecutables (ingesta, entrenamiento, verificación...)
+├── scripts/        # scripts ejecutables (ingesta, entrenamiento, predicción, monitor...)
 ├── data/           # bbdd SQLite y datos crudos (ignorado por git, se regenera)
-├── models/         # modelo activo + metricas de experimentos (joblib ignorado por git)
+├── models/         # modelo activo + historial de versiones + métricas de experimentos
 ├── notebooks/      # notebooks de exploración (EDA, análisis de resultados)
 ├── tests/          # tests con pytest
 ├── requirements.txt
@@ -104,12 +111,27 @@ ya descargadas:
 python -m scripts.ingest_historical
 ```
 
+Traer solo los datos nuevos desde el último dato ya guardado (lo que
+ejecuta el job diario; también válido para actualizar manualmente):
+
+```powershell
+python -m scripts.ingest_incremental
+```
+
 Entrenar el modelo actual (baseline naive + LightGBM sobre el régimen
 `post_tope`) y guardar el artefacto que sirve la API:
 
 ```powershell
 python -m scripts.train_baseline
 python -m scripts.train_lightgbm
+```
+
+Generar la predicción con el modelo activo y guardarla (para poder
+comparar más tarde contra el precio real), y correr la monitorización:
+
+```powershell
+python -m scripts.predict_and_log
+python -m scripts.monitor
 ```
 
 ## Servir el modelo (API)
@@ -150,6 +172,82 @@ docker run -d -p 8000:8000 `
 > `.github/workflows/docker-build.yml`: construye la imagen y hace un
 > smoke-test real de `/health` en el runner. Revisa la pestaña
 > "Actions" del repo para ver el resultado.
+
+## Automatización (job diario)
+
+`.github/workflows/daily.yml` corre cada día a las 06:00 UTC (y también
+manualmente desde la pestaña "Actions" → "daily-pipeline" → "Run workflow"):
+
+1. **Ingesta incremental** (`scripts/ingest_incremental.py`): trae solo
+   los datos nuevos de cada indicador desde el último dato ya guardado
+   (una petición por indicador, no re-descarga el histórico). Si un
+   indicador no tiene datos previos o lleva >30 días sin actualizar
+   (p.ej. porque se perdió el estado persistido), hace backfill
+   completo para ese indicador en su lugar — se autorrepara solo.
+2. **Reentrena el modelo** (`scripts/train_lightgbm.py`) con los datos
+   actualizados.
+3. **Genera y guarda la predicción** (`scripts/predict_and_log.py`) en
+   la tabla `predictions` de la bbdd, para poder comparar más tarde
+   contra el precio real.
+4. **Monitorización** (`scripts/monitor.py`): calidad de datos + error
+   real, ver abajo.
+5. Comitea `models/model_metadata.json`, `models/lightgbm_metrics.json`
+   y `data/monitoring_report.json` de vuelta al repo (`[skip ci]` para
+   no disparar el resto de workflows).
+
+**Configuración necesaria** (una sola vez): añade tu token de ESIOS
+como secret del repo en *Settings → Secrets and variables → Actions →
+New repository secret*, nombre `ESIOS_API_KEY`. Sin esto la ingesta
+incremental fallará con 401.
+
+**Versionado del modelo**: cada vez que `save_model_artifact()`
+(`src/model/artifact.py`) guarda un modelo nuevo, archiva primero el
+anterior en `models/history/model_<version>.joblib` +
+`model_metadata_<version>.json` — no se pierde el rastro de versiones
+previas al sobrescribir `models/model.joblib`.
+
+> **Limitación conocida y asumida a propósito**: los runners de GitHub
+> Actions no tienen estado propio entre ejecuciones, y
+> `electricidad.db` (~230MB) es demasiado grande para versionar en git
+> sin Git LFS. Se usa `actions/cache` (con una clave que incluye el
+> `run_id`, para que cada ejecución guarde un cache nuevo) para
+> persistir `data/` y `models/` entre días. No es almacenamiento
+> "de verdad" — GitHub puede evictar el cache (más de 7 días sin usar,
+> o si se supera el límite de 10GB del repo). Por eso
+> `ingest_incremental.py` está preparado para autorepararse con un
+> backfill completo si detecta que el cache se perdió, en vez de
+> fallar en silencio. Una mejora futura razonable sería mover el
+> almacenamiento a algo persistente de verdad (un bucket, una bbdd
+> gestionada) en vez de abusar de `actions/cache`.
+
+## Monitorización
+
+`scripts/monitor.py` (parte del job diario) revisa tres cosas y escribe
+`data/monitoring_report.json`:
+
+- **Huecos**: ¿faltan muchas horas de las últimas 72h para algún
+  indicador?
+- **Valores fuera de rango**: ¿hay precios/demandas fuera de un rango
+  "sano" (pensado para pillar errores groseros, no validación de
+  negocio estricta)?
+- **Indicador obsoleto**: ¿algún indicador lleva más de 48h sin traer
+  un dato nuevo (o no tiene ninguno)?
+- **Error real (7 días)**: compara las predicciones guardadas en la
+  tabla `predictions` contra el precio real ya conocido (tabla
+  `observations`) y calcula el MAE/RMSE de los últimos 7 días. **Esto
+  es la pieza más valiosa, no decorativa**: la Fase 5 ya estableció que
+  el error del modelo crece de forma estructural (régimen regulatorio
+  + tendencia de volatilidad) — esta métrica es lo que avisa si el
+  modelo placeholder actual se degrada MÁS de lo esperable, no solo lo
+  esperado.
+
+Si algo destaca, el script imprime `::warning::...` (sintaxis de
+GitHub Actions: marca un aviso visible en la UI del workflow, en
+amarillo, **sin fallar el job** — un error alto es una señal a
+vigilar, no necesariamente un fallo del pipeline). Si el propio job
+falla (ingesta o reentrenamiento con error real), eso ya lo marca
+GitHub Actions como fallo del workflow — visible en el badge de arriba
+y en la pestaña "Actions".
 
 ## Fuente de datos
 
@@ -230,3 +328,12 @@ la base de datos.
   placeholder — el modelo/features/target cambiarán más adelante, y el
   pipeline de reentrenamiento tiene que funcionar igual sea cual sea el
   modelo de turno.
+- **Primera ejecución real de `scripts/monitor.py` (2026-07-30) detectó
+  valores de demanda inconsistentes con una curva física real**:
+  `demanda_prevista`/`demanda_real` llegan a ~490.000 MW en las últimas
+  72h (vs. un pico real de la península española de ~45.000 MW), con
+  saltos bruscos entre horas consecutivas (p.ej. 325.789 → 26.870 MW en
+  una hora). Verificado que viene directo de la API de ESIOS (no es un
+  bug de parseo local — `magnitud: Potencia`, mismo patrón en la
+  respuesta cruda). No investigado a fondo todavía; queda como hallazgo
+  abierto de la monitorización, exactamente para lo que está pensada.

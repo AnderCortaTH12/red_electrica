@@ -53,6 +53,17 @@ CREATE TABLE IF NOT EXISTS ingestion_log (
     fetched_at    TEXT    NOT NULL,
     PRIMARY KEY (source, indicator_id, period_start, period_end)
 );
+
+CREATE TABLE IF NOT EXISTS predictions (
+    model_version        TEXT    NOT NULL,
+    target_datetime_utc  TEXT    NOT NULL,
+    predicted_price      REAL    NOT NULL,
+    made_at              TEXT    NOT NULL,
+    PRIMARY KEY (model_version, target_datetime_utc)
+);
+
+CREATE INDEX IF NOT EXISTS idx_predictions_target
+    ON predictions(target_datetime_utc);
 """
 
 
@@ -98,6 +109,28 @@ def insert_observations(conn: sqlite3.Connection, df: pd.DataFrame) -> int:
         VALUES (?, ?, ?, ?, ?)
         """,
         df[["source", "indicator_id", "datetime_utc", "geo_id", "value"]].itertuples(
+            index=False, name=None
+        ),
+    )
+    conn.commit()
+    return conn.total_changes - before
+
+
+def insert_predictions(conn: sqlite3.Connection, df: pd.DataFrame) -> int:
+    """Guarda predicciones (model_version, target_datetime_utc,
+    predicted_price, made_at), ignorando duplicados. Sirve de base para
+    comparar despues contra el precio real y trackear el error (ver
+    src.monitoring.error_tracking).
+    """
+    if df.empty:
+        return 0
+    before = conn.total_changes
+    conn.executemany(
+        """
+        INSERT OR IGNORE INTO predictions (model_version, target_datetime_utc, predicted_price, made_at)
+        VALUES (?, ?, ?, ?)
+        """,
+        df[["model_version", "target_datetime_utc", "predicted_price", "made_at"]].itertuples(
             index=False, name=None
         ),
     )
