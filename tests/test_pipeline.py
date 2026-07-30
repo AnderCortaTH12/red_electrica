@@ -121,3 +121,35 @@ def test_backfill_indicator_skips_done_periods(conn):
 
     assert second["skip"] == first["ventanas"]
     assert client.fetch.call_count == calls_after_first  # no se repiten peticiones
+
+
+def test_update_incremental_with_end_offset_requests_future_end(conn):
+    """Los indicadores de prevision (demanda_prevista, prevision_eolica,
+    prevision_fv) se piden hasta ahora + end_offset_hours, no solo hasta
+    ahora -- si no, nunca tendriamos en la bbdd el dato de manana que
+    ESIOS publica con antelacion."""
+    insert_observations(conn, make_obs_df(1, start="2026-07-29T00:00:00Z"))
+    client = make_fake_client(fetch_return=make_obs_df(1))
+    entry = make_entry()
+
+    update_indicator_incremental(client, conn, entry, end_offset_hours=48)
+
+    end_param = client.fetch.call_args[0][2]
+    # "ahora" en el test es la fecha real de ejecucion, muy posterior a
+    # 2026-07-29 (el ultimo dato conocido); basta con comprobar que el
+    # end pedido es mayor que "ahora" sin offset para confirmar que se
+    # aplico el desplazamiento hacia el futuro.
+    now_no_offset = pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%dT%H:%M")
+    assert end_param > now_no_offset
+
+
+def test_update_incremental_without_end_offset_does_not_request_future(conn):
+    insert_observations(conn, make_obs_df(1, start="2026-07-29T00:00:00Z"))
+    client = make_fake_client(fetch_return=make_obs_df(1))
+    entry = make_entry()
+
+    update_indicator_incremental(client, conn, entry, end_offset_hours=0)
+
+    end_param = client.fetch.call_args[0][2]
+    now_str = pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%dT%H:%M")
+    assert end_param <= now_str

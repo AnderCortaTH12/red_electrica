@@ -74,3 +74,50 @@ def test_latest_predictions_missing_feature_column_raises_keyerror():
 
     with pytest.raises(KeyError):
         latest_predictions(df, catalog, DummyModel(), ["columna_inventada"], hours=5)
+
+
+def test_latest_predictions_reaches_genuine_future_rows():
+    """Regresion: si las previsiones D+1 (demanda_prevista/prevision_eolica/
+    prevision_fv) llegan mas lejos en el tiempo que los indicadores
+    'reales' (que por definicion no existen para el futuro), las horas
+    futuras deben poder predecirse igualmente -- ni el target ausente
+    ni los lags/rollmeans de los indicadores reales (congelados hacia
+    adelante) deben bloquearlas.
+    """
+    catalog = sample_catalog()
+    df = synthetic_wide_df(n=400)
+
+    # simula "ahora": las columnas 'reales' (todo menos las 3 previsiones
+    # D+1) no tienen datos en las ultimas 5 horas, pero las previsiones
+    # SI (como pasa de verdad: ESIOS las publica con antelacion)
+    forecast_cols = {"demanda_prevista", "prevision_eolica", "prevision_fv"}
+    real_cols = [c for c in df.columns if c not in forecast_cols]
+    df.loc[df.index[-5:], real_cols] = float("nan")
+
+    cols = feature_columns_for(synthetic_wide_df(n=400), catalog)
+
+    result = latest_predictions(df, catalog, DummyModel(), cols, hours=10)
+
+    assert result["datetime_utc"].max() == df.index.max()
+    assert len(result) == 10
+
+
+def test_latest_predictions_forward_fills_derived_columns_for_future_rows():
+    catalog = sample_catalog()
+    df = synthetic_wide_df(n=400)
+    forecast_cols = {"demanda_prevista", "prevision_eolica", "prevision_fv"}
+    real_cols = [c for c in df.columns if c not in forecast_cols]
+    df.loc[df.index[-3:], real_cols] = float("nan")
+
+    frame = build_training_frame(df, catalog)
+    frame = add_trend_feature(frame)
+    derived_cols = [c for c in frame.columns if "_lag" in c or "_rollmean" in c]
+
+    # sin forward-fill, las filas futuras tendrian NaN en las columnas derivadas
+    assert frame[derived_cols].tail(3).isna().any().any()
+
+    cols = feature_columns_for(synthetic_wide_df(n=400), catalog)
+    result = latest_predictions(df, catalog, DummyModel(), cols, hours=3)
+
+    # con el forward-fill dentro de latest_predictions, si se pueden predecir
+    assert len(result) == 3

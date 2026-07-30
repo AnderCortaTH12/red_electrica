@@ -153,6 +153,23 @@ agnóstica al algoritmo (`src/model/artifact.py`): solo espera un
 `models/model.joblib` + `models/model_metadata.json` con esa forma, así
 que cambiar de modelo no requiere tocar `src/serving/api.py`.
 
+**Resuelto (Fase 8)**: `/predict` ya devuelve previsión real de horas
+futuras, no solo "las horas más recientes con dato completo" como en
+la Fase 6 original. `scripts/ingest_incremental.py` pide las 3
+previsiones D+1 de ESIOS (`demanda_prevista`, `prevision_eolica`,
+`prevision_fv`) hasta ahora+48h en vez de solo hasta ahora
+(`FORECAST_HORIZON_HOURS`). El horizonte real varía día a día: está
+acotado por la previsión con el horizonte publicado más corto en ese
+momento (normalmente `demanda_prevista`, que ESIOS suele publicar con
+menos antelación que eólica/fotovoltaica). Bug relacionado corregido
+de paso en `src/model/predict.py`: el `dropna()` exigía el target
+(`precio_spot`) además de las features, lo que descartaba siempre las
+horas futuras (el precio real, por definición, no existe todavía para
+ellas); y las columnas derivadas de indicadores reales (lags/medias
+móviles) se "congelan" hacia adelante (forward-fill) más allá de la
+última hora con dato real, porque no se pueden recalcular de verdad
+para el futuro.
+
 Con Docker (`Dockerfile` en la raíz). La imagen NO incluye `data/` ni
 `models/` — son estado que cambia con cada ingesta/reentrenamiento, no
 código, así que se montan como volúmenes en tiempo de ejecución (así no

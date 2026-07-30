@@ -75,16 +75,17 @@ def health() -> HealthResponse:
 @app.get("/predict", response_model=PredictResponse)
 def predict(hours: int = 24) -> PredictResponse:
     """Predicciones sobre las últimas `hours` horas con features
-    completas disponibles en la base de datos.
+    completas disponibles en la base de datos -- incluye futuro real
+    si las previsiones D+1 (demanda_prevista/prevision_eolica/
+    prevision_fv) ya están ingeridas para esas horas (ver
+    scripts/ingest_incremental.py, FORECAST_HORIZON_HOURS=48h).
 
-    IMPORTANTE (honesto sobre el alcance actual): esto NO es todavía
-    una previsión de las próximas 24h reales. Sería eso si la ingesta
-    diaria (Fase 7) trajera también las previsiones D+1 de demanda/
-    eólica/fotovoltaica que publica ESIOS con antelación -- hoy la
-    ingesta solo trae datos hasta "ahora", así que la ventana más
-    reciente con features completas es, como mucho, el presente
-    reciente, no el futuro. El campo `note` de la respuesta lo deja
-    explícito para quien consuma la API sin leer el código.
+    El horizonte real de predicción varía día a día: está acotado por
+    cuál de esas 3 previsiones tenga el horizonte publicado más corto
+    en ese momento (ESIOS no publica todas con la misma antelación —
+    p.ej. demanda_prevista suele llegar menos lejos que las de
+    eólica/fotovoltaica). Si se piden más `hours` de las que hay datos
+    para predecir, se devuelven las que haya disponibles, no un error.
     """
     try:
         model, metadata = load_model_artifact()
@@ -126,10 +127,10 @@ def predict(hours: int = 24) -> PredictResponse:
         model_version=metadata["model_version"],
         trained_at=metadata["trained_at"],
         note=(
-            "Predicciones sobre las horas más recientes con datos completos "
-            "en la base de datos, no una previsión real de horas futuras "
-            "todavía (pendiente de la ingesta diaria de previsiones D+1, "
-            "Fase 7)."
+            "Incluye horas futuras reales mientras las previsiones D+1 de "
+            "ESIOS (demanda, eólica, fotovoltaica) estén ingeridas para "
+            "ellas; el horizonte varía día a día según cuánto haya "
+            "publicado ESIOS en cada previsión en el momento de la consulta."
         ),
         predictions=points,
     )

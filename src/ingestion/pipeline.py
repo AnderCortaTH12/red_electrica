@@ -64,13 +64,26 @@ def update_indicator_incremental(
     entry: dict,
     overlap_hours: int = DEFAULT_OVERLAP_HOURS,
     stale_days: int = DEFAULT_STALE_DAYS,
+    end_offset_hours: int = 0,
 ) -> dict:
     """Trae los datos nuevos de un indicador desde el último dato
-    conocido en la bbdd hasta ahora, en una sola petición.
+    conocido en la bbdd hasta ahora (o hasta ahora + `end_offset_hours`
+    si se pide futuro), en una sola petición.
 
     `overlap_hours` repite un pequeño margen hacia atrás por si ESIOS
     revisa/corrige valores recientes tras publicarlos (INSERT OR IGNORE
     hace que no importe si se repite algo ya guardado).
+
+    `end_offset_hours` > 0 sirve para los indicadores de PREVISIÓN
+    (demanda_prevista, prevision_eolica, prevision_fv), que ESIOS
+    publica con antelación real: pedir hasta ahora+48h trae ya el dato
+    de mañana, necesario para que el modelo prediga un futuro de
+    verdad y no solo "las horas más recientes con dato completo" (ver
+    scripts/predict_and_log.py). OJO: por el INSERT OR IGNORE de
+    insert_observations, una vez guardada una hora futura no se
+    actualiza aunque ESIOS revise esa previsión más adelante -- se
+    queda con la primera versión que se capturó. Aceptable para este
+    proyecto, pero es una limitación a tener en cuenta.
     """
     indicator_id, source = entry["id"], entry["source"]
     row = conn.execute(
@@ -89,7 +102,7 @@ def update_indicator_incremental(
         return backfill_indicator(client, conn, entry)
 
     start = (last_known - pd.Timedelta(hours=overlap_hours)).strftime("%Y-%m-%dT%H:%M")
-    end = now.strftime("%Y-%m-%dT%H:%M")
+    end = (now + pd.Timedelta(hours=end_offset_hours)).strftime("%Y-%m-%dT%H:%M")
 
     try:
         df = client.fetch(indicator_id, start, end)
