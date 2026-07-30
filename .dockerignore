@@ -1,0 +1,14 @@
+venv/
+.venv/
+.git/
+__pycache__/
+*.pyc
+.pytest_cache/
+notebooks/
+.ipynb_checkpoints/
+.env
+scripts/
+tests/
+Proyecto_Forecasting_Electrico_Guia.md
+data/
+models/

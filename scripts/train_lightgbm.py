@@ -17,10 +17,9 @@ Uso:
 import json
 import sqlite3
 
-import joblib
-
 from src.features.build import add_trend_feature, build_training_frame
 from src.features.load import load_catalog, load_wide_dataframe
+from src.model.artifact import save_model_artifact
 from src.model.baseline import naive_forecast
 from src.model.evaluate import evaluate_by_year, train_test_split_by_date
 from src.model.lgbm import predict, train
@@ -30,8 +29,7 @@ from src.model.regimes import assign_regime
 DB_PATH = "data/electricidad.db"
 TEST_START = "2025-08-01T00:00"  # mismo holdout que scripts/train_baseline.py
 POST_TOPE_INICIO = "2024-01-01T00:00"
-MODEL_OUTPUT = "models/lightgbm_precio_spot.joblib"
-METRICS_OUTPUT = "models/lightgbm_metrics.json"
+METRICS_OUTPUT = "models/lightgbm_metrics.json"  # informe detallado (este experimento)
 
 
 def main() -> None:
@@ -89,9 +87,6 @@ def main() -> None:
     print("\n-- Baseline por año (post_tope completo, para comparar) --")
     print(baseline_yearly.to_string(index=False, float_format=lambda x: f"{x:,.2f}"))
 
-    joblib.dump(model, MODEL_OUTPUT)
-    print(f"\nModelo guardado: {MODEL_OUTPUT}")
-
     feature_importance = dict(
         sorted(
             zip(X_train.columns, [int(v) for v in model.feature_importances_]),
@@ -118,6 +113,30 @@ def main() -> None:
     with open(METRICS_OUTPUT, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
     print(f"Métricas guardadas: {METRICS_OUTPUT}")
+
+    # Modelo servido en produccion (src/serving/api.py): se reentrena con
+    # TODO el post_tope disponible (train+test), no solo con train_df --
+    # las metricas de arriba (holdout honesto) son las que se reportan,
+    # pero el modelo que sirve la API aprovecha tambien los datos mas
+    # recientes. La API solo conoce el contrato de save_model_artifact,
+    # nunca lightgbm directamente: cambiar de algoritmo aqui no requiere
+    # tocar src/serving/api.py.
+    X_full = post_tope.drop(columns=["precio_spot"])
+    y_full = post_tope["precio_spot"]
+    final_model = train(X_full, y_full)
+    metadata = save_model_artifact(
+        final_model,
+        feature_columns=list(X_full.columns),
+        model_type="lightgbm",
+        metrics={
+            "holdout_mae": lgbm_mae,
+            "holdout_rmse": lgbm_rmse,
+            "baseline_holdout_mae": baseline_mae,
+            "regimen": "post_tope",
+            "nota": "modelo placeholder: pierde contra el baseline, ver README",
+        },
+    )
+    print(f"\nModelo de produccion guardado (version {metadata['model_version']})")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,48 @@
+name: docker-build
+
+# Verifica que el Dockerfile construye y arranca correctamente. Corre en
+# el runner de GitHub (que ya trae Docker), asi que no requiere Docker
+# Desktop instalado en local para saber si el Dockerfile esta bien.
+#
+# No necesita electricidad.db ni el modelo entrenado: la imagen no los
+# incluye (se montan como volumenes en tiempo de ejecucion, ver README),
+# y /health responde "ok_sin_modelo" de forma controlada sin ellos.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t forecasting-electrico .
+
+      - name: Run container
+        run: docker run -d -p 8000:8000 --name smoke-test forecasting-electrico
+
+      - name: Esperar arranque y comprobar /health
+        run: |
+          for i in $(seq 1 10); do
+            if curl -sf http://localhost:8000/health; then
+              echo "OK"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "El contenedor no respondio a tiempo"
+          docker logs smoke-test
+          exit 1
+
+      - name: Logs del contenedor
+        if: always()
+        run: docker logs smoke-test
+
+      - name: Parar contenedor
+        if: always()
+        run: docker rm -f smoke-test

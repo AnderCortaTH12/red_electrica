@@ -19,8 +19,13 @@ para el plan completo.
 - [x] Fase 2 — Cliente robusto de la API
 - [x] Fase 3 — Ingesta histórica a SQLite
 - [x] Fase 4 — Exploración y features
-- [ ] Fase 5 — Modelo (baseline + LightGBM)
-- [ ] Fase 6 — Servir el modelo (FastAPI + Docker)
+- [x] Fase 5 — Modelo (baseline + LightGBM) — pipeline completo; LightGBM
+      pierde contra el baseline por ahora, es un placeholder a propósito
+      (ver Limitaciones conocidas)
+- [x] Fase 6 — Servir el modelo (FastAPI + Docker) — API verificada en
+      local; el `Dockerfile` se verifica vía GitHub Actions (Docker
+      Desktop no instalado en este entorno de desarrollo), ver
+      pestaña "Actions" del repo
 - [ ] Fase 7 — Automatización y monitorización
 
 ### Diseño planeado: dashboard público (Fase 6/7)
@@ -49,12 +54,19 @@ Flujo diario (GitHub Actions cron, ver Fase 7):
 
 ```
 Forecasting-Electrico/
-├── src/            # código fuente (cliente API, storage, features, modelo...)
-├── scripts/        # scripts ejecutables puntuales (verificación, ingesta histórica...)
+├── src/
+│   ├── ingestion/  # cliente ESIOS, DataSource abstracta, troceo de fechas
+│   ├── storage/    # esquema y acceso a SQLite
+│   ├── features/   # carga wide-format + feature engineering leakage-safe
+│   ├── model/      # baseline, LightGBM, metricas, regimenes, artefacto agnostico
+│   └── serving/    # API FastAPI (src/serving/api.py)
+├── scripts/        # scripts ejecutables (ingesta, entrenamiento, verificación...)
 ├── data/           # bbdd SQLite y datos crudos (ignorado por git, se regenera)
-├── notebooks/       # notebooks de exploración (EDA, análisis de resultados)
+├── models/         # modelo activo + metricas de experimentos (joblib ignorado por git)
+├── notebooks/      # notebooks de exploración (EDA, análisis de resultados)
 ├── tests/          # tests con pytest
 ├── requirements.txt
+├── Dockerfile
 └── .env.example    # plantilla de variables de entorno (copiar a .env)
 ```
 
@@ -91,6 +103,53 @@ ya descargadas:
 ```powershell
 python -m scripts.ingest_historical
 ```
+
+Entrenar el modelo actual (baseline naive + LightGBM sobre el régimen
+`post_tope`) y guardar el artefacto que sirve la API:
+
+```powershell
+python -m scripts.train_baseline
+python -m scripts.train_lightgbm
+```
+
+## Servir el modelo (API)
+
+Arranque local (recarga automática al cambiar código):
+
+```powershell
+uvicorn src.serving.api:app --reload
+```
+
+```powershell
+curl http://localhost:8000/health
+curl "http://localhost:8000/predict?hours=24"
+```
+
+`/health` expone `model_type`/`model_version`/`trained_at` para saber a
+simple vista qué modelo está sirviendo sin mirar el código. La API es
+agnóstica al algoritmo (`src/model/artifact.py`): solo espera un
+`models/model.joblib` + `models/model_metadata.json` con esa forma, así
+que cambiar de modelo no requiere tocar `src/serving/api.py`.
+
+Con Docker (`Dockerfile` en la raíz). La imagen NO incluye `data/` ni
+`models/` — son estado que cambia con cada ingesta/reentrenamiento, no
+código, así que se montan como volúmenes en tiempo de ejecución (así no
+hay que reconstruir la imagen cada vez que se reentrena):
+
+```powershell
+docker build -t forecasting-electrico .
+docker run -d -p 8000:8000 `
+  -v ${PWD}/data:/app/data `
+  -v ${PWD}/models:/app/models `
+  --name forecasting-electrico forecasting-electrico
+```
+
+> El `Dockerfile` no se ha podido verificar en este entorno de
+> desarrollo (Docker Desktop no instalado), pero sí se verifica
+> automáticamente en cada push a GitHub vía
+> `.github/workflows/docker-build.yml`: construye la imagen y hace un
+> smoke-test real de `/health` en el runner. Revisa la pestaña
+> "Actions" del repo para ver el resultado.
 
 ## Fuente de datos
 
