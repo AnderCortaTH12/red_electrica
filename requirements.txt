@@ -4,3 +4,7 @@ python-dotenv>=1.0
 python-dateutil>=2.8
 pytest>=8.0
 pytest-mock>=3.12
+holidays>=0.45
+matplotlib>=3.8
+ipykernel>=6.29
+nbconvert>=7.16

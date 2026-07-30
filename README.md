@@ -18,7 +18,7 @@ para el plan completo.
 - [x] Fase 1 — Catálogo de indicadores
 - [x] Fase 2 — Cliente robusto de la API
 - [x] Fase 3 — Ingesta histórica a SQLite
-- [ ] Fase 4 — Exploración y features
+- [x] Fase 4 — Exploración y features
 - [ ] Fase 5 — Modelo (baseline + LightGBM)
 - [ ] Fase 6 — Servir el modelo (FastAPI + Docker)
 - [ ] Fase 7 — Automatización y monitorización
@@ -123,3 +123,13 @@ la base de datos.
   con ventanas de 3 meses, el indicador de precio spot (600) en 2025 supera
   los 60s de timeout (~3.7MB de respuesta por mes). No afecta a la
   granularidad de los datos, que sigue siendo horaria.
+- Varios indicadores devuelven varios ámbitos geográficos por hora (p.ej.
+  el precio spot trae también Portugal/Francia/Alemania/Bélgica/Países
+  Bajos; el PVPC trae Canarias/Baleares/Ceuta/Melilla además de
+  Península). `geo_id_objetivo` en el catálogo fija cuál se usa; el resto
+  se descarta al pivotar a formato ancho (`src/features/load.py`).
+- Incluir `pvpc` como feature reduce la ventana de entrenamiento
+  utilizable a 2021-06 → hoy (~42.400 filas) en vez del histórico
+  completo desde 2014 (~110.000 filas), porque su cobertura empieza en
+  2021-06 y se usa en lag de hasta 168h. Ver `notebooks/01_eda.ipynb`
+  para el detalle — es una decisión pendiente de tomar en la Fase 5.

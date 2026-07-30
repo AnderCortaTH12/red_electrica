@@ -7,7 +7,10 @@
     "rol": "Precio mercado SPOT Diario -> TARGET a predecir",
     "disponible_desde_2014": true,
     "disponible_reciente": true,
-    "cobertura_desde": "2014-01"
+    "cobertura_desde": "2014-01",
+    "geo_id_objetivo": 3,
+    "columna": "precio_spot",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -17,7 +20,10 @@
     "rol": "Término de facturación de energía activa del PVPC 2.0TD -> precio PVPC (regulado, distinto del spot)",
     "disponible_desde_2014": false,
     "disponible_reciente": true,
-    "cobertura_desde": "2021-06"
+    "cobertura_desde": "2021-06",
+    "geo_id_objetivo": 8741,
+    "columna": "pvpc",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -27,7 +33,10 @@
     "rol": "Demanda prevista -> feature (previsión, disponible antes de la hora H)",
     "disponible_desde_2014": true,
     "disponible_reciente": true,
-    "cobertura_desde": "2014-01"
+    "cobertura_desde": "2014-01",
+    "geo_id_objetivo": 8741,
+    "columna": "demanda_prevista",
+    "disponible_antes_de_hora_h": true
   },
   {
     "source": "esios",
@@ -37,7 +46,10 @@
     "rol": "Demanda real -> solo como lag (real, no disponible a priori en la hora H)",
     "disponible_desde_2014": true,
     "disponible_reciente": true,
-    "cobertura_desde": "2014-01"
+    "cobertura_desde": "2014-01",
+    "geo_id_objetivo": 8741,
+    "columna": "demanda_real",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -47,7 +59,10 @@
     "rol": "Generación T.Real eólica -> lag / feature de mix energético",
     "disponible_desde_2014": true,
     "disponible_reciente": true,
-    "cobertura_desde": "2014-01"
+    "cobertura_desde": "2014-01",
+    "geo_id_objetivo": 8741,
+    "columna": "gen_eolica",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -57,7 +72,10 @@
     "rol": "Generación T.Real Solar fotovoltaica -> lag / feature de mix energético",
     "disponible_desde_2014": false,
     "disponible_reciente": true,
-    "cobertura_desde": "2015-07"
+    "cobertura_desde": "2015-07",
+    "geo_id_objetivo": 8741,
+    "columna": "gen_solar_fv",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -67,7 +85,10 @@
     "rol": "Generación T.Real Solar térmica -> lag / feature de mix energético",
     "disponible_desde_2014": false,
     "disponible_reciente": true,
-    "cobertura_desde": "2015-07"
+    "cobertura_desde": "2015-07",
+    "geo_id_objetivo": 8741,
+    "columna": "gen_solar_termica",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -77,7 +98,10 @@
     "rol": "Generación T.Real nuclear -> lag / feature de mix energético (muy estable)",
     "disponible_desde_2014": true,
     "disponible_reciente": true,
-    "cobertura_desde": "2014-01"
+    "cobertura_desde": "2014-01",
+    "geo_id_objetivo": 8741,
+    "columna": "gen_nuclear",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -87,7 +111,10 @@
     "rol": "Generación T.Real hidráulica -> lag / feature de mix energético",
     "disponible_desde_2014": true,
     "disponible_reciente": true,
-    "cobertura_desde": "2014-01"
+    "cobertura_desde": "2014-01",
+    "geo_id_objetivo": 8741,
+    "columna": "gen_hidraulica",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -97,7 +124,10 @@
     "rol": "Generación T.Real ciclo combinado nacional -> lag / feature de mix energético",
     "disponible_desde_2014": false,
     "disponible_reciente": true,
-    "cobertura_desde": "2019-01"
+    "cobertura_desde": "2019-01",
+    "geo_id_objetivo": 3,
+    "columna": "gen_ciclo_combinado",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -107,7 +137,10 @@
     "rol": "Generación T.Real carbón -> lag / feature de mix energético",
     "disponible_desde_2014": true,
     "disponible_reciente": true,
-    "cobertura_desde": "2014-01"
+    "cobertura_desde": "2014-01",
+    "geo_id_objetivo": 8741,
+    "columna": "gen_carbon",
+    "disponible_antes_de_hora_h": false
   },
   {
     "source": "esios",
@@ -117,7 +150,10 @@
     "rol": "Previsión diaria D+1 eólica -> feature (disponible antes de la hora H)",
     "disponible_desde_2014": false,
     "disponible_reciente": true,
-    "cobertura_desde": "2019-01"
+    "cobertura_desde": "2019-01",
+    "geo_id_objetivo": 8741,
+    "columna": "prevision_eolica",
+    "disponible_antes_de_hora_h": true
   },
   {
     "source": "esios",
@@ -127,6 +163,9 @@
     "rol": "Previsión diaria D+1 fotovoltaica -> feature (disponible antes de la hora H)",
     "disponible_desde_2014": false,
     "disponible_reciente": true,
-    "cobertura_desde": "2019-01"
+    "cobertura_desde": "2019-01",
+    "geo_id_objetivo": 8741,
+    "columna": "prevision_fv",
+    "disponible_antes_de_hora_h": true
   }
 ]
