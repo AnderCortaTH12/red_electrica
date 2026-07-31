@@ -73,7 +73,7 @@ class ESIOSClient(DataSource):
         indicator_id: int,
         start_date: str,
         end_date: str,
-        time_trunc: str = "hour",
+        time_trunc: str | None = "hour",
         geo_agg: str | None = None,
         geo_ids: list[int] | None = None,
     ) -> pd.DataFrame:
@@ -86,8 +86,9 @@ class ESIOSClient(DataSource):
         params: dict[str, Any] = {
             "start_date": start_date,
             "end_date": end_date,
-            "time_trunc": time_trunc,
         }
+        if time_trunc:
+            params["time_trunc"] = time_trunc
         if geo_agg:
             params["geo_agg"] = geo_agg
         if geo_ids:
@@ -116,7 +117,7 @@ class ESIOSClient(DataSource):
         indicator_id: int,
         start_date: str,
         end_date: str,
-        time_trunc: str = "hour",
+        time_trunc: str | None = "hour",
         geo_agg: str | None = None,
         geo_ids: list[int] | None = None,
         **kwargs,
@@ -138,6 +139,54 @@ class ESIOSClient(DataSource):
         df["datetime_utc"] = raw["datetime_utc"].dt.strftime("%Y-%m-%dT%H:%M:%SZ")
         df["geo_id"] = raw["geo_id"].fillna(0).astype(int)
         df["value"] = raw["value"]
+        df["source"] = self.name
+        return df[OBSERVATION_COLUMNS]
+
+    def fetch_hourly_mean(
+        self,
+        indicator_id: int,
+        start_date: str,
+        end_date: str,
+        geo_ids: list[int] | None = None,
+        **kwargs,
+    ) -> pd.DataFrame:
+        """Como `fetch()`, pero para indicadores cuya resolución nativa es
+        más fina que la hora (demanda/generación T.Real a 5 min; el precio
+        spot -- indicador 600 -- pasó de nativo horario a nativo de 15 min
+        en algún punto entre 2024-06 y 2025-01, el cambio real de mercado
+        europeo a "15-minute market time units").
+
+        ESIOS, al pedir `time_trunc=hour` para un indicador cuya
+        resolución nativa es más fina, no promedia las muestras de esa
+        hora: las SUMA. Verificado contra la API real en ambos casos:
+        demanda (~21.500 MW de media -> guardado como ~250.000) y precio
+        (~105 €/MWh de media en 15 min -> guardado como ~422 €/MWh, un
+        salto de escala x4 justo desde que el precio pasó a granularidad
+        de 15 min, que parecía -y se documentó como- un cambio estructural
+        de mercado sin precedente cuando en realidad era este bug).
+
+        No se fija un `time_trunc` concreto: se pide resolución NATIVA
+        (lo que sea que ESIOS use para ese indicador en ese rango de
+        fechas) y se promedia a hora en cliente, por geo_id. Esto es
+        correcto tanto si la resolución nativa es de 5 min, 15 min, o ya
+        horaria (promediar una única muestra por hora es un no-op).
+        """
+        raw = self.get_indicator(
+            indicator_id, start_date, end_date, time_trunc=None, geo_ids=geo_ids
+        )
+        df = pd.DataFrame(columns=OBSERVATION_COLUMNS)
+        if raw.empty:
+            return df
+
+        raw = raw.copy()
+        raw["geo_id"] = raw["geo_id"].fillna(0).astype(int)
+        raw["hora_utc"] = raw["datetime_utc"].dt.floor("h")
+        hourly = raw.groupby(["hora_utc", "geo_id"], as_index=False)["value"].mean()
+
+        df["datetime_utc"] = hourly["hora_utc"].dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+        df["geo_id"] = hourly["geo_id"]
+        df["value"] = hourly["value"]
+        df["indicator_id"] = indicator_id
         df["source"] = self.name
         return df[OBSERVATION_COLUMNS]
 

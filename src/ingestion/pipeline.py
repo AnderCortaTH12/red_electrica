@@ -42,11 +42,12 @@ def backfill_indicator(client, conn, entry: dict) -> dict:
             summary["skip"] += 1
             continue
         try:
-            df = client.fetch(
-                indicator_id,
-                chunk_start.strftime("%Y-%m-%dT00:00"),
-                chunk_end.strftime("%Y-%m-%dT23:59"),
-            )
+            start_param = chunk_start.strftime("%Y-%m-%dT00:00")
+            end_param = chunk_end.strftime("%Y-%m-%dT23:59")
+            if entry.get("promediar_desde_nativo"):
+                df = client.fetch_hourly_mean(indicator_id, start_param, end_param)
+            else:
+                df = client.fetch(indicator_id, start_param, end_param)
             n_new = insert_observations(conn, df)
             mark_period(conn, source, indicator_id, period_start, period_end, "done", len(df))
             summary["nuevas_filas"] += n_new
@@ -105,7 +106,10 @@ def update_indicator_incremental(
     end = (now + pd.Timedelta(hours=end_offset_hours)).strftime("%Y-%m-%dT%H:%M")
 
     try:
-        df = client.fetch(indicator_id, start, end)
+        if entry.get("promediar_desde_nativo"):
+            df = client.fetch_hourly_mean(indicator_id, start, end)
+        else:
+            df = client.fetch(indicator_id, start, end)
         n_new = insert_observations(conn, df)
         return {"modo": "incremental", "nuevas_filas": n_new, "fallidas": 0}
     except ESIOSAPIError as exc:

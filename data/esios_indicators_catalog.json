@@ -10,7 +10,8 @@
     "cobertura_desde": "2014-01",
     "geo_id_objetivo": 3,
     "columna": "precio_spot",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -23,7 +24,8 @@
     "cobertura_desde": "2021-06",
     "geo_id_objetivo": 8741,
     "columna": "pvpc",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": false
   },
   {
     "source": "esios",
@@ -36,7 +38,8 @@
     "cobertura_desde": "2014-01",
     "geo_id_objetivo": 8741,
     "columna": "demanda_prevista",
-    "disponible_antes_de_hora_h": true
+    "disponible_antes_de_hora_h": true,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -49,7 +52,8 @@
     "cobertura_desde": "2014-01",
     "geo_id_objetivo": 8741,
     "columna": "demanda_real",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -62,7 +66,8 @@
     "cobertura_desde": "2014-01",
     "geo_id_objetivo": 8741,
     "columna": "gen_eolica",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -75,7 +80,8 @@
     "cobertura_desde": "2015-07",
     "geo_id_objetivo": 8741,
     "columna": "gen_solar_fv",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -88,7 +94,8 @@
     "cobertura_desde": "2015-07",
     "geo_id_objetivo": 8741,
     "columna": "gen_solar_termica",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -101,7 +108,8 @@
     "cobertura_desde": "2014-01",
     "geo_id_objetivo": 8741,
     "columna": "gen_nuclear",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -114,7 +122,8 @@
     "cobertura_desde": "2014-01",
     "geo_id_objetivo": 8741,
     "columna": "gen_hidraulica",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -127,7 +136,8 @@
     "cobertura_desde": "2019-01",
     "geo_id_objetivo": 3,
     "columna": "gen_ciclo_combinado",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -140,7 +150,8 @@
     "cobertura_desde": "2014-01",
     "geo_id_objetivo": 8741,
     "columna": "gen_carbon",
-    "disponible_antes_de_hora_h": false
+    "disponible_antes_de_hora_h": false,
+    "promediar_desde_nativo": true
   },
   {
     "source": "esios",
@@ -153,7 +164,8 @@
     "cobertura_desde": "2019-01",
     "geo_id_objetivo": 8741,
     "columna": "prevision_eolica",
-    "disponible_antes_de_hora_h": true
+    "disponible_antes_de_hora_h": true,
+    "promediar_desde_nativo": false
   },
   {
     "source": "esios",
@@ -166,6 +178,7 @@
     "cobertura_desde": "2019-01",
     "geo_id_objetivo": 8741,
     "columna": "prevision_fv",
-    "disponible_antes_de_hora_h": true
+    "disponible_antes_de_hora_h": true,
+    "promediar_desde_nativo": false
   }
 ]

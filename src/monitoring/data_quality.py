@@ -11,22 +11,24 @@ from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 
-# Rangos "sanos" calibrados sobre el histórico REAL de esta fuente
-# (verificado 2026-07-30 sobre 2019-hoy), no sobre la escala de la red
-# eléctrica española real: toda la demanda/generación de este dataset
-# está sistemáticamente ~6-10x por encima de esa escala de forma
-# consistente desde 2019 (curvas diarias suaves y físicamente
-# plausibles, no es ruido) -- una característica de esta fuente
-# simulada, no un fallo puntual. Los márgenes de abajo dejan hueco por
-# encima de los máximos observados para seguir pillando errores
-# groseros reales (nulos como 0, unidades realmente mal escaladas).
+# Rangos "sanos" en escala real de MW (verificado 2026-07-31 sobre
+# 2019-hoy tras corregir el bug de agregación: los indicadores de
+# demanda/generación tienen resolución nativa de 5 minutos, y
+# time_trunc=hour en ESIOS SUMA esas ~12 muestras en vez de
+# promediarlas -- ver src/ingestion/esios_client.py fetch_hourly_mean.
+# Antes de este fix estos rangos estaban calibrados sobre esa suma
+# inflada (~6-10x la escala real); con el fix, demanda_real ronda
+# 27.000-29.000 MW de media y hasta ~43.000 MW de pico, en línea con
+# la demanda peninsular española real. Los márgenes dejan hueco por
+# encima/debajo de los máximos/mínimos observados para seguir pillando
+# errores groseros reales (nulos, unidades mal escaladas).
 RANGOS_SANOS = {
     "precio_spot": (-500, 5000),
     "pvpc": (-500, 5000),
-    "demanda_real": (0, 700000),
-    "demanda_prevista": (0, 700000),
+    "demanda_real": (0, 60000),
+    "demanda_prevista": (0, 60000),
 }
-RANGO_GENERACION_DEFECTO = (-60000, 450000)
+RANGO_GENERACION_DEFECTO = (-8000, 40000)
 
 STALE_HOURS = 48
 GAP_CHECK_HOURS = 72

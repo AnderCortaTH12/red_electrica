@@ -86,7 +86,10 @@ def main() -> None:
             end_param = chunk_end.strftime("%Y-%m-%dT23:59")
 
             try:
-                df = client.fetch(indicator_id, start_param, end_param)
+                if entry.get("promediar_desde_nativo"):
+                    df = client.fetch_hourly_mean(indicator_id, start_param, end_param)
+                else:
+                    df = client.fetch(indicator_id, start_param, end_param)
                 n_new = insert_observations(conn, df)
                 mark_period(conn, source, indicator_id, period_start, period_end, "done", len(df))
                 total_new_rows += n_new

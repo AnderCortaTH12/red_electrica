@@ -143,6 +143,42 @@ def test_update_incremental_with_end_offset_requests_future_end(conn):
     assert end_param > now_no_offset
 
 
+def test_backfill_uses_fetch_hourly_mean_when_marked_in_catalog(conn):
+    entry = make_entry(cobertura_desde="2026-06")
+    entry["promediar_desde_nativo"] = True
+    client = make_fake_client()
+    client.fetch_hourly_mean.return_value = make_obs_df(1)
+
+    backfill_indicator(client, conn, entry)
+
+    assert client.fetch_hourly_mean.called
+    assert not client.fetch.called
+
+
+def test_backfill_uses_plain_fetch_when_not_marked(conn):
+    entry = make_entry(cobertura_desde="2026-06")
+    client = make_fake_client(fetch_return=make_obs_df(1))
+
+    backfill_indicator(client, conn, entry)
+
+    assert client.fetch.called
+    assert not client.fetch_hourly_mean.called
+
+
+def test_update_incremental_uses_fetch_hourly_mean_when_marked_in_catalog(conn):
+    insert_observations(conn, make_obs_df(1, start="2026-07-29T00:00:00Z"))
+    entry = make_entry()
+    entry["promediar_desde_nativo"] = True
+    client = make_fake_client()
+    client.fetch_hourly_mean.return_value = make_obs_df(1, start="2026-07-29T00:00:00Z")
+
+    result = update_indicator_incremental(client, conn, entry)
+
+    assert result["modo"] == "incremental"
+    assert client.fetch_hourly_mean.called
+    assert not client.fetch.called
+
+
 def test_update_incremental_without_end_offset_does_not_request_future(conn):
     insert_observations(conn, make_obs_df(1, start="2026-07-29T00:00:00Z"))
     client = make_fake_client(fetch_return=make_obs_df(1))

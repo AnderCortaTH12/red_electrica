@@ -172,6 +172,77 @@ def test_get_indicator_handles_dst_offset_change():
     assert str(df["datetime"].iloc[1].tzinfo) == "UTC+02:00"
 
 
+def test_fetch_hourly_mean_averages_native_samples_instead_of_summing():
+    """Regresión del bug real: ESIOS con time_trunc=hour SUMA las
+    muestras nativas de esa hora (5 min en demanda/generación, 15 min
+    en el precio desde el cambio de mercado europeo) en vez de
+    promediarlas. fetch_hourly_mean debe pedir resolución nativa (sin
+    fijar time_trunc) y promediar en cliente para obtener el valor
+    medio real, no una suma inflada."""
+    client = make_client()
+    payload = {
+        "indicator": {
+            "id": 1293,
+            "name": "Demanda real",
+            "values": [
+                {"value": 100.0, "datetime": "2025-06-01T02:00:00.000+02:00",
+                 "datetime_utc": "2025-06-01T00:00:00Z", "geo_id": 8741, "geo_name": "Península"},
+                {"value": 200.0, "datetime": "2025-06-01T02:05:00.000+02:00",
+                 "datetime_utc": "2025-06-01T00:05:00Z", "geo_id": 8741, "geo_name": "Península"},
+                {"value": 300.0, "datetime": "2025-06-01T02:10:00.000+02:00",
+                 "datetime_utc": "2025-06-01T00:10:00Z", "geo_id": 8741, "geo_name": "Península"},
+                {"value": 400.0, "datetime": "2025-06-01T03:00:00.000+02:00",
+                 "datetime_utc": "2025-06-01T01:00:00Z", "geo_id": 8741, "geo_name": "Península"},
+            ],
+        }
+    }
+    client.session.get = MagicMock(return_value=make_response(200, payload))
+
+    df = client.fetch_hourly_mean(1293, "2025-06-01T00:00", "2025-06-01T01:59")
+
+    # petición real a ESIOS debe pedir resolución nativa (sin time_trunc), no la horaria (que suma)
+    call_params = client.session.get.call_args.kwargs["params"]
+    assert "time_trunc" not in call_params
+
+    assert len(df) == 2
+    row_00 = df[df["datetime_utc"] == "2025-06-01T00:00:00Z"].iloc[0]
+    row_01 = df[df["datetime_utc"] == "2025-06-01T01:00:00Z"].iloc[0]
+    assert row_00["value"] == pytest.approx(200.0)  # media de 100/200/300, no la suma (600)
+    assert row_01["value"] == pytest.approx(400.0)
+    assert (df["indicator_id"] == 1293).all()
+    assert (df["geo_id"] == 8741).all()
+
+
+def test_get_indicator_omits_time_trunc_when_none():
+    client = make_client()
+    client.session.get = MagicMock(return_value=make_response(200, SAMPLE_INDICATOR_PAYLOAD))
+
+    client.get_indicator(600, "2019-01-01T00:00", "2019-01-01T23:59", time_trunc=None)
+
+    call_params = client.session.get.call_args.kwargs["params"]
+    assert "time_trunc" not in call_params
+
+
+def test_get_indicator_sends_time_trunc_by_default():
+    client = make_client()
+    client.session.get = MagicMock(return_value=make_response(200, SAMPLE_INDICATOR_PAYLOAD))
+
+    client.get_indicator(600, "2019-01-01T00:00", "2019-01-01T23:59")
+
+    call_params = client.session.get.call_args.kwargs["params"]
+    assert call_params["time_trunc"] == "hour"
+
+
+def test_fetch_hourly_mean_empty_returns_empty_dataframe():
+    client = make_client()
+    empty_payload = {"indicator": {"id": 1293, "name": "x", "values": []}}
+    client.session.get = MagicMock(return_value=make_response(200, empty_payload))
+
+    df = client.fetch_hourly_mean(1293, "2025-06-01T00:00", "2025-06-01T01:59")
+
+    assert df.empty
+
+
 def test_search_indicators():
     client = make_client()
     payload = {"indicators": [{"id": 600, "name": "Precio mercado SPOT Diario"}]}
