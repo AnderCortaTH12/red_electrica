@@ -404,3 +404,25 @@ ver "Corregido (2026-07-31)" en Limitaciones conocidas para el motivo.
   limitación de extrapolación de los árboles es real y documentable
   aunque ya no sea el cuello de botella dominante — más robusto de cara
   a que el precio siga una tendencia genuina en el futuro.
+
+- **Corregido (2026-07-31, tras revisar el dashboard ya publicado): dos
+  restos del bug de agregación de arriba seguían contaminando la
+  visualización aunque los datos ya estaban arreglados.**
+  1. `models/baseline_metrics.json` no se había regenerado tras el fix
+     del precio — sus cifras de 2025/2026 venían del precio ~4x
+     inflado (MAE baseline 2026 mostraba ~67 en vez de ~17). El gráfico
+     "MAE por año" del dashboard lo lee directo del fichero, así que
+     comparaba el modelo (ya corregido) contra un baseline todavía
+     corrompido. Se regeneró con `python -m scripts.train_baseline`.
+  2. La tabla `predictions` conservaba 24 filas de un `model_version`
+     anterior al fix (entrenado con datos corrompidos), con predicciones
+     de hasta 847 €/MWh para horas ya pasadas — el gráfico de precio
+     las mostraba tal cual junto a las del modelo nuevo, porque
+     `load_all_predictions()` (`scripts/export_dashboard_data.py`) no
+     distingue `model_version`, solo deduplica por hora quedándose con
+     la más reciente. Se borraron esas filas directamente de la bbdd
+     (no había nada que preservar: solo 2 ejecuciones del cron diario
+     desde que existe la tabla). El diseño de "no distinguir
+     model_version" se mantiene tal cual para el futuro — es correcto
+     una vez el pipeline es estable, el problema era solo esta
+     contaminación puntual de la migración.
