@@ -95,5 +95,102 @@
     "mae_modelo": 16.78,
     "mae_baseline": 18.21
   },
-  "scatter": []
+  "scatter": [
+    {
+      "actual": 167.66,
+      "predicted": 171.31
+    },
+    {
+      "actual": 176.01,
+      "predicted": 185.65
+    },
+    {
+      "actual": 175.44,
+      "predicted": 190.49
+    },
+    {
+      "actual": 167.69,
+      "predicted": 174.62
+    },
+    {
+      "actual": 153.26,
+      "predicted": 141.3
+    },
+    {
+      "actual": 111.92,
+      "predicted": 126.79
+    },
+    {
+      "actual": 90.25,
+      "predicted": 95.22
+    },
+    {
+      "actual": 79.5,
+      "predicted": 66.98
+    },
+    {
+      "actual": 69.93,
+      "predicted": 46.22
+    },
+    {
+      "actual": 81.33,
+      "predicted": 37.81
+    },
+    {
+      "actual": 83.27,
+      "predicted": 27.44
+    },
+    {
+      "actual": 85.27,
+      "predicted": 35.44
+    },
+    {
+      "actual": 91.38,
+      "predicted": 49.08
+    },
+    {
+      "actual": 114.53,
+      "predicted": 89.33
+    },
+    {
+      "actual": 143.18,
+      "predicted": 133.41
+    },
+    {
+      "actual": 173.28,
+      "predicted": 171.1
+    },
+    {
+      "actual": 178.97,
+      "predicted": 176.05
+    },
+    {
+      "actual": 174.25,
+      "predicted": 172.56
+    },
+    {
+      "actual": 171.06,
+      "predicted": 170.05
+    },
+    {
+      "actual": 172.07,
+      "predicted": 167.84
+    },
+    {
+      "actual": 172.29,
+      "predicted": 169.87
+    },
+    {
+      "actual": 173.91,
+      "predicted": 171.76
+    },
+    {
+      "actual": 176.25,
+      "predicted": 172.76
+    },
+    {
+      "actual": 177.62,
+      "predicted": 177.26
+    }
+  ]
 }

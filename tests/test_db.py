@@ -12,6 +12,7 @@ from src.storage.db import (
     insert_predictions,
     is_period_done,
     mark_period,
+    normalize_datetime_utc,
     upsert_catalog,
 )
 
@@ -155,3 +156,44 @@ def test_different_model_versions_dont_collide(conn):
 
     count = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
     assert count == 4
+
+
+def test_normalize_datetime_utc_canonical_format():
+    assert normalize_datetime_utc("2026-07-31T21:00:00+00:00") == "2026-07-31T21:00:00Z"
+    assert normalize_datetime_utc("2026-07-31T21:00:00Z") == "2026-07-31T21:00:00Z"
+    assert normalize_datetime_utc(pd.Timestamp("2026-07-31T21:00:00", tz="UTC")) == "2026-07-31T21:00:00Z"
+    # naive se asume UTC (todo el backend trabaja en UTC)
+    assert normalize_datetime_utc("2026-07-31T21:00:00") == "2026-07-31T21:00:00Z"
+    # otra zona se convierte, no se trunca
+    assert normalize_datetime_utc("2026-08-01T00:00:00+02:00") == "2026-07-31T22:00:00Z"
+
+
+def test_insert_predictions_normalizes_timestamps_so_joins_work(conn):
+    """Regresion del bug que dejaba el scatter del dashboard y el error
+    real de monitorizacion siempre vacios: predictions guardaba
+    '+00:00' y observations 'Z', y sqlite compara TEXTO en el JOIN, asi
+    que no casaban nunca."""
+    insert_observations(conn, make_df(1))  # datetime_utc en formato ...Z
+    obs_dt = conn.execute("SELECT datetime_utc FROM observations").fetchone()[0]
+
+    preds = pd.DataFrame(
+        {
+            "model_version": ["v1"],
+            # formato "malo" que producia Timestamp.isoformat()
+            "target_datetime_utc": [obs_dt.replace("Z", "+00:00")],
+            "predicted_price": [50.0],
+            "made_at": ["2026-07-31T12:00:00Z"],
+        }
+    )
+    insert_predictions(conn, preds)
+
+    stored = conn.execute("SELECT target_datetime_utc FROM predictions").fetchone()[0]
+    assert stored == obs_dt
+
+    matched = conn.execute(
+        """
+        SELECT COUNT(*) FROM predictions p
+        JOIN observations o ON o.datetime_utc = p.target_datetime_utc
+        """
+    ).fetchone()[0]
+    assert matched == 1

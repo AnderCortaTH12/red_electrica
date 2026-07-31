@@ -116,17 +116,30 @@ export function chartGridColor() {
   return isDarkMode() ? "#1a212c" : "#e3e6ea";
 }
 
-// YYYY-MM-DD (calendario UTC, igual que summary.json/monthly -- lo
-// documentamos así en vez de intentar mapear a días de Madrid, para no
-// reintroducir líos de DST en la propia navegación del dashboard).
-export function utcDateStr(date) {
-  return date.toISOString().slice(0, 10);
+// YYYY-MM-DD en calendario ESPAÑOL (Europe/Madrid), que es el que usa
+// OMIE y con el que agrega el backend (ver build_summary_rows). Se
+// obtiene con Intl ("en-CA" da directamente formato YYYY-MM-DD), nunca
+// con aritmética manual de horas: Intl aplica el cambio de horario
+// solo, que es justo donde se coló el bug de DST del backend.
+const ISO_DATE_MADRID_FORMATTER = new Intl.DateTimeFormat("en-CA", {
+  timeZone: MADRID_TZ,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** Día natural de Madrid al que pertenece un instante. */
+export function madridDateStr(date) {
+  return ISO_DATE_MADRID_FORMATTER.format(new Date(date));
 }
 
-export function addDaysUtc(dateStr, days) {
-  const d = new Date(`${dateStr}T00:00:00Z`);
+/** Suma días sobre un YYYY-MM-DD tratándolo como fecha de calendario.
+ * Se ancla a mediodía UTC para que sumar/restar días nunca cruce por
+ * accidente una frontera de día por el cambio de hora. */
+export function addDays(dateStr, days) {
+  const d = new Date(`${dateStr}T12:00:00Z`);
   d.setUTCDate(d.getUTCDate() + days);
-  return utcDateStr(d);
+  return d.toISOString().slice(0, 10);
 }
 
 export function yearMonthFromDateStr(dateStr) {

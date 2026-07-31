@@ -426,3 +426,69 @@ ver "Corregido (2026-07-31)" en Limitaciones conocidas para el motivo.
      model_version" se mantiene tal cual para el futuro — es correcto
      una vez el pipeline es estable, el problema era solo esta
      contaminación puntual de la migración.
+
+- **Corregido (2026-07-31): el modelo no estaba prediciendo el futuro.**
+  `latest_predictions()` cogía `.tail(hours)` de las filas con features
+  completas, que en la práctica siempre caían dentro de horas cuyo
+  precio OMIE ya había publicado — y el dashboard las etiquetaba como
+  "Predicción". No es una predicción: es un dato ya conocido.
+  Renombrada a `forecast_unpublished_hours()` y reescrita para devolver
+  solo horas **estrictamente posteriores al último `precio_spot`
+  conocido**. El detalle de mercado que lo explica: OMIE es una subasta
+  diaria que publica DE GOLPE las 24h de D+1 sobre las 13:00 CET, así
+  que el horizonte genuinamente desconocido a las 08:00 CET (cuando
+  corre el cron) es el día siguiente completo.
+
+  **Limitación abierta que esto ha dejado a la vista**: el modelo usa
+  `demanda_prevista` como feature, y ESIOS no publica la de D+1 tan
+  pronto como las previsiones de eólica/FV (verificado 2026-07-31 a las
+  08:54 UTC: eólica y FV llegaban hasta el día siguiente, demanda
+  prevista solo hasta el final de hoy). Mientras esa feature no cubra
+  D+1, `prediccion_24h` sale vacía y el dashboard lo dice
+  explícitamente en vez de dejar un hueco mudo. Pendiente de decidir:
+  mover la hora del cron, o quitar `demanda_prevista` del conjunto de
+  features para no depender de la publicación más tardía.
+
+- **Corregido (2026-07-31): los agregados diarios no cuadraban con
+  OMIE.** Se agregaba por día natural **UTC**, pero OMIE publica en
+  calendario **español**, que va 1-2h desplazado según el horario de
+  verano. La media del 30-jul-2026 salía 129,05 €/MWh frente a los
+  128,55 reales. `build_summary_rows` y `build_kpis` agregan ahora por
+  `Europe/Madrid` (con `tz_convert`, nunca aritmética manual de horas),
+  y en el frontend `madridDateStr()` sustituye a `utcDateStr()`. Como
+  un día español empieza a las 22:00Z/23:00Z del día UTC anterior, el
+  día 1 de cada mes tiene sus primeras horas en el fichero mensual
+  anterior: `loadDay()` carga los dos meses y los combina.
+  **Validado contra fuente externa** (OMIE vía Rankia, 30-jul-2026):
+  media 128,55 / mín 6,13 de 13 a 14h / máx 204,72 de 21 a 22h —
+  coincide hora a hora con lo que muestra el dashboard.
+
+- **Corregido (2026-07-31): la monitorización del error real nunca
+  había funcionado.** `observations.datetime_utc` guarda
+  `2026-07-31T21:00:00Z` y `predictions.target_datetime_utc` guardaba
+  `2026-07-31T21:00:00+00:00` (venía de `Timestamp.isoformat()`).
+  SQLite no tiene tipo fecha: el JOIN entre ambas tablas compara
+  **texto**, así que no casaba nunca. Consecuencia: el scatter
+  "predicho vs real" del dashboard salía siempre vacío y
+  `recent_error()` devolvía siempre `n=0` — toda la monitorización de
+  error de la Fase 7 era decorativa. Se normaliza ahora en
+  `insert_predictions()` (único punto de escritura, ver
+  `normalize_datetime_utc` en `src/storage/db.py`) para que ningún
+  llamador pueda reintroducir el formato equivocado, y se migraron las
+  filas ya guardadas. Tras el fix: 24 puntos en el scatter y MAE real
+  de 14,59 €/MWh en la ventana de 7 días.
+
+## Cadencia de actualización
+
+Los datos de origen son **horarios**, pero todo el pipeline corre **una
+vez al día** (cron de GitHub Actions a las 06:00 UTC): ingesta →
+reentreno → predicción → monitorización → exportación de
+`docs/data/*.json` → commit. La página es estática, así que solo cambia
+cuando ese job hace push.
+
+Una vez al día es la cadencia correcta para este problema: el mercado
+diario es una **subasta diaria**, no un flujo continuo — no hay un
+"precio nuevo" cada hora al que reaccionar. Lo que sí importa es la
+**hora** a la que corre: 06:00 UTC = 08:00 CET, antes de que OMIE
+publique D+1 sobre las 13:00 CET, que es lo que permite que la
+predicción de D+1 sea genuina y no un dato ya conocido.

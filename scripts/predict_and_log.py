@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 
 from src.features.load import load_catalog, load_wide_dataframe
 from src.model.artifact import load_model_artifact
-from src.model.predict import latest_predictions
+from src.model.predict import forecast_unpublished_hours
 from src.storage.db import get_connection, init_db, insert_predictions
 
 DB_PATH = "data/electricidad.db"
@@ -30,13 +30,15 @@ def main() -> int:
     catalog = load_catalog()
     df = load_wide_dataframe(conn, catalog)
 
-    preds = latest_predictions(df, catalog, model, metadata["feature_columns"], hours=HOURS)
+    preds = forecast_unpublished_hours(df, catalog, model, metadata["feature_columns"], hours=HOURS)
     if preds.empty:
         print("No hay datos recientes suficientes para predecir; nada que guardar.")
         conn.close()
         return 0
 
-    preds["datetime_utc"] = preds["datetime_utc"].apply(lambda t: t.isoformat())
+    # el formato canonico ...Z lo aplica insert_predictions (ver
+    # normalize_datetime_utc en src/storage/db.py); aqui basta con
+    # pasar los Timestamp tal cual
     preds = preds.rename(
         columns={"datetime_utc": "target_datetime_utc", "predicted_price": "predicted_price"}
     )

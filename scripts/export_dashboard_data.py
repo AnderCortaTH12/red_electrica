@@ -39,7 +39,7 @@ from src.features.load import load_catalog, load_wide_dataframe
 from src.model.artifact import load_model_artifact
 from src.model.baseline import naive_forecast
 from src.model.metrics import mae, rmse
-from src.model.predict import latest_predictions
+from src.model.predict import forecast_unpublished_hours
 from src.monitoring.error_tracking import recent_error
 
 DB_PATH = "data/electricidad.db"
@@ -159,10 +159,16 @@ def build_status(metadata: dict | None, generated_at: str) -> dict:
 
 
 def build_kpis(df: pd.DataFrame, now_utc: pd.Timestamp) -> dict:
-    """KPIs del día en curso. Día = día natural en UTC (todo el backend
-    trabaja en UTC; el frontend convierte a Europe/Madrid al mostrar)."""
-    today_start = pd.Timestamp(now_utc.date(), tz="UTC")
-    today_end = today_start + pd.Timedelta(days=1)
+    """KPIs del día en curso. Día = día natural ESPAÑOL (Europe/Madrid),
+    igual que en build_summary_rows: es el calendario en el que OMIE
+    publica, así que 'media de hoy' tiene que significar lo mismo aquí
+    que en la fuente oficial. Los instantes que se devuelven siguen
+    siendo UTC (...Z); solo el corte del día es local."""
+    now_madrid = now_utc.tz_convert("Europe/Madrid")
+    today_start = pd.Timestamp(now_madrid.date(), tz="Europe/Madrid").tz_convert("UTC")
+    today_end = (
+        pd.Timestamp(now_madrid.date(), tz="Europe/Madrid") + pd.Timedelta(days=1)
+    ).tz_convert("UTC")
     todays = df.loc[(df.index >= today_start) & (df.index < today_end), "precio_spot"].dropna()
 
     empty = {
@@ -222,7 +228,7 @@ def build_prediccion_24h(df, catalog, model, metadata, baseline: pd.Series) -> d
     if model is None:
         return {"datetime_utc": [], "precio_modelo": [], "precio_baseline": []}
 
-    preds = latest_predictions(
+    preds = forecast_unpublished_hours(
         df, catalog, model, metadata["feature_columns"], hours=PREDICTION_HORIZON_HOURS
     )
     if preds.empty:
@@ -376,8 +382,18 @@ def build_model_performance(conn: sqlite3.Connection) -> dict:
 
 
 def build_summary_rows(df: pd.DataFrame) -> list[list]:
+    """Agregados diarios por DÍA NATURAL ESPAÑOL (Europe/Madrid), no por
+    día UTC: OMIE publica sus medias diarias en calendario español, y un
+    día UTC va desplazado 1-2h (según horario de verano), así que
+    agregando en UTC las cifras nunca cuadran con la fuente oficial
+    (p.ej. 30-jul-2026: 129.05 en UTC frente a los 128.55 reales).
+
+    El resto del backend sigue en UTC; la conversión se hace solo aquí,
+    para agrupar, y con tz_convert (nunca aritmética manual de horas,
+    que fue el origen de un bug de horario de verano anterior).
+    """
     start_ts = pd.Timestamp(SUMMARY_START, tz="UTC")
-    window = df.loc[df.index >= start_ts]
+    window = df.loc[df.index >= start_ts].tz_convert("Europe/Madrid")
 
     price_stats = window["precio_spot"].resample("D").agg(["mean", "min", "max"])
     daily_means = window[["demanda_real"] + GEN_COLUMNS].resample("D").mean()

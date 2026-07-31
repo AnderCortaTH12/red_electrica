@@ -22,9 +22,10 @@
         <h2>Precio y predicción</h2>
         <p class="section-note">
           Últimas 72h de precio real, comparado con el modelo y con el baseline naive (precio de
-          ayer a la misma hora). La zona sombreada a la derecha es predicción, no dato ya
-          ocurrido.
+          ayer a la misma hora). Solo se marcan como predicción las horas cuyo precio OMIE
+          todavía no ha publicado.
         </p>
+        <p class="section-note" id="forecast-note"></p>
         <div id="price-chart" class="chart"></div>
       </section>
 

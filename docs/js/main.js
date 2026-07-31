@@ -1,12 +1,11 @@
-import { loadLatest, loadMonth, loadModelPerformance, loadSummary, extractDay, DataError } from "./data.js";
+import { loadLatest, loadDay, loadModelPerformance, loadSummary, DataError } from "./data.js";
 import {
   formatDatetimeMadrid,
   formatPercent,
   formatPrice,
   numberFormat,
-  utcDateStr,
-  addDaysUtc,
-  yearMonthFromDateStr,
+  madridDateStr,
+  addDays,
 } from "./utils.js";
 import { renderPriceChart } from "./charts/priceChart.js";
 import { renderDayChart } from "./charts/dayChart.js";
@@ -83,6 +82,28 @@ function renderStatusBar(latest) {
   `;
 }
 
+/** Explica el estado real de la predicción. El mercado diario (OMIE)
+ * publica de golpe las 24h del día siguiente sobre las 13:00 CET, así
+ * que hay ventanas del día en las que no queda ninguna hora sin
+ * publicar que predecir -- y eso hay que decirlo, no dejar un hueco
+ * mudo que parezca un fallo. */
+function renderForecastNote(latest) {
+  const el = document.getElementById("forecast-note");
+  const pred = latest.prediccion_24h;
+  const n = pred && pred.datetime_utc ? pred.datetime_utc.length : 0;
+
+  if (n > 0) {
+    el.textContent = `Predicción activa: ${n} h todavía no publicadas por OMIE, desde las ${formatDatetimeMadrid(
+      pred.datetime_utc[0]
+    )}.`;
+    return;
+  }
+  el.textContent =
+    "Ahora mismo no hay ninguna hora que predecir: OMIE ya ha publicado el precio de " +
+    "todas las horas para las que hay previsiones disponibles. La predicción vuelve a " +
+    "aparecer cuando ESIOS publica las previsiones del día siguiente.";
+}
+
 // ---- Sección día: estado compartido ----
 
 const dayState = { currentDate: null };
@@ -116,9 +137,7 @@ async function loadAndRenderDay(dateStr) {
   loadingEl.hidden = false;
 
   try {
-    const yearMonth = yearMonthFromDateStr(dateStr);
-    const monthData = await loadMonth(yearMonth);
-    const day = extractDay(monthData, dateStr);
+    const day = await loadDay(dateStr);
 
     if (!day) {
       sectionError(dayChartEl, "No hay datos para este día todavía.");
@@ -152,9 +171,9 @@ function setupDayControls(latestDateStr) {
     btn.addEventListener("click", () => {
       const kind = btn.dataset.quick;
       let target = latestDateStr;
-      if (kind === "ayer") target = addDaysUtc(latestDateStr, -1);
-      else if (kind === "7d") target = addDaysUtc(latestDateStr, -7);
-      else if (kind === "año") target = addDaysUtc(latestDateStr, -365);
+      if (kind === "ayer") target = addDays(latestDateStr, -1);
+      else if (kind === "7d") target = addDays(latestDateStr, -7);
+      else if (kind === "año") target = addDays(latestDateStr, -365);
       loadAndRenderDay(target);
     });
   });
@@ -204,6 +223,7 @@ async function main() {
   try {
     latest = await loadLatest();
     renderStatusBar(latest);
+    renderForecastNote(latest);
     trackChart(renderPriceChart(document.getElementById("price-chart"), latest));
   } catch (err) {
     sectionError(document.getElementById("price-chart"), "No se pudo cargar el estado actual.");
@@ -212,10 +232,12 @@ async function main() {
   }
 
   // 2) selector de dia: arranca en la ultima hora conocida de latest.json
+  // .slice(0,10) daria el dia UTC, que a partir de las 22:00/23:00 Madrid
+  // ya es el dia siguiente: hay que preguntar el dia de Madrid
   const latestDateStr =
     latest && latest.horas_72h && latest.horas_72h.datetime_utc.length
-      ? latest.horas_72h.datetime_utc[latest.horas_72h.datetime_utc.length - 1].slice(0, 10)
-      : utcDateStr(new Date());
+      ? madridDateStr(latest.horas_72h.datetime_utc[latest.horas_72h.datetime_utc.length - 1])
+      : madridDateStr(new Date());
   setupDayControls(latestDateStr);
   loadAndRenderDay(latestDateStr);
 

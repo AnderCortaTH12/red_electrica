@@ -20,7 +20,8 @@ from pydantic import BaseModel
 
 from src.features.load import load_catalog, load_wide_dataframe
 from src.model.artifact import load_model_artifact
-from src.model.predict import latest_predictions
+from src.model.predict import forecast_unpublished_hours
+from src.storage.db import normalize_datetime_utc
 
 DB_PATH = "data/electricidad.db"
 
@@ -99,7 +100,7 @@ def predict(hours: int = 24) -> PredictResponse:
 
     feature_columns = metadata["feature_columns"]
     try:
-        preds_df = latest_predictions(df, catalog, model, feature_columns, hours=hours)
+        preds_df = forecast_unpublished_hours(df, catalog, model, feature_columns, hours=hours)
     except KeyError as exc:
         raise HTTPException(
             status_code=500,
@@ -111,12 +112,17 @@ def predict(hours: int = 24) -> PredictResponse:
 
     if preds_df.empty:
         raise HTTPException(
-            status_code=503, detail="No hay datos recientes suficientes para predecir."
+            status_code=503,
+            detail=(
+                "No hay horas que predecir ahora mismo: o bien OMIE ya ha publicado "
+                "el precio de todas las horas con features disponibles, o las "
+                "previsiones D+1 de ESIOS aun no cubren el dia siguiente."
+            ),
         )
 
     points = [
         PredictionPoint(
-            datetime_utc=row.datetime_utc.isoformat(),
+            datetime_utc=normalize_datetime_utc(row.datetime_utc),
             predicted_price_eur_mwh=float(row.predicted_price),
         )
         for row in preds_df.itertuples()

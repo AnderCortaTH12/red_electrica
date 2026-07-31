@@ -38,7 +38,7 @@ def synthetic_df(n=400, start="2024-02-01"):
     return pd.DataFrame({c: rng.uniform(10, 100, n) for c in cols}, index=idx)
 
 
-def test_build_kpis_uses_today_utc_window():
+def test_build_kpis_uses_madrid_day_window():
     df = synthetic_df()
     now = df.index.max()
     kpis = build_kpis(df, now)
@@ -46,6 +46,48 @@ def test_build_kpis_uses_today_utc_window():
     assert kpis["precio_actual"] is not None
     assert kpis["precio_min_hoy"] <= kpis["precio_actual"] <= kpis["precio_max_hoy"]
     assert kpis["hora_mas_cara_utc"].endswith("Z")
+
+
+def test_build_kpis_day_boundary_is_madrid_not_utc():
+    """En verano Madrid va +2h: el dia natural espanol empieza a las
+    22:00Z del dia anterior. Un dato de las 22:30Z del dia D-1 pertenece
+    ya al dia D espanol y debe entrar en los KPIs de 'hoy'; con el corte
+    en UTC quedaba fuera."""
+    idx = pd.date_range("2026-07-29T21:00:00Z", periods=6, freq="h", tz="UTC")
+    df = pd.DataFrame(
+        {c: [50.0] * len(idx) for c in ["precio_spot", "demanda_real"] + GEN_COLUMNS},
+        index=idx,
+    )
+    # 2026-07-29T22:00Z == 2026-07-30 00:00 en Madrid -> dia espanol 30
+    df.loc["2026-07-29T22:00:00Z", "precio_spot"] = 999.0
+    # 2026-07-29T21:00Z == 2026-07-29 23:00 en Madrid -> dia espanol 29
+    df.loc["2026-07-29T21:00:00Z", "precio_spot"] = -999.0
+
+    kpis = build_kpis(df, pd.Timestamp("2026-07-30T02:00:00Z"))
+
+    assert kpis["precio_max_hoy"] == 999.0  # la hora de las 22:00Z SI cuenta
+    assert kpis["precio_min_hoy"] != -999.0  # la de las 21:00Z NO
+
+
+def test_build_summary_rows_aggregates_by_madrid_day():
+    """Regresion del desajuste con OMIE: agregando por dia UTC la media
+    del 30-jul-2026 salia 129.05 en vez de los 128.55 que publica OMIE,
+    porque el dia UTC va desplazado 2h respecto al dia espanol."""
+    idx = pd.date_range("2026-06-30T22:00:00Z", periods=24, freq="h", tz="UTC")
+    df = pd.DataFrame(
+        {c: [1000.0] * 24 for c in ["demanda_real"] + GEN_COLUMNS}, index=idx
+    )
+    # las 24h del dia espanol 1-jul valen 100; se anaden vecinas distintas
+    df["precio_spot"] = 100.0
+
+    rows = build_summary_rows(df)
+    by_date = {r[0]: r for r in rows}
+
+    assert "2026-07-01" in by_date
+    fila = by_date["2026-07-01"]
+    assert fila[1] == 100.0  # media exacta del dia espanol completo
+    # y ese dia agrupa las 24 horas, no 22 ni 26
+    assert fila[2] == 100.0 and fila[3] == 100.0
 
 
 def test_build_kpis_empty_when_no_data_today():
@@ -131,7 +173,9 @@ def test_build_status_high_error_is_amber(tmp_path, monkeypatch):
 
 
 def test_build_summary_rows_skips_days_without_price():
-    idx = pd.date_range("2019-01-01", periods=48, freq="h", tz="UTC")
+    # arranca a las 23:00Z = 00:00 del 1-ene en Madrid (invierno, +1h),
+    # para que las 24 horas con precio sean exactamente un dia espanol
+    idx = pd.date_range("2018-12-31T23:00:00Z", periods=48, freq="h", tz="UTC")
     df = pd.DataFrame(
         {
             "precio_spot": [50.0] * 24 + [np.nan] * 24,

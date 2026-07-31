@@ -2,6 +2,8 @@
 // pantalla en blanco si un JSON falta o el fetch falla) y caché en
 // memoria para no repetir peticiones del mismo mensual al navegar.
 
+import { addDays, madridDateStr, yearMonthFromDateStr } from "./utils.js";
+
 const monthlyCache = new Map();
 
 export class DataError extends Error {}
@@ -52,28 +54,56 @@ export async function loadMonth(yearMonth) {
   return data;
 }
 
-/** Extrae las 24h de un día concreto (YYYY-MM-DD, calendario UTC) de
- * un JSON mensual ya cargado. */
-export function extractDay(monthData, dateStr) {
-  const indices = [];
-  monthData.datetime_utc.forEach((t, i) => {
-    if (t.startsWith(dateStr)) indices.push(i);
-  });
-  if (indices.length === 0) return null;
+const DAY_KEYS = [
+  "datetime_utc",
+  "precio_real",
+  "precio_modelo",
+  "precio_baseline",
+  "demanda_real",
+  "gen_eolica",
+  "gen_solar_fv",
+  "gen_solar_termica",
+  "gen_nuclear",
+  "gen_hidraulica",
+  "gen_ciclo_combinado",
+  "gen_carbon",
+];
 
-  const pick = (key) => indices.map((i) => monthData[key][i]);
-  return {
-    datetime_utc: pick("datetime_utc"),
-    precio_real: pick("precio_real"),
-    precio_modelo: pick("precio_modelo"),
-    precio_baseline: pick("precio_baseline"),
-    demanda_real: pick("demanda_real"),
-    gen_eolica: pick("gen_eolica"),
-    gen_solar_fv: pick("gen_solar_fv"),
-    gen_solar_termica: pick("gen_solar_termica"),
-    gen_nuclear: pick("gen_nuclear"),
-    gen_hidraulica: pick("gen_hidraulica"),
-    gen_ciclo_combinado: pick("gen_ciclo_combinado"),
-    gen_carbon: pick("gen_carbon"),
-  };
+/** Extrae las 24h de un día natural ESPAÑOL (YYYY-MM-DD en
+ * Europe/Madrid) de uno o varios JSON mensuales ya cargados.
+ *
+ * Recibe varios meses porque un día de Madrid empieza a las 22:00Z o
+ * 23:00Z del día UTC anterior (según horario de verano): el día 1 de
+ * cada mes tiene sus primeras horas en el fichero del mes anterior. */
+export function extractDay(monthDatas, dateStr) {
+  const months = Array.isArray(monthDatas) ? monthDatas : [monthDatas];
+  const day = {};
+  DAY_KEYS.forEach((k) => (day[k] = []));
+
+  months.filter(Boolean).forEach((monthData) => {
+    monthData.datetime_utc.forEach((t, i) => {
+      if (madridDateStr(t) !== dateStr) return;
+      DAY_KEYS.forEach((k) => day[k].push(monthData[k][i]));
+    });
+  });
+
+  return day.datetime_utc.length === 0 ? null : day;
+}
+
+/** Carga los meses necesarios y devuelve el día de Madrid ya extraído. */
+export async function loadDay(dateStr) {
+  const yearMonth = yearMonthFromDateStr(dateStr);
+  const prevMonth = yearMonthFromDateStr(addDays(dateStr, -1));
+
+  const months = [await loadMonth(yearMonth)];
+  if (prevMonth !== yearMonth) {
+    // el mes anterior puede no existir (inicio de la serie): que falte
+    // no debe impedir mostrar el resto del día
+    try {
+      months.unshift(await loadMonth(prevMonth));
+    } catch (err) {
+      /* sin mes previo: se muestran las horas disponibles */
+    }
+  }
+  return extractDay(months, dateStr);
 }

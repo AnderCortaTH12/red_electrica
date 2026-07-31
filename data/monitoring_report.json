@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-31T08:06:55.736894+00:00",
+  "generated_at": "2026-07-31T08:48:53.623967+00:00",
   "gaps": [],
   "stale_indicators": [],
   "out_of_range": [],
   "error_ultimos_7_dias": {
-    "n": 0,
-    "mae": null,
-    "rmse": null,
+    "n": 24,
+    "mae": 14.591512186342337,
+    "rmse": 21.946319716236314,
     "dias": 7
   },
   "mae_alert_threshold_eur_mwh": 150.0

@@ -41,12 +41,23 @@ def sample_catalog():
     return [{"columna": c, "disponible_antes_de_hora_h": c in forecast_cols} for c in all_cols]
 
 
-def synthetic_wide_df(n=400):
+def synthetic_wide_df(n=400, unpublished=24):
+    """Escenario realista: las ultimas `unpublished` horas todavia no
+    tienen precio publicado por OMIE ni datos de indicadores 'reales',
+    pero SI las previsiones D+1 -- que es justo lo que /predict debe
+    poder predecir (ver forecast_unpublished_hours)."""
     idx = pd.date_range("2024-02-01", periods=n, freq="h", tz="UTC")
     rng = np.random.default_rng(0)
     cols = [e["columna"] for e in sample_catalog()]
-    data = {c: rng.uniform(10, 100, n) for c in cols}
-    return pd.DataFrame(data, index=idx)
+    df = pd.DataFrame({c: rng.uniform(10, 100, n) for c in cols}, index=idx)
+
+    if unpublished:
+        forecast_cols = {
+            e["columna"] for e in sample_catalog() if e["disponible_antes_de_hora_h"]
+        }
+        real_cols = [c for c in df.columns if c not in forecast_cols]
+        df.loc[df.index[-unpublished:], real_cols] = float("nan")
+    return df
 
 
 class DummyConnection:

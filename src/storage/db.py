@@ -116,14 +116,37 @@ def insert_observations(conn: sqlite3.Connection, df: pd.DataFrame) -> int:
     return conn.total_changes - before
 
 
+def normalize_datetime_utc(value) -> str:
+    """Normaliza un instante al formato canonico del proyecto:
+    '2026-07-31T21:00:00Z'.
+
+    `observations.datetime_utc` siempre usa ese formato (lo escribe
+    ESIOSClient.fetch), pero `predictions.target_datetime_utc` se
+    escribia con Timestamp.isoformat(), que produce '+00:00'. Como los
+    JOIN entre ambas tablas comparan TEXTO (sqlite no tiene tipo fecha),
+    nunca casaban: el scatter del dashboard y el error real de
+    monitorizacion salian siempre vacios. Se normaliza aqui, en el
+    unico punto de escritura, para que ningun llamador pueda volver a
+    introducir el formato equivocado.
+    """
+    ts = pd.Timestamp(value)
+    ts = ts.tz_localize("UTC") if ts.tzinfo is None else ts.tz_convert("UTC")
+    return ts.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def insert_predictions(conn: sqlite3.Connection, df: pd.DataFrame) -> int:
     """Guarda predicciones (model_version, target_datetime_utc,
     predicted_price, made_at), ignorando duplicados. Sirve de base para
     comparar despues contra el precio real y trackear el error (ver
     src.monitoring.error_tracking).
+
+    `target_datetime_utc` se normaliza al formato canonico ...Z para que
+    los JOIN contra observations funcionen (ver normalize_datetime_utc).
     """
     if df.empty:
         return 0
+    df = df.copy()
+    df["target_datetime_utc"] = df["target_datetime_utc"].map(normalize_datetime_utc)
     before = conn.total_changes
     conn.executemany(
         """
