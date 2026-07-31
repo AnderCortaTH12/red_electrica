@@ -1,7 +1,7 @@
 {
   "model_type": "lightgbm+trend",
-  "model_version": "2026-07-31T07:49:55.604314+00:00",
-  "trained_at": "2026-07-31T07:49:55.604314+00:00",
+  "model_version": "2026-07-31T13:23:59.763940+00:00",
+  "trained_at": "2026-07-31T13:23:59.763940+00:00",
   "target": "precio_spot",
   "feature_columns": [
     "hour",
@@ -61,9 +61,9 @@
     "dias_desde_referencia"
   ],
   "metrics": {
-    "holdout_mae": 16.77539989382811,
-    "holdout_rmse": 21.200833299317907,
-    "baseline_holdout_mae": 18.206651978522235,
+    "holdout_mae": 16.77093872105199,
+    "holdout_rmse": 21.196115954312667,
+    "baseline_holdout_mae": 18.23180158637583,
     "regimen": "post_tope",
     "nota": "tendencia lineal (dias_desde_referencia) + residuo LightGBM: la parte lineal extrapola mas alla del rango de entrenamiento, a diferencia de un LightGBM puro (ver README, Limitaciones conocidas)"
   }
