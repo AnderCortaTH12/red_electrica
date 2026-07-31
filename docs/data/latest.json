@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-31T13:24:08Z",
+  "generated_at": "2026-07-31T13:29:29Z",
   "status": {
     "model_type": "lightgbm+trend",
     "model_version": "2026-07-31T13:23:59.763940+00:00",
     "trained_at": "2026-07-31T13:23:59.763940+00:00",
-    "last_run_at": "2026-07-31T13:24:08Z",
+    "last_run_at": "2026-07-31T13:29:29Z",
     "last_run_status": "ok",
     "health": "green",
     "quality_flags": []
@@ -836,9 +836,21 @@
     ]
   },
   "prediccion_24h": {
-    "datetime_utc": [],
-    "precio_modelo": [],
-    "precio_baseline": []
+    "datetime_utc": [
+      "2026-07-31T22:00:00Z",
+      "2026-07-31T23:00:00Z",
+      "2026-08-01T00:00:00Z"
+    ],
+    "precio_modelo": [
+      168.61,
+      165.33,
+      167.67
+    ],
+    "precio_baseline": [
+      177.62,
+      176.25,
+      173.91
+    ]
   },
   "error_rolling": {
     "mae_modelo_7d": null,
