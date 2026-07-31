@@ -177,21 +177,21 @@ function renderHonestyBlock(performance) {
 
   el.innerHTML = `
     <strong>El modelo actual (${holdout.modelo_tipo || "placeholder"}) ${
-    peor ? "pierde contra" : "supera a"
-  } el baseline naive.</strong>
+    peor ? "pierde contra" : "supera al"
+  } baseline naive.</strong>
     En el holdout de evaluación (${holdout.test_start ? formatDatetimeMadrid(holdout.test_start).slice(0, 10) : "—"}
     en adelante, régimen ${holdout.regimen || "post_tope"}): MAE del modelo
     ${numberFormat(holdout.mae_modelo)} €/MWh frente a ${numberFormat(holdout.mae_baseline)} €/MWh del baseline
     (${peor ? "+" : ""}${numberFormat(diferenciaPct, 0)}% ${peor ? "peor" : "mejor"}).
     ${
       peor
-        ? "Causa raíz identificada: los modelos de árboles (como LightGBM) no pueden predecir " +
-          "por encima del precio máximo visto en entrenamiento -- las predicciones quedan " +
-          "ancladas cerca de ese techo mientras el precio real sigue subiendo. No es un error " +
-          "de features, es una limitación estructural. Se mantiene así a propósito por ahora: " +
-          "la prioridad de esta fase era que el pipeline de extremo a extremo funcionase, no la " +
-          "calidad del modelo (ver README, sección Limitaciones conocidas)."
-        : ""
+        ? "Los modelos de árboles (como LightGBM) no pueden predecir por encima del precio " +
+          "máximo visto en entrenamiento -- las predicciones quedan ancladas cerca de ese techo " +
+          "mientras el precio real sigue subiendo. Por eso el modelo combina una tendencia lineal " +
+          "(que sí extrapola) con un LightGBM sobre el residuo (ver README, Limitaciones conocidas)."
+        : "El modelo combina una tendencia lineal (que extrapola más allá del rango visto en " +
+          "entrenamiento) con un LightGBM sobre el residuo, precisamente para evitar quedarse " +
+          "anclado cuando el precio sube fuera de ese rango."
     }
   `;
 }

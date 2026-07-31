@@ -22,8 +22,9 @@ para el plan completo.
 - [x] Fase 2 — Cliente robusto de la API
 - [x] Fase 3 — Ingesta histórica a SQLite
 - [x] Fase 4 — Exploración y features
-- [x] Fase 5 — Modelo (baseline + LightGBM) — pipeline completo; LightGBM
-      pierde contra el baseline por ahora, es un placeholder a propósito
+- [x] Fase 5 — Modelo (baseline + LightGBM) — pipeline completo; el modelo
+      (tendencia lineal + LightGBM sobre el residuo, `src/model/detrend.py`)
+      supera al baseline tras corregir dos bugs de agregación de datos
       (ver Limitaciones conocidas)
 - [x] Fase 6 — Servir el modelo (FastAPI + Docker) — API verificada en
       local; el `Dockerfile` se verifica vía GitHub Actions (Docker
@@ -307,10 +308,15 @@ la base de datos.
 
 ## Almacenamiento
 
-`data/electricidad.db` (SQLite, no versionado en git). Datos **horarios**
-(`time_trunc=hour`), 2014 → hoy, para los 13 indicadores del catálogo:
-~1.78M filas. Ver `src/storage/db.py` para el esquema (`observations`,
-`indicators_catalog`, `ingestion_log`).
+`data/electricidad.db` (SQLite, no versionado en git). Datos **horarios**,
+2014 → hoy, para los 13 indicadores del catálogo: ~1.78M filas. Ver
+`src/storage/db.py` para el esquema (`observations`, `indicators_catalog`,
+`ingestion_log`).
+
+10 de esos 13 indicadores (precio spot, demanda, generación T.Real) se
+piden en resolución **nativa** y se promedian a hora en cliente
+(`ESIOSClient.fetch_hourly_mean`), no con `time_trunc=hour` directo —
+ver "Corregido (2026-07-31)" en Limitaciones conocidas para el motivo.
 
 ## Limitaciones conocidas
 
@@ -350,46 +356,51 @@ la base de datos.
   `normal`. Ver `src/model/regimes.py`, `evaluate_by_regime()` en
   `src/model/evaluate.py`, y la sección de régimen en
   `notebooks/01_eda.ipynb`.
-- **Primer intento de LightGBM: pierde contra el baseline con claridad**
-  (MAE 131.97 vs 63.26 en el holdout, entrenado solo sobre el régimen
-  `post_tope`). Causa raíz identificada: los modelos de árboles no
-  pueden extrapolar más allá del rango del target visto en
-  entrenamiento (precio máximo en train: 240 EUR/MWh; en test llega a
-  1020). Las predicciones quedan ancladas cerca de ese techo mientras
-  el precio real sigue subiendo. No es un problema de la feature de
-  tendencia (se probó sin ella, mismo resultado) — es una limitación
-  estructural de los árboles de decisión ante una serie con tendencia
-  fuerte. Pendiente de decidir cómo abordarlo (predecir un residual/
-  ratio en vez del precio absoluto, reentrenamiento periódico con
-  ventana móvil, o un modelo que sí extrapole). Ver
-  `models/lightgbm_metrics.json`.
-  **Decisión (2026-07-30): se deja así por ahora a propósito.** El
-  objetivo inmediato es que el flujo de punta a punta funcione (Fases
-  6-7: servir el modelo, reentrenamiento e ingesta diaria automáticos),
-  no la calidad del modelo. `scripts/train_lightgbm.py` es un
-  placeholder — el modelo/features/target cambiarán más adelante, y el
-  pipeline de reentrenamiento tiene que funcionar igual sea cual sea el
-  modelo de turno.
-- **Corregido (2026-07-30): la demanda/generación de esta fuente está a
-  otra escala que la red española real, de forma sistemática — no es
-  un fallo de datos.** La primera ejecución de `scripts/monitor.py`
-  marcó `demanda_prevista`/`demanda_real` como "fuera de rango"
-  (~490.000 MW vs. un pico real peninsular de ~45.000 MW) y pareció
-  haber saltos bruscos entre horas. Investigado a fondo: revisando el
-  histórico completo (2019 → hoy), **todos** los indicadores de
-  demanda y generación están consistentemente ~6-10x por encima de la
-  escala española real desde el primer día (demanda media diaria pasa
-  de ~189.000 MW en 2019 a ~380.000 MW en 2026 — una escala distinta,
-  no un dato roto), y las curvas horarias son suaves y físicamente
-  plausibles (sube de madrugada a mediodía, baja de noche, forma de
-  campana normal) — el "salto brusco" que se documentó inicialmente no
-  se reproducía al revisar la bbdd, fue un artefacto de una
-  comprobación puntual contra la API en vivo (probablemente una
-  previsión revisada entre una lectura y otra, algo normal en un
-  indicador de tipo "previsión"). **Los umbrales de
-  `src/monitoring/data_quality.py` estaban calibrados contra la escala
-  real de España, no contra la escala real de este dataset** —
-  corregidos para reflejar los rangos observados (demanda hasta
-  700.000, generación hasta 450.000). El origen último de por qué esta
-  fuente usa una escala distinta sigue sin aclarar, pero ya no genera
-  falsos avisos de calidad de datos.
+- **Corregido (2026-07-31): ESIOS suma en vez de promediar cuando se pide
+  `time_trunc=hour` sobre un indicador con resolución nativa más fina —
+  bug real de la fuente, no de nuestro pipeline, pero que estuvo
+  corrompiendo tanto features como el target.** Dos casos, encontrados
+  al investigar por qué la demanda no cuadraba con la escala real de
+  España (aviso del usuario) y por qué el modelo perdía cada vez peor
+  contra el baseline en 2025-2026:
+  - **Demanda y generación T.Real** (9 indicadores) tienen resolución
+    nativa de 5 minutos. Pedir `time_trunc=hour` no promedia las ~12
+    muestras de esa hora: las suma. Una demanda media real de ~21.500 MW
+    se guardaba como ~250.000 (~6-10x según cuántas muestras hubiera esa
+    hora — de ahí que en la investigación anterior pareciera "solo una
+    escala distinta, consistente"; en realidad el multiplicador variaba
+    con el número de muestras nativas disponibles, que a su vez cambió
+    con los años, imitando una falsa tendencia temporal).
+  - **El precio spot (indicador 600, el TARGET a predecir)** pasó de
+    resolución nativa horaria a nativa de 15 minutos en algún punto
+    entre 2024-06 y 2025-01 — el cambio real de mercado europeo a
+    "15-minute market time units". Desde entonces, `time_trunc=hour`
+    sumaba las 4 muestras de 15 min en vez de promediarlas: un precio
+    real de ~105 €/MWh se guardaba como ~422 €/MWh. Esto producía un
+    salto artificial de ~4x en el precio justo a partir de esa fecha,
+    que en un primer análisis parecía un cambio estructural de mercado
+    sin precedente — en realidad era este bug.
+
+  **Fix**: `ESIOSClient.fetch_hourly_mean()` (`src/ingestion/esios_client.py`)
+  pide resolución nativa (sin fijar `time_trunc`, sea la que sea en cada
+  momento) y promedia a hora en cliente, por geo_id. Se aplica a los 10
+  indicadores afectados (ver `promediar_desde_nativo` en
+  `data/esios_indicators_catalog.json`). Todo el histórico de estos 10
+  indicadores se ha vuelto a descargar desde 2014/cobertura_desde con el
+  fix aplicado (no solo hacia adelante). Umbrales de
+  `src/monitoring/data_quality.py` revertidos a escala real de MW
+  (demanda hasta 60.000, generación hasta 40.000).
+
+- **El modelo ahora supera al baseline** (MAE 16.8 vs 18.2 €/MWh en el
+  holdout `2025-08-01 → hoy`, antes 128 vs 63 con los datos corrompidos).
+  El diagnóstico anterior ("los árboles no pueden extrapolar más allá
+  del precio máximo visto en entrenamiento") seguía siendo cierto en
+  teoría pero **no era la causa principal del mal resultado**: la mayor
+  parte del salto de error en 2025-2026 era el bug de agregación del
+  precio de arriba, que fabricaba un salto de precio de ~4x sin
+  precedente real que ningún modelo podía haber anticipado. Se mantiene
+  igualmente `src/model/detrend.py` (tendencia lineal sobre
+  `dias_desde_referencia` + LightGBM sobre el residuo) porque la
+  limitación de extrapolación de los árboles es real y documentable
+  aunque ya no sea el cuello de botella dominante — más robusto de cara
+  a que el precio siga una tendencia genuina en el futuro.

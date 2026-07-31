@@ -69,31 +69,31 @@
   "modelo_por_anio": [
     {
       "periodo": "2023",
-      "mae": 5.3,
+      "mae": 7.79,
       "n": 1
     },
     {
       "periodo": "2024",
-      "mae": 3.59,
-      "n": 8431
+      "mae": 3.65,
+      "n": 8600
     },
     {
       "periodo": "2025",
-      "mae": 45.87,
-      "n": 8061
+      "mae": 8.14,
+      "n": 8230
     },
     {
       "periodo": "2026",
-      "mae": 154.26,
-      "n": 4879
+      "mae": 19.04,
+      "n": 4895
     }
   ],
   "holdout": {
-    "modelo_tipo": "lightgbm",
+    "modelo_tipo": "lightgbm+trend",
     "regimen": "post_tope",
     "test_start": "2025-08-01T00:00",
-    "mae_modelo": 131.98,
-    "mae_baseline": 63.26
+    "mae_modelo": 16.78,
+    "mae_baseline": 18.21
   },
   "scatter": []
 }

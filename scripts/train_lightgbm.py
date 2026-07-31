@@ -10,6 +10,13 @@ añade 'dias_desde_referencia' (tendencia) porque el propio post_tope no
 es homogéneo: el MAE del baseline escala año a año dentro de él
 (18.3 en 2024 -> 36.6 en 2025 -> 66.8 en 2026).
 
+El modelo es un DetrendedModel (src/model/detrend.py): regresión lineal
+sobre 'dias_desde_referencia' + LightGBM sobre el residuo. LightGBM solo
+no puede extrapolar más allá del precio máximo visto en entrenamiento
+(limitación estructural de los árboles); la parte lineal sí lo hace,
+así que la predicción final puede seguir subiendo/bajando fuera del
+rango de entrenamiento en vez de quedarse anclada.
+
 Uso:
     python -m scripts.train_lightgbm
 """
@@ -21,8 +28,8 @@ from src.features.build import add_trend_feature, build_training_frame
 from src.features.load import load_catalog, load_wide_dataframe
 from src.model.artifact import save_model_artifact
 from src.model.baseline import naive_forecast
+from src.model.detrend import predict, train
 from src.model.evaluate import evaluate_by_year, train_test_split_by_date
-from src.model.lgbm import predict, train
 from src.model.metrics import mae, rmse
 from src.model.regimes import assign_regime
 
@@ -96,7 +103,7 @@ def main() -> None:
     )
 
     results = {
-        "modelo": "lightgbm",
+        "modelo": "lightgbm+trend",
         "regimen": "post_tope",
         "test_start": TEST_START,
         "n_train": len(train_df),
@@ -127,13 +134,17 @@ def main() -> None:
     metadata = save_model_artifact(
         final_model,
         feature_columns=list(X_full.columns),
-        model_type="lightgbm",
+        model_type="lightgbm+trend",
         metrics={
             "holdout_mae": lgbm_mae,
             "holdout_rmse": lgbm_rmse,
             "baseline_holdout_mae": baseline_mae,
             "regimen": "post_tope",
-            "nota": "modelo placeholder: pierde contra el baseline, ver README",
+            "nota": (
+                "tendencia lineal (dias_desde_referencia) + residuo LightGBM: "
+                "la parte lineal extrapola mas alla del rango de entrenamiento, "
+                "a diferencia de un LightGBM puro (ver README, Limitaciones conocidas)"
+            ),
         },
     )
     print(f"\nModelo de produccion guardado (version {metadata['model_version']})")

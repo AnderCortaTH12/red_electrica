@@ -299,16 +299,6 @@ section h2 {
   color: var(--text-mute);
 }
 
-.demand-note {
-  font-size: 11px;
-  color: var(--text-mute);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 10px;
-  margin-top: 8px;
-}
-
 /* ---- Largo plazo ---- */
 
 .regime-legend {
