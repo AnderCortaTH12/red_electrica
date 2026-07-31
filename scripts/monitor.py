@@ -16,6 +16,7 @@ Uso:
 import json
 import sqlite3
 from datetime import datetime, timezone
+from pathlib import Path
 
 from src.features.load import load_catalog
 from src.monitoring.data_quality import check_gaps, check_out_of_range, check_stale_indicators
@@ -23,6 +24,7 @@ from src.monitoring.error_tracking import recent_error
 
 DB_PATH = "data/electricidad.db"
 OUTPUT_PATH = "data/monitoring_report.json"
+PREDICTIONS_LOG_PATH = Path("docs/data/predictions_log.json")
 
 # El baseline naive ya llega a MAE ~67 EUR/MWh en 2026 (ver README);
 # ponemos el umbral bastante por encima para no disparar avisos por el
@@ -44,7 +46,7 @@ def main() -> None:
     gaps = check_gaps(conn, catalog)
     stale = check_stale_indicators(conn, catalog)
     out_of_range = check_out_of_range(conn, catalog)
-    error_7d = recent_error(conn, days=7)
+    error_7d = recent_error(conn, PREDICTIONS_LOG_PATH, days=7)
 
     conn.close()
 

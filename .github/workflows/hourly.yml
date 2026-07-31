@@ -1,8 +1,8 @@
 name: hourly-refresh
 
-# Refresco horario LIGERO del dashboard: ingesta incremental -> exportar
-# docs/data/*.json. Sin reentreno, sin predict_and_log, sin monitorizacion
-# (eso es del job diario, ver daily.yml).
+# Refresco horario LIGERO del dashboard: ingesta incremental -> generar
+# prediccion -> exportar docs/data/*.json. Sin reentreno, sin
+# monitorizacion (eso es del job diario, ver daily.yml).
 #
 # Por que hace falta un job horario si el precio es una subasta diaria:
 # hay dos cadencias distintas en los datos.
@@ -13,18 +13,24 @@ name: hourly-refresh
 #     (resolucion nativa de 5 min). Con solo el job diario se quedaban
 #     congeladas a las 06:00 UTC y el grafico del dia en curso mostraba
 #     unicamente las primeras horas hasta el dia siguiente.
-# Ademas, la prediccion del dashboard se calcula EN VIVO en
-# build_prediccion_24h (no se lee de la tabla predictions), asi que este
-# job la hace aparecer en cuanto ESIOS publica las previsiones D+1 --
-# sin tener que acertar a que hora exacta las publica.
 #
-# El cache se RESTAURA pero no se guarda: electricidad.db pesa ~230MB y
-# guardarlo 24 veces al dia agotaria el limite de 10GB de caches del
-# repositorio en pocas horas. Cada ejecucion parte del snapshot que dejo
-# el job diario e ingesta el hueco desde entonces (una peticion por
+# SI se llama a predict_and_log aqui (a diferencia del diseno original):
+# sin esto, cualquier prediccion generada en un run horario se perdia en
+# cuanto terminaba el job, porque electricidad.db (donde predict_and_log
+# escribia) vive en la cache de Actions y este job no la guarda -- el
+# siguiente run horario restauraba otra vez el snapshot de esta manana,
+# sin rastro de lo predicho entre medias. predict_and_log ahora tambien
+# escribe en docs/data/predictions_log.json (ver
+# src/storage/predictions_log.py), que SI es durable porque se comitea a
+# git en el mismo paso que el resto del dashboard.
+#
+# El cache de electricidad.db/models/ se RESTAURA pero no se guarda: pesa
+# ~230MB y guardarlo 24 veces al dia agotaria el limite de 10GB de caches
+# del repositorio en pocas horas. Cada ejecucion parte del snapshot que
+# dejo el job diario e ingesta el hueco desde entonces (una peticion por
 # indicador, ver update_indicator_incremental) -- correcto e idempotente.
-# Las escrituras que SI deben perdurar (tabla predictions, modelo
-# reentrenado) son del job diario, que si guarda cache.
+# El modelo entrenado (models/) si necesita venir de esa cache para poder
+# predecir aqui; reentrenarlo sigue siendo cosa exclusiva del job diario.
 
 on:
   schedule:
@@ -98,6 +104,10 @@ jobs:
         env:
           ESIOS_API_KEY: ${{ secrets.ESIOS_API_KEY }}
         run: python -m scripts.ingest_incremental
+
+      - name: Generar y guardar predicción (log persistente en git)
+        if: steps.state.outputs.ready == 'true'
+        run: python -m scripts.predict_and_log
 
       - name: Exportar datos del dashboard (docs/data/*.json)
         if: steps.state.outputs.ready == 'true'

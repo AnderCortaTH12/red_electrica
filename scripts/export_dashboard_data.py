@@ -41,10 +41,12 @@ from src.model.baseline import naive_forecast
 from src.model.metrics import mae, rmse
 from src.model.predict import forecast_unpublished_hours
 from src.monitoring.error_tracking import recent_error
+from src.storage.predictions_log import load_predictions_log
 
 DB_PATH = "data/electricidad.db"
 DOCS_DATA_DIR = Path("docs/data")
 MONITORING_REPORT_PATH = Path("data/monitoring_report.json")
+PREDICTIONS_LOG_PATH = DOCS_DATA_DIR / "predictions_log.json"
 
 GEN_COLUMNS = [
     "gen_eolica",
@@ -90,17 +92,18 @@ def _iso_z(ts: pd.Timestamp) -> str:
     return ts.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def load_all_predictions(conn: sqlite3.Connection) -> pd.Series:
-    """Predicciones logueadas por hora objetivo, quedándose con la más
-    reciente si una misma hora se predijo más de una vez (el horizonte
-    de predicción se solapa día a día)."""
-    query = "SELECT target_datetime_utc, predicted_price, made_at FROM predictions ORDER BY made_at"
-    df = pd.read_sql_query(query, conn)
-    if df.empty:
+def load_all_predictions() -> pd.Series:
+    """Predicciones históricas por hora objetivo, leídas del log
+    persistente en git (docs/data/predictions_log.json) -- NO de la
+    tabla SQLite, que vive en la cache de Actions y hourly.yml no
+    guarda (ver src/storage/predictions_log.py). Ya viene deduplicada
+    por target_datetime_utc (una fila por hora, la última predicción
+    antes de que esa hora se publicara)."""
+    log = load_predictions_log(PREDICTIONS_LOG_PATH)
+    if log.empty:
         return pd.Series(dtype=float)
-    df = df.drop_duplicates(subset="target_datetime_utc", keep="last")
-    idx = pd.to_datetime(df["target_datetime_utc"], utc=True)
-    return pd.Series(df["predicted_price"].values, index=idx)
+    idx = pd.to_datetime(log["target_datetime_utc"], utc=True)
+    return pd.Series(log["predicted_price"].astype(float).values, index=idx)
 
 
 def build_status(metadata: dict | None, generated_at: str) -> dict:
@@ -242,8 +245,8 @@ def build_prediccion_24h(df, catalog, model, metadata, baseline: pd.Series) -> d
 
 
 def build_error_rolling(conn: sqlite3.Connection, df: pd.DataFrame, baseline: pd.Series) -> dict:
-    model_7d = recent_error(conn, days=7)
-    model_30d = recent_error(conn, days=30)
+    model_7d = recent_error(conn, PREDICTIONS_LOG_PATH, days=7)
+    model_30d = recent_error(conn, PREDICTIONS_LOG_PATH, days=30)
 
     y_true = df["precio_spot"]
     now = pd.Timestamp.now(tz="UTC")
@@ -397,20 +400,21 @@ def build_model_performance(conn: sqlite3.Connection) -> dict:
             "mae_baseline": _round(lgbm_metrics.get("baseline_mae")),
         }
 
-    query = """
-        SELECT o.value AS actual, p.predicted_price AS predicted, p.target_datetime_utc
-        FROM predictions p
-        JOIN observations o
-          ON o.source = 'esios' AND o.indicator_id = 600 AND o.geo_id = 3
-             AND o.datetime_utc = p.target_datetime_utc
-        ORDER BY p.target_datetime_utc DESC
-        LIMIT ?
-    """
-    scatter_df = pd.read_sql_query(query, conn, params=(MAX_SCATTER_POINTS,))
-    scatter = [
-        {"actual": _round(row.actual), "predicted": _round(row.predicted)}
-        for row in scatter_df.itertuples()
-    ]
+    log = load_predictions_log(PREDICTIONS_LOG_PATH)
+    scatter = []
+    if not log.empty:
+        query = """
+            SELECT datetime_utc AS target_datetime_utc, value AS actual
+            FROM observations
+            WHERE source = 'esios' AND indicator_id = 600 AND geo_id = 3
+        """
+        actuals = pd.read_sql_query(query, conn)
+        merged = log.merge(actuals, on="target_datetime_utc", how="inner")
+        merged = merged.sort_values("target_datetime_utc", ascending=False).head(MAX_SCATTER_POINTS)
+        scatter = [
+            {"actual": _round(row.actual), "predicted": _round(float(row.predicted_price))}
+            for row in merged.itertuples()
+        ]
 
     return {
         "baseline_por_anio": baseline_por_anio,
@@ -495,7 +499,7 @@ def run() -> None:
     generated_at = _iso_z(now_utc)
 
     baseline = naive_forecast(df, lag_hours=24)
-    all_predictions = load_all_predictions(conn)
+    all_predictions = load_all_predictions()
 
     latest_payload = {
         "generated_at": generated_at,

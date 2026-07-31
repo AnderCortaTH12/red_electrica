@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.storage.db import get_connection, init_db, insert_observations, insert_predictions
+from src.storage.db import get_connection, init_db, insert_observations
+from src.storage.predictions_log import append_predictions_log
 
 from scripts.export_dashboard_data import (
     GEN_COLUMNS,
@@ -270,6 +271,7 @@ def test_build_model_performance_scatter_from_verified_predictions(tmp_path, mon
 
     monkeypatch.setattr(mod, "BASELINE_METRICS_PATH", tmp_path / "nope1.json")
     monkeypatch.setattr(mod, "LIGHTGBM_METRICS_PATH", tmp_path / "nope2.json")
+    monkeypatch.setattr(mod, "PREDICTIONS_LOG_PATH", tmp_path / "predictions_log.json")
 
     conn = get_connection(str(tmp_path / "test.db"))
     init_db(conn)
@@ -284,14 +286,10 @@ def test_build_model_performance_scatter_from_verified_predictions(tmp_path, mon
             }
         ),
     )
-    insert_predictions(
-        conn,
-        pd.DataFrame(
-            {
-                "model_version": ["v1"], "target_datetime_utc": [target],
-                "predicted_price": [50.0], "made_at": [target],
-            }
-        ),
+    append_predictions_log(
+        mod.PREDICTIONS_LOG_PATH,
+        pd.DataFrame({"datetime_utc": [target], "predicted_price": [50.0]}),
+        model_version="v1",
     )
 
     result = build_model_performance(conn)

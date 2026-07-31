@@ -517,3 +517,32 @@ fila por línea** (ver `write_rows_json`) y git hace delta de ellos. Con
 el formato anterior (todo el JSON en una sola línea) cada reescritura
 guardaba un blob completo de ~72 KB y el refresco horario habría costado
 ~3,8 GB/año — inviable.
+
+- **Corregido (2026-07-31): las predicciones nunca sobrevivían entre
+  ejecuciones, así que ni el scatter predicho-vs-real ni el error real
+  de monitorización mostraban nada, y la línea del modelo desaparecía
+  del gráfico de precio en cuanto pasaba una hora.** `predict_and_log`
+  escribía solo en la tabla `predictions` de SQLite, que vive en la
+  cache de GitHub Actions -- y `hourly.yml` la restaura pero no la
+  guarda (a propósito, para no subir 230MB de cache 24 veces al día).
+  Cualquier predicción generada en un run horario se perdía al terminar
+  el job. Y ni siquiera el job diario libraba del problema: como OMIE
+  publica el día completo de golpe con antelación, casi nunca quedan
+  horas "sin publicar" en el momento en que corre, así que la tabla
+  apenas llegaba a tener filas en producción real (comprobado: 0 filas
+  desde el primer día, pese a que en pruebas locales manuales sí había
+  parecido funcionar).
+
+  **Fix**: nuevo `docs/data/predictions_log.json`
+  (`src/storage/predictions_log.py`), versionado en git -- se comitea
+  en cada ejecución (diaria u horaria) junto al resto del dashboard,
+  así que es durable sin depender de que la cache de Actions
+  sobreviva. `predict_and_log.py` escribe ahí además de en SQLite;
+  `load_all_predictions()` (línea del modelo en el gráfico de precio),
+  el scatter de `build_model_performance()` y `recent_error()`
+  (monitorización) leen de este log en vez de la tabla SQL. Si una
+  hora se predice varias veces mientras sigue sin publicarse, se
+  queda con la más reciente; en cuanto se publica su precio y deja de
+  predecirse, su fila queda congelada tal cual -- es el registro
+  histórico de "qué predijimos antes de saberlo". `hourly.yml` ahora
+  también llama a `predict_and_log` (antes no lo hacía en absoluto).

@@ -5,7 +5,8 @@ import pytest
 
 from src.monitoring.data_quality import check_gaps, check_out_of_range, check_stale_indicators
 from src.monitoring.error_tracking import recent_error
-from src.storage.db import get_connection, init_db, insert_observations, insert_predictions
+from src.storage.db import get_connection, init_db, insert_observations
+from src.storage.predictions_log import append_predictions_log
 
 
 @pytest.fixture
@@ -120,15 +121,17 @@ def test_check_out_of_range_ok_within_bounds(conn):
 # ---- recent_error ----
 
 
-def test_recent_error_no_predictions_returns_none(conn):
-    result = recent_error(conn, days=7)
+def test_recent_error_no_predictions_returns_none(conn, tmp_path):
+    log_path = tmp_path / "predictions_log.json"
+    result = recent_error(conn, log_path, days=7)
     assert result == {"n": 0, "mae": None, "rmse": None, "dias": 7}
 
 
-def test_recent_error_computes_mae_against_actuals(conn):
+def test_recent_error_computes_mae_against_actuals(conn, tmp_path):
     now = datetime.now(timezone.utc)
     target_hour = (now - timedelta(hours=2)).replace(minute=0, second=0, microsecond=0)
     target_str = target_hour.strftime("%Y-%m-%dT%H:%M:%SZ")
+    log_path = tmp_path / "predictions_log.json"
 
     insert_observations(
         conn,
@@ -142,26 +145,21 @@ def test_recent_error_computes_mae_against_actuals(conn):
             }
         ),
     )
-    insert_predictions(
-        conn,
-        pd.DataFrame(
-            {
-                "model_version": ["v1"],
-                "target_datetime_utc": [target_str],
-                "predicted_price": [90.0],
-                "made_at": [now.isoformat()],
-            }
-        ),
+    append_predictions_log(
+        log_path,
+        pd.DataFrame({"datetime_utc": [target_str], "predicted_price": [90.0]}),
+        model_version="v1",
     )
 
-    result = recent_error(conn, days=7)
+    result = recent_error(conn, log_path, days=7)
 
     assert result["n"] == 1
     assert result["mae"] == pytest.approx(10.0)
 
 
-def test_recent_error_ignores_predictions_outside_window(conn):
+def test_recent_error_ignores_predictions_outside_window(conn, tmp_path):
     old_target = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    log_path = tmp_path / "predictions_log.json"
     insert_observations(
         conn,
         pd.DataFrame(
@@ -171,16 +169,12 @@ def test_recent_error_ignores_predictions_outside_window(conn):
             }
         ),
     )
-    insert_predictions(
-        conn,
-        pd.DataFrame(
-            {
-                "model_version": ["v1"], "target_datetime_utc": [old_target],
-                "predicted_price": [90.0], "made_at": [old_target],
-            }
-        ),
+    append_predictions_log(
+        log_path,
+        pd.DataFrame({"datetime_utc": [old_target], "predicted_price": [90.0]}),
+        model_version="v1",
     )
 
-    result = recent_error(conn, days=7)
+    result = recent_error(conn, log_path, days=7)
 
     assert result["n"] == 0
