@@ -480,15 +480,40 @@ ver "Corregido (2026-07-31)" en Limitaciones conocidas para el motivo.
 
 ## Cadencia de actualización
 
-Los datos de origen son **horarios**, pero todo el pipeline corre **una
-vez al día** (cron de GitHub Actions a las 06:00 UTC): ingesta →
-reentreno → predicción → monitorización → exportación de
-`docs/data/*.json` → commit. La página es estática, así que solo cambia
-cuando ese job hace push.
+Los datos de origen **no tienen una sola cadencia**, así que el pipeline
+está partido en dos workflows:
 
-Una vez al día es la cadencia correcta para este problema: el mercado
-diario es una **subasta diaria**, no un flujo continuo — no hay un
-"precio nuevo" cada hora al que reaccionar. Lo que sí importa es la
-**hora** a la que corre: 06:00 UTC = 08:00 CET, antes de que OMIE
-publique D+1 sobre las 13:00 CET, que es lo que permite que la
-predicción de D+1 sea genuina y no un dato ya conocido.
+| Dato | Cómo lo publica la fuente | Refresco necesario |
+|---|---|---|
+| `precio_spot` (target) | Subasta diaria: OMIE publica las 24h de D+1 de golpe (~13:00 CET) | Diario |
+| `demanda_real`, `gen_*` | Continuo (resolución nativa de 5 min) | **Horario** |
+| Previsiones D+1 | A lo largo del día, cada indicador a su hora | **Horario** |
+
+- **`.github/workflows/hourly.yml`** (cada hora, a y 15): ingesta
+  incremental → exportar `docs/data/*.json` → commit. Ligero (~2-3 min),
+  sin reentreno. Es lo que evita que la generación del día en curso se
+  quede congelada a las 08:00 de Madrid hasta el día siguiente. Como
+  `build_prediccion_24h` calcula la predicción **en vivo** (no la lee de
+  la tabla `predictions`), este job también hace que la predicción
+  aparezca en cuanto ESIOS publica las previsiones D+1, sin tener que
+  acertar a qué hora exacta las publica.
+- **`.github/workflows/daily.yml`** (06:00 UTC): el pipeline completo,
+  con lo pesado y lo que debe perdurar — reentreno, `predict_and_log`
+  (guarda la predicción en la bbdd para poder verificarla después contra
+  el precio real) y monitorización. Es el único que **guarda** el cache.
+
+Los dos comparten `concurrency group` (a las 06:00 UTC coinciden) y
+hacen `git pull --rebase` antes de empujar, para que no se pisen.
+
+El job horario **restaura** el cache pero no lo guarda: `electricidad.db`
+pesa ~230 MB y guardarlo 24 veces al día agotaría el límite de 10 GB de
+caches del repositorio en pocas horas. Cada ejecución parte del snapshot
+que dejó el job diario e ingesta el hueco desde entonces — correcto e
+idempotente por el `INSERT OR IGNORE`.
+
+**Coste en git del refresco horario**: medido, ~0,7 KB por ejecución
+(≈6 MB/año), porque `summary.json` y los mensuales se escriben con **una
+fila por línea** (ver `write_rows_json`) y git hace delta de ellos. Con
+el formato anterior (todo el JSON en una sola línea) cada reescritura
+guardaba un blob completo de ~72 KB y el refresco horario habría costado
+~3,8 GB/año — inviable.

@@ -1,8 +1,15 @@
 name: daily-pipeline
 
-# Cron diario: ingesta incremental -> reentreno -> prediccion -> monitorizacion
-# -> exportar datos del dashboard (docs/data/*.json, servido por GitHub Pages
-# desde main:/docs).
+# Cron diario COMPLETO: ingesta incremental -> reentreno -> prediccion ->
+# monitorizacion -> exportar datos del dashboard (docs/data/*.json, servido
+# por GitHub Pages desde main:/docs).
+#
+# Este job hace las piezas PESADAS y las que deben perdurar entre
+# ejecuciones (reentrenar el modelo, guardar la prediccion en la tabla
+# predictions para poder verificarla despues contra el precio real, y
+# guardar el cache). El refresco frecuente del dashboard lo hace
+# hourly.yml, que es ligero y no reentrena -- ver el comentario de ese
+# fichero para por que hacen falta las dos cadencias.
 #
 # Limitacion conocida y asumida a proposito: los runners de GitHub Actions
 # son efimeros (sin estado propio entre ejecuciones), y electricidad.db
@@ -22,6 +29,12 @@ on:
 
 permissions:
   contents: write
+
+# comparte grupo con hourly.yml: los dos hacen push a main y a las 06:00
+# UTC coinciden, asi que deben encolarse en vez de pisarse
+concurrency:
+  group: forecasting-electrico-pipeline
+  cancel-in-progress: false
 
 jobs:
   run:
@@ -75,4 +88,7 @@ jobs:
             echo "::warning::La exportacion del dashboard fallo, no se comitean docs/data/ en este run"
           fi
           git diff --cached --quiet || git commit -m "Actualizacion diaria automatica [skip ci]"
+          # el job horario (hourly.yml) puede haber pusheado mientras
+          # corria este: rebase antes de empujar en vez de fallar
+          git pull --rebase origin main
           git push

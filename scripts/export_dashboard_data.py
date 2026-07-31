@@ -269,25 +269,65 @@ def build_error_rolling(conn: sqlite3.Connection, df: pd.DataFrame, baseline: pd
     }
 
 
+MONTHLY_COLUMNS = [
+    "datetime_utc",
+    "precio_real",
+    "precio_modelo",
+    "precio_baseline",
+    "demanda_real",
+] + GEN_COLUMNS
+
+
 def build_monthly_payload(
     df: pd.DataFrame, baseline: pd.Series, model_preds: pd.Series, year: int, month: int
 ) -> dict:
+    """Formato {columns, rows} con una fila por hora, igual que
+    summary.json: el fichero del mes en curso se reescribe en cada
+    ejecución del pipeline (horaria), y con una fila por línea de texto
+    el diff es 1-2 líneas en vez del fichero entero. Con el formato
+    anterior (todo en una línea) cada reescritura guardaba un blob
+    nuevo de ~72KB en git -- inviable a 24 ejecuciones diarias.
+    """
     start = pd.Timestamp(year=year, month=month, day=1, tz="UTC")
     end = start + pd.DateOffset(months=1)
     window = df.loc[(df.index >= start) & (df.index < end)]
-    idx = window.index
 
-    payload = {
+    rows = []
+    for t, row in window.iterrows():
+        rows.append(
+            [
+                _iso_z(t),
+                _round(row["precio_spot"]),
+                _round(model_preds.get(t)),
+                _round(baseline.get(t)),
+                _round(row["demanda_real"]),
+                *[_round(row[col]) for col in GEN_COLUMNS],
+            ]
+        )
+
+    return {
         "year_month": f"{year:04d}-{month:02d}",
-        "datetime_utc": [_iso_z(t) for t in idx],
-        "precio_real": [_round(v) for v in window["precio_spot"]],
-        "precio_modelo": [_round(model_preds.get(t)) for t in idx],
-        "precio_baseline": [_round(baseline.get(t)) for t in idx],
-        "demanda_real": [_round(v) for v in window["demanda_real"]],
+        "columns": MONTHLY_COLUMNS,
+        "rows": rows,
     }
-    for col in GEN_COLUMNS:
-        payload[col] = [_round(v) for v in window[col]]
-    return payload
+
+
+def write_rows_json(path: Path, payload: dict) -> None:
+    """Escribe {..., columns, rows} con cada fila en su propia línea.
+    Compartido por summary.json y los mensuales para que git pueda
+    hacer delta de los ficheros que se reescriben a menudo."""
+    rows = payload["rows"]
+    head = {k: v for k, v in payload.items() if k != "rows"}
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("{\n")
+        for key, value in head.items():
+            f.write(f"  {json.dumps(key, ensure_ascii=False)}: ")
+            f.write(json.dumps(value, ensure_ascii=False) + ",\n")
+        f.write('  "rows": [\n')
+        for i, row in enumerate(rows):
+            comma = "," if i < len(rows) - 1 else ""
+            f.write("    " + json.dumps(row, ensure_ascii=False) + comma + "\n")
+        f.write("  ]\n}\n")
 
 
 def export_monthly_files(
@@ -313,8 +353,7 @@ def export_monthly_files(
             cursor = cursor + pd.DateOffset(months=1)
             continue
         payload = build_monthly_payload(df, baseline, model_preds, year, month)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
+        write_rows_json(path, payload)
         written.append(path.name)
         cursor = cursor + pd.DateOffset(months=1)
     return written
@@ -432,19 +471,11 @@ def build_summary_rows(df: pd.DataFrame) -> list[list]:
 
 
 def write_summary_json(rows: list[list]) -> Path:
-    """Cada fila en su propia línea a propósito: se regenera entero
-    cada día, y con esto el diff diario son 1-2 líneas nuevas/cambiadas,
-    no el fichero completo (~200KB)."""
+    """Cada fila en su propia línea a propósito: se regenera entero en
+    cada ejecución, y con esto el diff es 1-2 líneas nuevas/cambiadas,
+    no el fichero completo (~320KB). Ver write_rows_json."""
     path = DOCS_DATA_DIR / "summary.json"
-    with open(path, "w", encoding="utf-8") as f:
-        f.write("{\n")
-        f.write('  "columns": ' + json.dumps(SUMMARY_COLUMNS, ensure_ascii=False) + ",\n")
-        f.write('  "rows": [\n')
-        for i, row in enumerate(rows):
-            comma = "," if i < len(rows) - 1 else ""
-            f.write("    " + json.dumps(row, ensure_ascii=False) + comma + "\n")
-        f.write("  ]\n")
-        f.write("}\n")
+    write_rows_json(path, {"columns": SUMMARY_COLUMNS, "rows": rows})
     return path
 
 

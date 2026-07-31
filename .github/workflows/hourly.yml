@@ -1,0 +1,89 @@
+name: hourly-refresh
+
+# Refresco horario LIGERO del dashboard: ingesta incremental -> exportar
+# docs/data/*.json. Sin reentreno, sin predict_and_log, sin monitorizacion
+# (eso es del job diario, ver daily.yml).
+#
+# Por que hace falta un job horario si el precio es una subasta diaria:
+# hay dos cadencias distintas en los datos.
+#   - precio_spot: OMIE publica las 24h de D+1 DE GOLPE (~13:00 CET). A
+#     las 06:00 UTC el dia en curso ya esta completo -> no necesita
+#     refresco horario.
+#   - demanda_real y generacion T.Real: ESIOS las publica en continuo
+#     (resolucion nativa de 5 min). Con solo el job diario se quedaban
+#     congeladas a las 06:00 UTC y el grafico del dia en curso mostraba
+#     unicamente las primeras horas hasta el dia siguiente.
+# Ademas, la prediccion del dashboard se calcula EN VIVO en
+# build_prediccion_24h (no se lee de la tabla predictions), asi que este
+# job la hace aparecer en cuanto ESIOS publica las previsiones D+1 --
+# sin tener que acertar a que hora exacta las publica.
+#
+# El cache se RESTAURA pero no se guarda: electricidad.db pesa ~230MB y
+# guardarlo 24 veces al dia agotaria el limite de 10GB de caches del
+# repositorio en pocas horas. Cada ejecucion parte del snapshot que dejo
+# el job diario e ingesta el hueco desde entonces (una peticion por
+# indicador, ver update_indicator_incremental) -- correcto e idempotente.
+# Las escrituras que SI deben perdurar (tabla predictions, modelo
+# reentrenado) son del job diario, que si guarda cache.
+
+on:
+  schedule:
+    # a y 15 de cada hora: el minuto 0 es cuando GitHub tiene mas cola de
+    # workflows programados y mas retrasos
+    - cron: "15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# comparte grupo con daily.yml: los dos hacen push a main, y si coinciden
+# (a las 06:00 UTC lo hacen) deben encolarse, no pisarse
+concurrency:
+  group: forecasting-electrico-pipeline
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restaurar cache de datos y modelo (sin guardarlo)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/electricidad.db
+            models/
+          key: forecasting-electrico-state-
+          restore-keys: |
+            forecasting-electrico-state-
+
+      - run: pip install -r requirements.txt
+
+      - name: Ingesta incremental
+        env:
+          ESIOS_API_KEY: ${{ secrets.ESIOS_API_KEY }}
+        run: python -m scripts.ingest_incremental
+
+      - name: Exportar datos del dashboard (docs/data/*.json)
+        id: export_dashboard
+        run: python -m scripts.export_dashboard_data
+
+      - name: Commit del dashboard actualizado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/
+          if git diff --cached --quiet; then
+            echo "Sin cambios en docs/data/, nada que comitear"
+            exit 0
+          fi
+          git commit -m "Refresco horario del dashboard [skip ci]"
+          # el job diario puede haber pusheado mientras corria este:
+          # rebase antes de empujar en vez de fallar
+          git pull --rebase origin main
+          git push

@@ -49,7 +49,14 @@ export async function loadSummary() {
 
 export async function loadMonth(yearMonth) {
   if (monthlyCache.has(yearMonth)) return monthlyCache.get(yearMonth);
-  const data = await fetchJson(`data/monthly/${yearMonth}.json`);
+  const raw = await fetchJson(`data/monthly/${yearMonth}.json`);
+  // {columns, rows} (una fila por hora, formato git-friendly) -> arrays
+  // paralelos por columna, que es lo que consumen los graficos
+  const { columns, rows } = raw;
+  const data = { year_month: raw.year_month };
+  columns.forEach((col, i) => {
+    data[col] = rows.map((row) => row[i]);
+  });
   monthlyCache.set(yearMonth, data);
   return data;
 }
