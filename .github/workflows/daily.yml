@@ -46,6 +46,17 @@ jobs:
         with:
           python-version: "3.12"
 
+      # falla pronto y con un mensaje claro en vez de dejar que reviente
+      # dentro de python con un traceback (ESIOSClient lanza al construirse)
+      - name: Comprobar que existe el secret ESIOS_API_KEY
+        env:
+          ESIOS_API_KEY: ${{ secrets.ESIOS_API_KEY }}
+        run: |
+          if [ -z "$ESIOS_API_KEY" ]; then
+            echo "::error::Falta el secret ESIOS_API_KEY. Configuralo en Settings -> Secrets and variables -> Actions -> New repository secret (nombre exacto: ESIOS_API_KEY). Tiene que ser un *secret*, no una *variable*."
+            exit 1
+          fi
+
       - name: Cache de datos y modelo (persisten entre ejecuciones)
         uses: actions/cache@v4
         with:
