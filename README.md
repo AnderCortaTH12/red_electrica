@@ -1,548 +1,312 @@
-# Forecasting Eléctrico
+# Observatorio del Sistema Gasista Español
 
-[![daily pipeline](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/daily.yml/badge.svg)](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/daily.yml)
-[![docker build](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/docker-build.yml/badge.svg)](https://github.com/AnderCortaTH12/red_electrica/actions/workflows/docker-build.yml)
+Datos mensuales del sistema gasista español, extraídos automáticamente de
+las dos publicaciones PDF de Enagás (Boletín Estadístico del Gas y
+Progreso mensual de la demanda), validados con reglas de cuadre cruzado,
+y servidos en un dashboard estático en GitHub Pages.
 
-Sistema de predicción del precio eléctrico español (mercado diario/spot) en
-producción continua: ingesta automatizada de datos de la API de ESIOS (Red
-Eléctrica de España), almacenamiento en SQLite, modelo de forecasting con
-validación temporal honesta, servido vía API, y monitorización del error
-real fuera de muestra.
+**Dashboard:** https://andercortath12.github.io/red_electrica/
 
-El objetivo no es solo entrenar un modelo, sino **productivizarlo**: que
-corra solo, se pueda reproducir, y se vigile a sí mismo.
+Este proyecto era antes un sistema de forecasting del precio eléctrico
+(ver el historial de git para esa versión). Se reconvirtió por completo:
+se conserva la infraestructura que funcionaba (patrón de automatización
+con GitHub Actions, abstracción de fuentes de datos, capa `docs/` de
+GitHub Pages sin build step), pero la lógica de negocio es enteramente
+nueva.
 
-## Estado del proyecto
+## La idea en una frase
 
-En construcción, fase por fase. Ver `Proyecto_Forecasting_Electrico_Guia.md`
-para el plan completo.
+Cada mes, sin intervención manual: descarga los dos PDF que publica
+Enagás, le pide a Claude que localice cada cifra y la mapee a un
+catálogo de métricas fijo, valida que los agregados cuadran entre sí
+(y entre las dos fuentes), y si todo cuadra lo escribe en un CSV
+versionado en git que alimenta el dashboard.
 
-- [x] Fase 0 — Estructura y verificación de acceso a la API
-- [x] Fase 1 — Catálogo de indicadores
-- [x] Fase 2 — Cliente robusto de la API
-- [x] Fase 3 — Ingesta histórica a SQLite
-- [x] Fase 4 — Exploración y features
-- [x] Fase 5 — Modelo (baseline + LightGBM) — pipeline completo; el modelo
-      (tendencia lineal + LightGBM sobre el residuo, `src/model/detrend.py`)
-      supera al baseline tras corregir dos bugs de agregación de datos
-      (ver Limitaciones conocidas)
-- [x] Fase 6 — Servir el modelo (FastAPI + Docker) — API verificada en
-      local; el `Dockerfile` se verifica vía GitHub Actions (Docker
-      Desktop no instalado en este entorno de desarrollo), ver
-      pestaña "Actions" del repo
-- [x] Fase 7 — Automatización y monitorización — job diario en GitHub
-      Actions (ingesta incremental, reentreno, predicción, monitorización);
-      badge arriba muestra el estado del último run
-- [x] Fase 8 — Dashboard público en GitHub Pages
+## Por qué dos fuentes
 
-## Dashboard (Fase 8)
+- **Boletín Estadístico del Gas**: totales de demanda, demanda por
+  CCAA, orígenes de suministro por país, conexiones internacionales,
+  biometano, TVB, plantas de regasificación, mix de generación
+  eléctrica. Es la fuente "ancha": muchas métricas, cada una a un solo
+  nivel de detalle.
+- **Progreso mensual de la demanda**: lo único que aporta y el Boletín
+  no trae es el desglose de la demanda convencional en **D/C+PyMES ·
+  Industrial · Cisternas**. Sin esta fuente, la jerarquía de demanda se
+  quedaría coja en su nivel más fino.
 
-Página estática en GitHub Pages, servida desde **`main:/docs`** (no una
-rama `gh-pages` separada — menos piezas que gestionar en un proyecto en
-solitario): **https://andercortath12.github.io/red_electrica/**
+Que ambas fuentes describan la misma demanda convencional total desde
+ángulos distintos es, además, la validación cruzada más valiosa del
+pipeline (ver más abajo).
 
-Sin build step (HTML + CSS + JS vanilla con ES modules nativos,
-[Apache ECharts](https://echarts.apache.org/) vía CDN) — cero
-dependencias que puedan romper el Action dentro de seis meses. GitHub
-Pages es estático (sin Python en runtime), así que todo lo que se
-muestra viene precalculado por `scripts/export_dashboard_data.py`
-(último paso del job diario, con `continue-on-error` para no tumbar el
-resto del pipeline si falla):
+## Decisiones de arquitectura
 
-- `docs/data/latest.json` (~16KB, se carga siempre): últimas 72h de
-  precio real/modelo/baseline + generación, predicción de las próximas
-  horas, KPIs del día, estado del sistema (semáforo verde/ámbar según
-  los flags de `src/monitoring/`), y MAE rolling 7/30 días.
-- `docs/data/monthly/YYYY-MM.json` (91 ficheros, ~78KB cada uno,
-  2019-01 → hoy): cargado bajo demanda al navegar a una fecha. Los
-  meses **pasados son inmutables** — solo se regenera el mes en curso
-  en cada ejecución, para no inflar el historial de git.
-- `docs/data/summary.json` (~350KB, series diarias 2019-hoy): formato
-  `{columns, rows}` con cada fila en su propia línea de texto (no
-  `json.dumps` con indent normal), para que el diff diario sean 1-2
-  líneas, no el fichero entero.
-- `docs/data/model_performance.json`: MAE por año (2014-hoy) del
-  baseline y del modelo, y el scatter predicho-vs-real de las
-  predicciones ya verificadas — crece día a día.
+**Nada de SQLite.** El volumen es pequeño (12 meses × unos cientos de
+métricas al año) y cabe de sobra en un CSV versionado en git
+(`data/gas.csv`). Esto da historial y diff auditable de cada
+extracción gratis, y elimina de raíz el problema del proyecto anterior
+(la cache de GitHub Actions evictándose y haciendo desaparecer datos).
 
-Probar en local (sirve `docs/` con un servidor estático simple; abrir
-`index.html` directamente con `file://` NO funciona por las
-restricciones CORS de los ES modules):
+**La extracción numérica es determinista; el LLM solo mapea.** Claude
+no calcula ni infiere ninguna cifra: copia literalmente el número que
+ve en el PDF y decide a qué `metrica_id` del catálogo corresponde
+(`src/extraccion/llm.py`). El parseo del formato español
+(`parse_numero_es`), la conversión de unidades y la normalización de
+nombres de dimensión los hace después código determinista
+(`src/extraccion/normalizar.py`). Un validador (`src/extraccion/validar.py`)
+comprueba que los agregados cuadran antes de escribir nada; si no
+cuadran, el proceso falla en rojo y **no se escribe nada en el CSV**
+(o todo o nada, para no dejar el dataset a medias).
 
-```powershell
-cd docs
-python -m http.server 8000
-# abrir http://localhost:8000
-```
+**PDF → imagen, no PDF → texto.** La primera versión mandaba a Claude
+el texto que extrae `pdfplumber`. Probado contra un PDF real, el texto
+de las tablas con estilo (fondo de color, cabeceras rotadas) sale
+desordenado carácter a carácter — inservible. La misma página
+renderizada como imagen se lee perfectamente. `src/extraccion/pdf.py`
+genera un PNG por página y `src/extraccion/llm.py` usa la API
+multimodal de Claude. El texto/tablas de `pdfplumber` se conservan
+igualmente como respaldo auditable barato en `data/extracciones/`.
 
-Para regenerar los datos a mano sin lanzar todo el pipeline:
-
-```powershell
-python -m scripts.export_dashboard_data
-```
+**Idempotencia y reproceso.** Cualquier mes se puede volver a procesar
+a mano con `--force`. Las revisiones de Enagás se sobrescriben en
+silencio (sin versionado ni aviso) — pero si la revisión introduce un
+sufijo distinto en el nombre del fichero (ver Limitaciones), hay que
+tocar `src/ingestion/enagas_source.py`.
 
 ## Estructura
 
 ```
 Forecasting-Electrico/
-├── .github/workflows/  # docker-build.yml (CI) y daily.yml (cron diario)
+├── .github/workflows/mensual.yml  # cron diario: ingesta + monitorización + dashboard
+├── data/
+│   ├── metricas_catalogo.json     # el contrato del proyecto
+│   ├── gas.csv                    # el dataset canónico, formato largo (tidy)
+│   ├── manifiesto.json            # URL/sha256/fechas de cada PDF procesado
+│   ├── extracciones/              # respuesta cruda del LLM por periodo+fuente (auditable)
+│   ├── metricas_desconocidas.json # cifras vistas pero no mapeadas a ninguna métrica
+│   ├── informe_monitorizacion.json
+│   └── raw/                       # PDFs descargados (gitignored, se recuperan de la URL)
 ├── src/
-│   ├── ingestion/  # cliente ESIOS, DataSource abstracta, backfill + incremental
-│   ├── storage/    # esquema y acceso a SQLite (observations, predictions...)
-│   ├── features/   # carga wide-format + feature engineering leakage-safe
-│   ├── model/      # baseline, LightGBM, metricas, regimenes, artefacto agnostico
-│   ├── monitoring/ # calidad de datos + tracking de error real
-│   └── serving/    # API FastAPI (src/serving/api.py)
-├── scripts/        # scripts ejecutables (ingesta, entrenamiento, predicción, monitor...)
-├── data/           # bbdd SQLite y datos crudos (ignorado por git, se regenera)
-├── models/         # modelo activo + historial de versiones + métricas de experimentos
-├── notebooks/      # notebooks de exploración (EDA, análisis de resultados)
-├── tests/          # tests con pytest
+│   ├── ingestion/                 # DataSource abstracta + BoletinSource/ProgresoSource
+│   ├── extraccion/                # pdf.py, llm.py, normalizar.py, validar.py, catalogo.py
+│   └── monitoring/                # informe.py (periodo desactualizado + última validación)
+├── scripts/                       # ingest_month.py, backfill.py, validar_dataset.py,
+│                                   # monitor.py, export_dashboard.py
+├── docs/                          # dashboard estático (GitHub Pages, sirve desde main:/docs)
+├── tests/
 ├── requirements.txt
-├── Dockerfile
-└── .env.example    # plantilla de variables de entorno (copiar a .env)
+└── .env.example
 ```
 
 ## Puesta en marcha
 
 ```powershell
-# Crear y activar entorno virtual (si no existe ya)
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-
-# Instalar dependencias
 pip install -r requirements.txt
 
-# Configurar credenciales
 copy .env.example .env
-# Editar .env y rellenar ESIOS_API_KEY con tu token personal
-```
-
-Verificar que la autenticación contra la API de ESIOS funciona:
-
-```powershell
-python -m scripts.test_esios_auth
-```
-
-> Los scripts de `scripts/` se ejecutan como módulo (`python -m scripts.nombre`,
-> no `python scripts\nombre.py`) porque importan código de `src/`, y `-m`
-> añade la raíz del proyecto al `sys.path` automáticamente.
-
-Descargar el histórico completo (2014 → hoy) de los indicadores del catálogo
-a `data/electricidad.db`. Es idempotente: si se corta a mitad, al
-relanzarlo continúa donde estaba sin duplicar datos ni repetir ventanas
-ya descargadas:
-
-```powershell
-python -m scripts.ingest_historical
-```
-
-Traer solo los datos nuevos desde el último dato ya guardado (lo que
-ejecuta el job diario; también válido para actualizar manualmente):
-
-```powershell
-python -m scripts.ingest_incremental
-```
-
-Entrenar el modelo actual (baseline naive + LightGBM sobre el régimen
-`post_tope`) y guardar el artefacto que sirve la API:
-
-```powershell
-python -m scripts.train_baseline
-python -m scripts.train_lightgbm
-```
-
-Generar la predicción con el modelo activo y guardarla (para poder
-comparar más tarde contra el precio real), y correr la monitorización:
-
-```powershell
-python -m scripts.predict_and_log
-python -m scripts.monitor
-```
-
-## Servir el modelo (API)
-
-Arranque local (recarga automática al cambiar código):
-
-```powershell
-uvicorn src.serving.api:app --reload
+# Editar .env y rellenar ANTHROPIC_API_KEY (console.anthropic.com/settings/keys)
 ```
 
 ```powershell
-curl http://localhost:8000/health
-curl "http://localhost:8000/predict?hours=24"
+python -m pytest tests/ -q
 ```
 
-`/health` expone `model_type`/`model_version`/`trained_at` para saber a
-simple vista qué modelo está sirviendo sin mirar el código. La API es
-agnóstica al algoritmo (`src/model/artifact.py`): solo espera un
-`models/model.joblib` + `models/model_metadata.json` con esa forma, así
-que cambiar de modelo no requiere tocar `src/serving/api.py`.
+## Esquema del CSV (`data/gas.csv`)
 
-**Resuelto (Fase 8)**: `/predict` ya devuelve previsión real de horas
-futuras, no solo "las horas más recientes con dato completo" como en
-la Fase 6 original. `scripts/ingest_incremental.py` pide las 3
-previsiones D+1 de ESIOS (`demanda_prevista`, `prevision_eolica`,
-`prevision_fv`) hasta ahora+48h en vez de solo hasta ahora
-(`FORECAST_HORIZON_HOURS`). El horizonte real varía día a día: está
-acotado por la previsión con el horizonte publicado más corto en ese
-momento (normalmente `demanda_prevista`, que ESIOS suele publicar con
-menos antelación que eólica/fotovoltaica). Bug relacionado corregido
-de paso en `src/model/predict.py`: el `dropna()` exigía el target
-(`precio_spot`) además de las features, lo que descartaba siempre las
-horas futuras (el precio real, por definición, no existe todavía para
-ellas); y las columnas derivadas de indicadores reales (lags/medias
-móviles) se "congelan" hacia adelante (forward-fill) más allá de la
-última hora con dato real, porque no se pueden recalcular de verdad
-para el futuro.
+Formato largo (tidy), una fila por observación, ordenado por
+`periodo, metrica_id, dimension, agregacion`:
 
-Con Docker (`Dockerfile` en la raíz). La imagen NO incluye `data/` ni
-`models/` — son estado que cambia con cada ingesta/reentrenamiento, no
-código, así que se montan como volúmenes en tiempo de ejecución (así no
-hay que reconstruir la imagen cada vez que se reentrena):
+```
+periodo,metrica_id,dimension,agregacion,valor,unidad,var_pct_interanual,fuente_doc,pagina,extraido_el
+2026-06,demanda_convencional,,mes,15267.0,GWh,-2.8,boletin,3,2026-08-06
+2026-06,demanda_convencional,,acumulado_anual,117818.0,GWh,-3.1,boletin,3,2026-08-06
+2026-06,aprovisionamiento_gn,Argelia,mes,9978.0,GWh,40.3,boletin,9,2026-08-06
+```
+
+- `periodo`: `YYYY-MM`, el mes al que se refiere el dato (no el de publicación).
+- `dimension`: vacío para métricas escalares; el valor del eje (p.ej.
+  `Argelia`, `Cataluña`) para las dimensionadas.
+- `agregacion`: `mes` | `acumulado_anual` | `tam` (Total Anual Móvil).
+  **Ojo**: no todas las métricas traen las tres. El desglose por CCAA,
+  las plantas de regasificación, el TVB y la mezcla GN/GNL solo vienen
+  en columna mensual en el PDF fuente — ver Limitaciones.
+- `var_pct_interanual`: tal cual la publica Enagás (ver por qué en
+  Limitaciones). `>100%`/`<-100%` se guardan como `null`, nunca como
+  `100`/`-100`.
+- Todo normalizado a la `unidad_canonica` del catálogo (TWh → GWh × 1000
+  cuando aplica). El CSV nunca mezcla unidades para la misma métrica.
+
+## Catálogo de métricas (`data/metricas_catalogo.json`)
+
+Es el contrato del proyecto. Cada métrica define `metrica_id`,
+`nombre`, `padre` (para la jerarquía de demanda), `unidad_canonica`,
+`unidad_pdf` (la unidad tal como aparece en el PDF, para saber cuándo
+convertir), `dimension`, `fuente` (`boletin`|`progreso`) y `obligatoria`
+(si su ausencia debe hacer fallar la validación).
+
+**Para añadir una métrica nueva:**
+
+1. Añade la entrada al catálogo con su `metrica_id`, `padre` (o `null`
+   si es raíz o no forma parte de la jerarquía de demanda),
+   `unidad_canonica`, `unidad_pdf`, `dimension` y `fuente`.
+2. Si quieres que bloquee la validación cuando falte, márcala
+   `obligatoria: true` — con cuidado, solo tiene sentido para métricas
+   que Enagás publica todos los meses sin falta.
+3. Reprocesa un mes con `--force` para comprobar que el modelo la
+   encuentra: `python -m scripts.ingest_month --periodo 2026-06 --force`.
+4. Si el modelo no la encuentra, revisa `data/metricas_desconocidas.json`
+   de ese periodo — puede que la esté describiendo con otro nombre.
+
+## Reprocesar un mes
 
 ```powershell
-docker build -t forecasting-electrico .
-docker run -d -p 8000:8000 `
-  -v ${PWD}/data:/app/data `
-  -v ${PWD}/models:/app/models `
-  --name forecasting-electrico forecasting-electrico
+python -m scripts.ingest_month --periodo 2026-06 --force   # revisión de Enagás
+python -m scripts.ingest_month --periodo 2026-06 --sin-llm  # reusa data/extracciones/, no llama a la API
+python -m scripts.ingest_month --dry-run                    # no escribe nada, solo informa
+python -m scripts.backfill                                  # todos los periodos pendientes desde 2026-01
+python -m scripts.validar_dataset                            # revalida gas.csv entero sin tocar PDFs
 ```
 
-> El `Dockerfile` no se ha podido verificar en este entorno de
-> desarrollo (Docker Desktop no instalado), pero sí se verifica
-> automáticamente en cada push a GitHub vía
-> `.github/workflows/docker-build.yml`: construye la imagen y hace un
-> smoke-test real de `/health` en el runner. Revisa la pestaña
-> "Actions" del repo para ver el resultado.
+## Automatización
 
-## Automatización (job diario)
+`.github/workflows/mensual.yml` corre cada día a las 07:00 UTC (cron
+diario pese al nombre "mensual": probar dos URLs con `HEAD` no cuesta
+nada y es más robusto que adivinar el día exacto de publicación de
+Enagás, que varía). Solo se llama a la API de Claude cuando aparece un
+PDF nuevo — un día sin publicación cuesta cero. También se puede
+lanzar a mano desde la pestaña *Actions* → *mensual-pipeline* → *Run
+workflow*, con inputs `periodo` y `force` para reprocesar un mes
+concreto.
 
-`.github/workflows/daily.yml` corre cada día a las 06:00 UTC (y también
-manualmente desde la pestaña "Actions" → "daily-pipeline" → "Run workflow"):
+**Configuración necesaria** (una sola vez): añade tu clave de la API
+de Anthropic como secret del repo en *Settings → Secrets and variables
+→ Actions → New repository secret*, nombre exacto `ANTHROPIC_API_KEY`
+(sin espacios ni comillas). Sin esto el job falla pronto con un mensaje
+claro en vez de un traceback.
 
-1. **Ingesta incremental** (`scripts/ingest_incremental.py`): trae solo
-   los datos nuevos de cada indicador desde el último dato ya guardado
-   (una petición por indicador, no re-descarga el histórico). Si un
-   indicador no tiene datos previos o lleva >30 días sin actualizar
-   (p.ej. porque se perdió el estado persistido), hace backfill
-   completo para ese indicador en su lugar — se autorrepara solo.
-2. **Reentrena el modelo** (`scripts/train_lightgbm.py`) con los datos
-   actualizados.
-3. **Genera y guarda la predicción** (`scripts/predict_and_log.py`) en
-   la tabla `predictions` de la bbdd, para poder comparar más tarde
-   contra el precio real.
-4. **Monitorización** (`scripts/monitor.py`): calidad de datos + error
-   real, ver abajo.
-5. Comitea `models/model_metadata.json`, `models/lightgbm_metrics.json`
-   y `data/monitoring_report.json` de vuelta al repo (`[skip ci]` para
-   no disparar el resto de workflows).
+**GitHub Pages**: *Settings → Pages → Build and deployment → Source:
+"Deploy from a branch"* → rama `main`, carpeta `/docs`. No uses el modo
+"GitHub Actions" — genera un workflow de Pages aparte
+(`actions/deploy-pages`) que no forma parte de este proyecto y que se
+ha visto quedarse colgado en `deployment_queued`.
 
-**Configuración necesaria** (una sola vez): añade tu token de ESIOS
-como secret del repo en *Settings → Secrets and variables → Actions →
-New repository secret*, nombre `ESIOS_API_KEY`. Sin esto la ingesta
-incremental fallará con 401.
-
-**Versionado del modelo**: cada vez que `save_model_artifact()`
-(`src/model/artifact.py`) guarda un modelo nuevo, archiva primero el
-anterior en `models/history/model_<version>.joblib` +
-`model_metadata_<version>.json` — no se pierde el rastro de versiones
-previas al sobrescribir `models/model.joblib`.
-
-> **Limitación conocida y asumida a propósito**: los runners de GitHub
-> Actions no tienen estado propio entre ejecuciones, y
-> `electricidad.db` (~230MB) es demasiado grande para versionar en git
-> sin Git LFS. Se usa `actions/cache` (con una clave que incluye el
-> `run_id`, para que cada ejecución guarde un cache nuevo) para
-> persistir `data/` y `models/` entre días. No es almacenamiento
-> "de verdad" — GitHub puede evictar el cache (más de 7 días sin usar,
-> o si se supera el límite de 10GB del repo). Por eso
-> `ingest_incremental.py` está preparado para autorepararse con un
-> backfill completo si detecta que el cache se perdió, en vez de
-> fallar en silencio. Una mejora futura razonable sería mover el
-> almacenamiento a algo persistente de verdad (un bucket, una bbdd
-> gestionada) en vez de abusar de `actions/cache`.
+Si la ingesta o la validación fallan, el job se pone en rojo (sin
+`continue-on-error`). Si no hay PDF nuevo, termina en verde sin commit.
+El paso de exportar el dashboard sí tiene `continue-on-error`: un fallo
+ahí no debe tumbar el pipeline de datos, que es la fuente de verdad.
 
 ## Monitorización
 
-`scripts/monitor.py` (parte del job diario) revisa tres cosas y escribe
-`data/monitoring_report.json`:
+`scripts/monitor.py` (parte del workflow) escribe
+`data/informe_monitorizacion.json` con dos chequeos:
 
-- **Huecos**: ¿faltan muchas horas de las últimas 72h para algún
-  indicador?
-- **Valores fuera de rango**: ¿hay precios/demandas fuera de un rango
-  "sano" (pensado para pillar errores groseros, no validación de
-  negocio estricta)?
-- **Indicador obsoleto**: ¿algún indicador lleva más de 48h sin traer
-  un dato nuevo (o no tiene ninguno)?
-- **Error real (7 días)**: compara las predicciones guardadas en la
-  tabla `predictions` contra el precio real ya conocido (tabla
-  `observations`) y calcula el MAE/RMSE de los últimos 7 días. **Esto
-  es la pieza más valiosa, no decorativa**: la Fase 5 ya estableció que
-  el error del modelo crece de forma estructural (régimen regulatorio
-  + tendencia de volatilidad) — esta métrica es lo que avisa si el
-  modelo placeholder actual se degrada MÁS de lo esperable, no solo lo
-  esperado.
+- **¿Más de 45 días sin conseguir ingerir un periodo nuevo?** Medido
+  contra la fecha de la última ingesta exitosa (`extraido_el`), no
+  contra el mes calendario del periodo — Enagás publica con ~1 mes de
+  retraso, así que medirlo mal dispararía el aviso todos los días
+  aunque el pipeline funcione perfectamente (bug real que se detectó
+  y corrigió antes de llegar a producción, ver tests en
+  `tests/test_monitoring.py`). Un aviso aquí sugiere que el patrón de
+  URL de Enagás ha cambiado.
+- **Resumen de la última validación** del periodo más reciente en el CSV.
 
-Si algo destaca, el script imprime `::warning::...` (sintaxis de
-GitHub Actions: marca un aviso visible en la UI del workflow, en
-amarillo, **sin fallar el job** — un error alto es una señal a
-vigilar, no necesariamente un fallo del pipeline). Si el propio job
-falla (ingesta o reentrenamiento con error real), eso ya lo marca
-GitHub Actions como fallo del workflow — visible en el badge de arriba
-y en la pestaña "Actions".
+Nunca falla el job: un aviso (`::warning::`) es una señal a revisar,
+no un fallo del pipeline.
 
-## Fuente de datos
+## Dashboard
 
-[API de ESIOS](https://api.esios.ree.es/) — API pública de Red Eléctrica de
-España para indicadores del sistema eléctrico (precio del mercado diario,
-demanda, generación por tecnología...). Requiere un token personal gratuito
-en el header `x-api-key`. Nunca se hardcodea: se carga desde `.env` mediante
-`python-dotenv`.
+Estático en `docs/`, servido por GitHub Pages desde `main:/docs`. HTML
++ CSS + JS vanilla con ES modules nativos, sin build step, [Apache
+ECharts](https://echarts.apache.org/) por CDN. `scripts/export_dashboard.py`
+genera `docs/data/{catalogo,serie,ultimo}.json`; `serie.json` con el
+patrón "una fila por línea" para que el diff de cada ejecución mensual
+sean unas pocas líneas.
 
-El diseño es multi-fuente desde el principio (`src/ingestion/base.py`,
-clase abstracta `DataSource`): ESIOS es la primera implementación, pero el
-esquema de `observations` ya incluye una columna `source`, así que añadir
-MIBGAS (gas) u Open-Meteo (meteorología) más adelante no requerirá migrar
-la base de datos.
+Seis vistas (Resumen, Desglose de la demanda, Comparativa, Territorio,
+Aprovisionamiento, Infraestructuras) con un control global de
+agregación (Mes / Acumulado del año / Total anual móvil). Territorio,
+Infraestructuras y la mezcla GN/GNL de Aprovisionamiento ignoran ese
+control a propósito y se quedan fijos en "Mes" con un aviso explícito
+— ver Limitaciones, esas tablas del PDF fuente no traen columna
+acumulado/TAM.
 
-## Almacenamiento
+Probar en local:
 
-`data/electricidad.db` (SQLite, no versionado en git). Datos **horarios**,
-2014 → hoy, para los 13 indicadores del catálogo: ~1.78M filas. Ver
-`src/storage/db.py` para el esquema (`observations`, `indicators_catalog`,
-`ingestion_log`).
-
-10 de esos 13 indicadores (precio spot, demanda, generación T.Real) se
-piden en resolución **nativa** y se promedian a hora en cliente
-(`ESIOSClient.fetch_hourly_mean`), no con `time_trunc=hour` directo —
-ver "Corregido (2026-07-31)" en Limitaciones conocidas para el motivo.
+```powershell
+cd docs
+python -m http.server 8000
+# abrir http://localhost:8000 (file:// no funciona, lo bloquean los ES modules por CORS)
+```
 
 ## Limitaciones conocidas
 
-- Varios indicadores no tienen histórico hasta 2014: PVPC 2.0TD empieza en
-  2021-06 (coincide con la reforma de tarifas), generación solar
-  FV/térmica en 2015-07, y ciclo combinado + previsiones D+1 eólica/FV en
-  2019-01. Ver `cobertura_desde` en `data/esios_indicators_catalog.json`.
-- La ingesta trocea las peticiones en ventanas mensuales, no trimestrales:
-  con ventanas de 3 meses, el indicador de precio spot (600) en 2025 supera
-  los 60s de timeout (~3.7MB de respuesta por mes). No afecta a la
-  granularidad de los datos, que sigue siendo horaria.
-- Varios indicadores devuelven varios ámbitos geográficos por hora (p.ej.
-  el precio spot trae también Portugal/Francia/Alemania/Bélgica/Países
-  Bajos; el PVPC trae Canarias/Baleares/Ceuta/Melilla además de
-  Península). `geo_id_objetivo` en el catálogo fija cuál se usa; el resto
-  se descarta al pivotar a formato ancho (`src/features/load.py`).
-- **Decisión tomada (Fase 5)**: `pvpc` se excluye del todo del dataset
-  de features (`DEFAULT_EXCLUDE_COLUMNS` en `src/features/build.py`),
-  no solo del lag 0 — es casi una derivada regulatoria del propio
-  precio spot (riesgo de leakage conceptual) y su cobertura desde
-  2021-06 habría recortado la ventana de entrenamiento a solo la
-  crisis energética 2021-2022. Aun así, la ventana de features usable
-  hoy es **2019-01 → hoy** (~62.300 filas), no el histórico completo
-  desde 2014: `gen_ciclo_combinado`, `prevision_eolica` y
-  `prevision_fv` tampoco tienen datos antes de 2019-01. El **baseline**
-  sí usa el histórico completo desde 2014 (solo necesita `precio_spot`).
-- **El error del baseline naive se ha multiplicado por ~7 desde 2020**:
-  MAE ~5 EUR/MWh en 2014-2020, pero 27.7 en 2022, 36.6 en 2025 y 66.8
-  en 2026 (ver `models/baseline_metrics.json`, generado por
-  `python -m scripts.train_baseline`). El mercado se ha vuelto mucho
-  más volátil — cualquier modelo hay que evaluarlo con esto en mente,
-  y probablemente conviene evaluar/entrenar por separado el periodo
-  reciente frente al histórico "tranquilo" 2014-2020.
-- **El salto de error SÍ coincide con un cambio de régimen regulatorio
-  real**, no es solo volatilidad acumulada: la std del precio en
-  `post_tope` (desde 2024-01-01, fin del tope al gas) es ~2.8x la de
-  `normal`. Ver `src/model/regimes.py`, `evaluate_by_regime()` en
-  `src/model/evaluate.py`, y la sección de régimen en
-  `notebooks/01_eda.ipynb`.
-- **Corregido (2026-07-31): ESIOS suma en vez de promediar cuando se pide
-  `time_trunc=hour` sobre un indicador con resolución nativa más fina —
-  bug real de la fuente, no de nuestro pipeline, pero que estuvo
-  corrompiendo tanto features como el target.** Dos casos, encontrados
-  al investigar por qué la demanda no cuadraba con la escala real de
-  España (aviso del usuario) y por qué el modelo perdía cada vez peor
-  contra el baseline en 2025-2026:
-  - **Demanda y generación T.Real** (9 indicadores) tienen resolución
-    nativa de 5 minutos. Pedir `time_trunc=hour` no promedia las ~12
-    muestras de esa hora: las suma. Una demanda media real de ~21.500 MW
-    se guardaba como ~250.000 (~6-10x según cuántas muestras hubiera esa
-    hora — de ahí que en la investigación anterior pareciera "solo una
-    escala distinta, consistente"; en realidad el multiplicador variaba
-    con el número de muestras nativas disponibles, que a su vez cambió
-    con los años, imitando una falsa tendencia temporal).
-  - **El precio spot (indicador 600, el TARGET a predecir)** pasó de
-    resolución nativa horaria a nativa de 15 minutos en algún punto
-    entre 2024-06 y 2025-01 — el cambio real de mercado europeo a
-    "15-minute market time units". Desde entonces, `time_trunc=hour`
-    sumaba las 4 muestras de 15 min en vez de promediarlas: un precio
-    real de ~105 €/MWh se guardaba como ~422 €/MWh. Esto producía un
-    salto artificial de ~4x en el precio justo a partir de esa fecha,
-    que en un primer análisis parecía un cambio estructural de mercado
-    sin precedente — en realidad era este bug.
+- **Los datos de Enagás son un AVANCE provisional**, sujeto a revisión
+  en publicaciones posteriores. El pipeline sobrescribe en silencio si
+  se reprocesa con `--force`; no versiona revisiones distintas del
+  mismo mes.
+- **No hay histórico antes de 2026-01**, así que las variaciones
+  interanuales se toman tal como las publica Enagás y no se pueden
+  recalcular de forma independiente hasta 2027, cuando haya un año
+  completo propio.
+- **La ingesta depende de un patrón de URL, no de una API.** Si Enagás
+  cambia el nombrado de los ficheros, el pipeline deja de encontrar
+  meses nuevos en silencio (no es un error: "PDF no publicado todavía"
+  es un estado válido). Por eso existe el aviso de monitorización de
+  "45 días sin periodo nuevo". Ya ha pasado una vez en producción: ver
+  el punto siguiente.
+- **Corregido durante el backfill: el Boletín renombra el fichero con
+  un sufijo "rev" cuando revisa un mes ya publicado**, y de forma
+  inconsistente — visto `ene26rev.pdf` (sin guion) y `feb26_rev.pdf` /
+  `mar26_rev.pdf` (con guion). `BoletinSource.candidate_urls` prueba
+  las tres variantes; el nombrado del Progreso ya era conocido por
+  inconsistente desde el diseño original.
+- **Los desgloses por CCAA no cuadran con el total nacional** (Enagás
+  no incluye todas las comunidades ni todos los consumos). Es un
+  `::warning::`, no un error — comprobado en los 6 meses del backfill,
+  la diferencia ronda el 5-10%.
+- **CCAA, plantas de regasificación, TVB y la mezcla GN/GNL solo
+  traen columna mensual** en el PDF fuente, sin desglose
+  acumulado/TAM. El validador no las comprueba fuera de `agregacion=mes`,
+  y el dashboard fija esas vistas a "Mes" con un aviso en vez de
+  mostrar una tabla vacía cuando se cambia el control de agregación.
+- **Los gráficos de tarta/donut son el punto más frágil de la
+  extracción por visión.** Se encontró un caso real: en
+  `destino_cargas_pct` de junio-2026, el modelo leyó bien los tres
+  porcentajes pero cruzó **Bunkering ↔ EU** (emparejó mal el color de
+  cada porción con su leyenda). Corregido a mano contrastando contra
+  el PDF, con nota de auditoría en
+  `data/extracciones/2026-06_boletin.json`, y reforzada la instrucción
+  del prompt (`src/extraccion/llm.py`) para que el modelo empareje por
+  color exacto, no por posición.
+- **`pct_total_gn`/`pct_total_gnl` faltaron para 2026-06**: el modelo
+  vio la cifra (registrada en `metricas_no_reconocidas`) pero no la
+  mapeó a la métrica del catálogo — un fallo de recall puntual, no
+  sistemático (los otros 5 meses del backfill sí lo mapearon bien).
+  Añadido a mano con el valor verificado contra el PDF.
+- **Almacenamientos subterráneos (AASS) no están en el catálogo.**
+  Decisión tomada al ver que esa sección del Boletín (página 20) es
+  solo gráficos, sin tabla de cifras — nada fiable que extraer por
+  ahora. Pendiente si Enagás cambia el formato de esa sección.
+- **Los rangos "sanos" del validador se calibraron sobre junio**
+  (mes de baja demanda) y hubo que ensancharlos tras procesar enero
+  (pico de demanda por calefacción, ~1,8x junio) — ver el historial de
+  `src/extraccion/validar.py`. Es plausible que haga falta ensancharlos
+  más al acumular más inviernos.
+- **Sin histórico real de rendimiento**: a diferencia del proyecto de
+  forecasting anterior, este observatorio no predice nada — es
+  puramente descriptivo. No hay MAE ni modelo que monitorizar, solo la
+  fiabilidad de la extracción.
 
-  **Fix**: `ESIOSClient.fetch_hourly_mean()` (`src/ingestion/esios_client.py`)
-  pide resolución nativa (sin fijar `time_trunc`, sea la que sea en cada
-  momento) y promedia a hora en cliente, por geo_id. Se aplica a los 10
-  indicadores afectados (ver `promediar_desde_nativo` en
-  `data/esios_indicators_catalog.json`). Todo el histórico de estos 10
-  indicadores se ha vuelto a descargar desde 2014/cobertura_desde con el
-  fix aplicado (no solo hacia adelante). Umbrales de
-  `src/monitoring/data_quality.py` revertidos a escala real de MW
-  (demanda hasta 60.000, generación hasta 40.000).
+## Tests
 
-- **El modelo ahora supera al baseline** (MAE 16.8 vs 18.2 €/MWh en el
-  holdout `2025-08-01 → hoy`, antes 128 vs 63 con los datos corrompidos).
-  El diagnóstico anterior ("los árboles no pueden extrapolar más allá
-  del precio máximo visto en entrenamiento") seguía siendo cierto en
-  teoría pero **no era la causa principal del mal resultado**: la mayor
-  parte del salto de error en 2025-2026 era el bug de agregación del
-  precio de arriba, que fabricaba un salto de precio de ~4x sin
-  precedente real que ningún modelo podía haber anticipado. Se mantiene
-  igualmente `src/model/detrend.py` (tendencia lineal sobre
-  `dias_desde_referencia` + LightGBM sobre el residuo) porque la
-  limitación de extrapolación de los árboles es real y documentable
-  aunque ya no sea el cuello de botella dominante — más robusto de cara
-  a que el precio siga una tendencia genuina en el futuro.
+```powershell
+python -m pytest tests/ -q
+```
 
-- **Corregido (2026-07-31, tras revisar el dashboard ya publicado): dos
-  restos del bug de agregación de arriba seguían contaminando la
-  visualización aunque los datos ya estaban arreglados.**
-  1. `models/baseline_metrics.json` no se había regenerado tras el fix
-     del precio — sus cifras de 2025/2026 venían del precio ~4x
-     inflado (MAE baseline 2026 mostraba ~67 en vez de ~17). El gráfico
-     "MAE por año" del dashboard lo lee directo del fichero, así que
-     comparaba el modelo (ya corregido) contra un baseline todavía
-     corrompido. Se regeneró con `python -m scripts.train_baseline`.
-  2. La tabla `predictions` conservaba 24 filas de un `model_version`
-     anterior al fix (entrenado con datos corrompidos), con predicciones
-     de hasta 847 €/MWh para horas ya pasadas — el gráfico de precio
-     las mostraba tal cual junto a las del modelo nuevo, porque
-     `load_all_predictions()` (`scripts/export_dashboard_data.py`) no
-     distingue `model_version`, solo deduplica por hora quedándose con
-     la más reciente. Se borraron esas filas directamente de la bbdd
-     (no había nada que preservar: solo 2 ejecuciones del cron diario
-     desde que existe la tabla). El diseño de "no distinguir
-     model_version" se mantiene tal cual para el futuro — es correcto
-     una vez el pipeline es estable, el problema era solo esta
-     contaminación puntual de la migración.
-
-- **Corregido (2026-07-31): el modelo no estaba prediciendo el futuro.**
-  `latest_predictions()` cogía `.tail(hours)` de las filas con features
-  completas, que en la práctica siempre caían dentro de horas cuyo
-  precio OMIE ya había publicado — y el dashboard las etiquetaba como
-  "Predicción". No es una predicción: es un dato ya conocido.
-  Renombrada a `forecast_unpublished_hours()` y reescrita para devolver
-  solo horas **estrictamente posteriores al último `precio_spot`
-  conocido**. El detalle de mercado que lo explica: OMIE es una subasta
-  diaria que publica DE GOLPE las 24h de D+1 sobre las 13:00 CET, así
-  que el horizonte genuinamente desconocido a las 08:00 CET (cuando
-  corre el cron) es el día siguiente completo.
-
-  **Limitación abierta que esto ha dejado a la vista**: el modelo usa
-  `demanda_prevista` como feature, y ESIOS no publica la de D+1 tan
-  pronto como las previsiones de eólica/FV (verificado 2026-07-31 a las
-  08:54 UTC: eólica y FV llegaban hasta el día siguiente, demanda
-  prevista solo hasta el final de hoy). Mientras esa feature no cubra
-  D+1, `prediccion_24h` sale vacía y el dashboard lo dice
-  explícitamente en vez de dejar un hueco mudo. Pendiente de decidir:
-  mover la hora del cron, o quitar `demanda_prevista` del conjunto de
-  features para no depender de la publicación más tardía.
-
-- **Corregido (2026-07-31): los agregados diarios no cuadraban con
-  OMIE.** Se agregaba por día natural **UTC**, pero OMIE publica en
-  calendario **español**, que va 1-2h desplazado según el horario de
-  verano. La media del 30-jul-2026 salía 129,05 €/MWh frente a los
-  128,55 reales. `build_summary_rows` y `build_kpis` agregan ahora por
-  `Europe/Madrid` (con `tz_convert`, nunca aritmética manual de horas),
-  y en el frontend `madridDateStr()` sustituye a `utcDateStr()`. Como
-  un día español empieza a las 22:00Z/23:00Z del día UTC anterior, el
-  día 1 de cada mes tiene sus primeras horas en el fichero mensual
-  anterior: `loadDay()` carga los dos meses y los combina.
-  **Validado contra fuente externa** (OMIE vía Rankia, 30-jul-2026):
-  media 128,55 / mín 6,13 de 13 a 14h / máx 204,72 de 21 a 22h —
-  coincide hora a hora con lo que muestra el dashboard.
-
-- **Corregido (2026-07-31): la monitorización del error real nunca
-  había funcionado.** `observations.datetime_utc` guarda
-  `2026-07-31T21:00:00Z` y `predictions.target_datetime_utc` guardaba
-  `2026-07-31T21:00:00+00:00` (venía de `Timestamp.isoformat()`).
-  SQLite no tiene tipo fecha: el JOIN entre ambas tablas compara
-  **texto**, así que no casaba nunca. Consecuencia: el scatter
-  "predicho vs real" del dashboard salía siempre vacío y
-  `recent_error()` devolvía siempre `n=0` — toda la monitorización de
-  error de la Fase 7 era decorativa. Se normaliza ahora en
-  `insert_predictions()` (único punto de escritura, ver
-  `normalize_datetime_utc` en `src/storage/db.py`) para que ningún
-  llamador pueda reintroducir el formato equivocado, y se migraron las
-  filas ya guardadas. Tras el fix: 24 puntos en el scatter y MAE real
-  de 14,59 €/MWh en la ventana de 7 días.
-
-## Cadencia de actualización
-
-Los datos de origen **no tienen una sola cadencia**, así que el pipeline
-está partido en dos workflows:
-
-| Dato | Cómo lo publica la fuente | Refresco necesario |
-|---|---|---|
-| `precio_spot` (target) | Subasta diaria: OMIE publica las 24h de D+1 de golpe (~13:00 CET) | Diario |
-| `demanda_real`, `gen_*` | Continuo (resolución nativa de 5 min) | **Horario** |
-| Previsiones D+1 | A lo largo del día, cada indicador a su hora | **Horario** |
-
-- **`.github/workflows/hourly.yml`** (cada hora, a y 15): ingesta
-  incremental → exportar `docs/data/*.json` → commit. Ligero (~2-3 min),
-  sin reentreno. Es lo que evita que la generación del día en curso se
-  quede congelada a las 08:00 de Madrid hasta el día siguiente. Como
-  `build_prediccion_24h` calcula la predicción **en vivo** (no la lee de
-  la tabla `predictions`), este job también hace que la predicción
-  aparezca en cuanto ESIOS publica las previsiones D+1, sin tener que
-  acertar a qué hora exacta las publica.
-- **`.github/workflows/daily.yml`** (06:00 UTC): el pipeline completo,
-  con lo pesado y lo que debe perdurar — reentreno, `predict_and_log`
-  (guarda la predicción en la bbdd para poder verificarla después contra
-  el precio real) y monitorización. Es el único que **guarda** el cache.
-
-Los dos comparten `concurrency group` (a las 06:00 UTC coinciden) y
-hacen `git pull --rebase` antes de empujar, para que no se pisen.
-
-El job horario **restaura** el cache pero no lo guarda: `electricidad.db`
-pesa ~230 MB y guardarlo 24 veces al día agotaría el límite de 10 GB de
-caches del repositorio en pocas horas. Cada ejecución parte del snapshot
-que dejó el job diario e ingesta el hueco desde entonces — correcto e
-idempotente por el `INSERT OR IGNORE`.
-
-**Coste en git del refresco horario**: medido, ~0,7 KB por ejecución
-(≈6 MB/año), porque `summary.json` y los mensuales se escriben con **una
-fila por línea** (ver `write_rows_json`) y git hace delta de ellos. Con
-el formato anterior (todo el JSON en una sola línea) cada reescritura
-guardaba un blob completo de ~72 KB y el refresco horario habría costado
-~3,8 GB/año — inviable.
-
-- **Corregido (2026-07-31): las predicciones nunca sobrevivían entre
-  ejecuciones, así que ni el scatter predicho-vs-real ni el error real
-  de monitorización mostraban nada, y la línea del modelo desaparecía
-  del gráfico de precio en cuanto pasaba una hora.** `predict_and_log`
-  escribía solo en la tabla `predictions` de SQLite, que vive en la
-  cache de GitHub Actions -- y `hourly.yml` la restaura pero no la
-  guarda (a propósito, para no subir 230MB de cache 24 veces al día).
-  Cualquier predicción generada en un run horario se perdía al terminar
-  el job. Y ni siquiera el job diario libraba del problema: como OMIE
-  publica el día completo de golpe con antelación, casi nunca quedan
-  horas "sin publicar" en el momento en que corre, así que la tabla
-  apenas llegaba a tener filas en producción real (comprobado: 0 filas
-  desde el primer día, pese a que en pruebas locales manuales sí había
-  parecido funcionar).
-
-  **Fix**: nuevo `docs/data/predictions_log.json`
-  (`src/storage/predictions_log.py`), versionado en git -- se comitea
-  en cada ejecución (diaria u horaria) junto al resto del dashboard,
-  así que es durable sin depender de que la cache de Actions
-  sobreviva. `predict_and_log.py` escribe ahí además de en SQLite;
-  `load_all_predictions()` (línea del modelo en el gráfico de precio),
-  el scatter de `build_model_performance()` y `recent_error()`
-  (monitorización) leen de este log en vez de la tabla SQL. Si una
-  hora se predice varias veces mientras sigue sin publicarse, se
-  queda con la más reciente; en cuanto se publica su precio y deja de
-  predecirse, su fila queda congelada tal cual -- es el registro
-  histórico de "qué predijimos antes de saberlo". `hourly.yml` ahora
-  también llama a `predict_and_log` (antes no lo hacía en absoluto).
+Cubren: parseo de números en formato español (`parse_numero_es`, con
+los casos reales del PDF que rompen más fácil), conversión de
+unidades, normalización de nombres de dimensión, construcción de URLs
+candidatas (incluidas las variantes "rev"), el validador (un caso que
+cuadra y uno por cada regla que falla), y el chequeo de periodo
+desactualizado de la monitorización.
