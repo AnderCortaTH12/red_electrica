@@ -1,92 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forecasting Eléctrico — Dashboard</title>
-    <meta
-      name="description"
-      content="Precio del mercado eléctrico español: real, predicho por el modelo, y comparado contra un baseline naive."
-    />
-    <link rel="stylesheet" href="css/style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
-  </head>
-  <body>
-    <header class="status-bar" id="status-bar">
-      <span class="brand">Forecasting Eléctrico</span>
-      <span class="status-item">Cargando estado…</span>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Observatorio del Sistema Gasista Español</title>
+  <meta name="description" content="Datos mensuales del sistema gasista español, extraídos automáticamente de las publicaciones de Enagás." />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-top">
+      <div class="brand">
+        <h1>Observatorio del Sistema Gasista Español</h1>
+        <span class="subtitle">datos de Enagás, sin intervención manual</span>
+      </div>
+      <div class="header-controls">
+        <div id="segmented-agregacion" class="segmented"></div>
+        <select id="selector-periodo" class="period-select" aria-label="Periodo"></select>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-view="resumen">Resumen</button>
+      <button class="tab-btn" data-view="desglose">Desglose de la demanda</button>
+      <button class="tab-btn" data-view="comparativa">Comparativa</button>
+      <button class="tab-btn" data-view="territorio">Territorio</button>
+      <button class="tab-btn" data-view="aprovisionamiento">Aprovisionamiento</button>
+      <button class="tab-btn" data-view="infraestructuras">Infraestructuras</button>
+    </nav>
+  </header>
 
-    <main>
-      <section id="price-section">
-        <h2>Precio y predicción</h2>
-        <p class="section-note">
-          Últimas 72h de precio real, comparado con el modelo y con el baseline naive (precio de
-          ayer a la misma hora). Solo se marcan como predicción las horas cuyo precio OMIE
-          todavía no ha publicado.
-        </p>
-        <p class="section-note" id="forecast-note"></p>
-        <div id="price-chart" class="chart"></div>
-      </section>
+  <main>
+    <!-- Resumen -->
+    <section id="view-resumen" class="view active">
+      <div class="view-heading">
+        <h2>Resumen</h2>
+        <p>KPIs del periodo seleccionado, con variación interanual y evolución del año.</p>
+      </div>
+      <div id="kpi-grid" class="card-grid"></div>
+    </section>
 
-      <section id="day-section">
-        <h2>Selector de día</h2>
-        <div class="day-controls">
-          <input type="date" id="day-picker" min="2019-01-01" />
-          <div class="quick-buttons">
-            <button data-quick="hoy">Hoy</button>
-            <button data-quick="ayer">Ayer</button>
-            <button data-quick="7d">Hace 7 días</button>
-            <button data-quick="año">Mismo día año pasado</button>
+    <!-- Desglose de la demanda -->
+    <section id="view-desglose" class="view">
+      <div class="view-heading">
+        <h2>Desglose de la demanda</h2>
+        <p>Total → Nacional / Internacional → Convencional / Sector eléctrico → Industrial / D-C+PyMES / Cisternas. Clic en un anillo para profundizar.</p>
+      </div>
+      <div class="card chart-card">
+        <div id="chart-desglose" class="chart tall"></div>
+      </div>
+    </section>
+
+    <!-- Comparativa -->
+    <section id="view-comparativa" class="view">
+      <div class="view-heading">
+        <h2>Comparativa</h2>
+        <p>Selecciona las métricas que quieras superponer, mes a mes.</p>
+      </div>
+      <div class="notice">
+        El histórico del observatorio empieza en 2026-01: por ahora cada métrica se ve como una única línea.
+        Cuando haya más de un año de datos, esta vista permitirá comparar años completos.
+      </div>
+      <div class="control-row">
+        <div id="chips-comparativa" class="chip-group"></div>
+      </div>
+      <div class="card chart-card">
+        <div id="chart-comparativa" class="chart tall"></div>
+      </div>
+    </section>
+
+    <!-- Territorio -->
+    <section id="view-territorio" class="view">
+      <div class="view-heading">
+        <h2>Territorio</h2>
+        <p>Demanda por comunidad autónoma en el periodo seleccionado. Clic en una columna para ordenar.</p>
+      </div>
+      <div class="notice">
+        Enagás no incluye todas las CCAA ni todos los tipos de consumo en este desglose: la suma por CCAA
+        no cuadra exactamente con el total nacional, y es la propia fuente la que lo deja así.
+      </div>
+      <div id="aviso-agregacion-territorio" class="notice" style="display:none">
+        El Boletín solo publica el desglose por CCAA en columna mensual (sin acumulado del año ni total
+        anual móvil): esta tabla muestra siempre el dato de <strong>Mes</strong>, aunque el control de arriba
+        esté en otra posición.
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead id="territorio-thead"></thead>
+          <tbody id="territorio-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Aprovisionamiento -->
+    <section id="view-aprovisionamiento" class="view">
+      <div class="view-heading">
+        <h2>Aprovisionamiento</h2>
+        <p>Origen del gas que entra en el sistema: países proveedores, mezcla GN/GNL y saldos por conexión internacional.</p>
+      </div>
+      <div class="card chart-card">
+        <h3>Aprovisionamiento por país de origen</h3>
+        <div id="chart-paises" class="chart tall"></div>
+      </div>
+      <div class="chart-row">
+        <div class="card chart-card">
+          <h3>Mezcla GN / GNL</h3>
+          <div id="aviso-agregacion-donut" class="notice" style="display:none">
+            El Boletín solo publica esta mezcla en columna mensual: se muestra siempre el dato de <strong>Mes</strong>.
           </div>
-          <span class="day-loading" id="day-loading" hidden>Cargando…</span>
+          <div id="chart-donut-origen" class="chart short"></div>
         </div>
-
-        <div class="day-grid">
-          <div>
-            <div id="day-chart" class="chart"></div>
-          </div>
-          <div class="day-side">
-            <div class="kpi-row" id="day-kpis"></div>
-            <div id="mix-donut" class="chart chart-small"></div>
-          </div>
+        <div class="card chart-card">
+          <h3>Saldos por conexión internacional</h3>
+          <div id="chart-saldos" class="chart short"></div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="longterm-section">
-        <h2>Vista de largo plazo (2019 → hoy)</h2>
-        <div id="longterm-chart" class="chart"></div>
-        <div class="regime-legend">
-          <span><span class="swatch" style="background: rgba(79, 163, 255, 0.35)"></span>Normal (hasta 2022-06-14)</span>
-          <span><span class="swatch" style="background: rgba(245, 169, 35, 0.45)"></span>Tope al gas (2022-06-15 a 2023-12-31)</span>
-          <span><span class="swatch" style="background: rgba(239, 68, 68, 0.35)"></span>Post-tope (desde 2024-01-01)</span>
-        </div>
-      </section>
+    <!-- Infraestructuras -->
+    <section id="view-infraestructuras" class="view">
+      <div class="view-heading">
+        <h2>Infraestructuras</h2>
+        <p>Actividad de las plantas de regasificación y capacidad del TVB (Terminales, Válvulas y Bombeo).</p>
+      </div>
+      <div id="aviso-agregacion-infraestructuras" class="notice" style="display:none">
+        El Boletín solo publica plantas y TVB en columna mensual (sin acumulado del año ni total anual
+        móvil): estos gráficos muestran siempre el dato de <strong>Mes</strong>.
+      </div>
+      <div class="card chart-card">
+        <h3>Actividad por planta de regasificación</h3>
+        <div id="chart-plantas" class="chart"></div>
+      </div>
+      <div class="card chart-card">
+        <h3>Capacidad y actividad del TVB</h3>
+        <div id="chart-tvb" class="chart short"></div>
+      </div>
+    </section>
+  </main>
 
-      <section id="performance-section">
-        <h2>Rendimiento del modelo</h2>
-        <div class="perf-grid">
-          <div>
-            <p class="section-note">MAE por año: baseline vs modelo</p>
-            <div id="error-chart" class="chart chart-small"></div>
-          </div>
-          <div>
-            <p class="section-note">Predicho vs real (predicciones ya verificadas)</p>
-            <div id="scatter-chart" class="chart chart-small"></div>
-          </div>
-        </div>
-        <div class="honesty-block" id="honesty-block">Cargando evaluación del modelo…</div>
-      </section>
-    </main>
+  <footer>
+    <div id="footer-info">Cargando…</div>
+  </footer>
 
-    <footer>
-      <a href="https://github.com/AnderCortaTH12/red_electrica" target="_blank" rel="noopener"
-        >red_electrica</a
-      >
-      — datos de la API de ESIOS (Red Eléctrica de España). Generado automáticamente por el job
-      diario.
-    </footer>
-
-    <script type="module" src="js/main.js"></script>
-  </body>
+  <script type="module" src="js/main.js"></script>
+</body>
 </html>

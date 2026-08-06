@@ -1,90 +1,53 @@
-"""Monitorización diaria: calidad de datos + error real de las
-predicciones ya verificables. Escribe data/monitoring_report.json y
-emite avisos de GitHub Actions (`::warning::`) si algo destaca.
+"""Monitorización del observatorio: genera `data/informe_monitorizacion.json`
+con el chequeo de "¿llevamos demasiado sin un periodo nuevo?" y un
+resumen de la validación del periodo más reciente.
 
-No falla el job por un error alto: un error alto es una señal a
-vigilar (esperable dado que el error crece de forma estructural, ver
-Fase 5), no necesariamente un fallo del pipeline. Si el propio job
-falla (ingesta o reentrenamiento con error), eso YA lo marca GitHub
-Actions como fallo del workflow — este script solo añade la señal más
-sutil de "algo va peor de lo normal aunque nada se haya roto".
+Nunca falla el job (siempre exit 0): un aviso aquí es una señal a
+revisar, no un fallo del pipeline -- eso ya lo hace `ingest_month.py`
+al negarse a escribir un periodo inválido en el CSV.
 
 Uso:
     python -m scripts.monitor
 """
 
+from __future__ import annotations
+
 import json
-import sqlite3
-from datetime import datetime, timezone
+import sys
 from pathlib import Path
 
-from src.features.load import load_catalog
-from src.monitoring.data_quality import check_gaps, check_out_of_range, check_stale_indicators
-from src.monitoring.error_tracking import recent_error
+from src.extraccion.catalogo import cargar_catalogo
+from src.monitoring.informe import generar_informe
 
-DB_PATH = "data/electricidad.db"
-OUTPUT_PATH = "data/monitoring_report.json"
-PREDICTIONS_LOG_PATH = Path("docs/data/predictions_log.json")
-
-# El baseline naive ya llega a MAE ~67 EUR/MWh en 2026 (ver README);
-# ponemos el umbral bastante por encima para no disparar avisos por el
-# deterioro estructural ya conocido, solo por algo genuinamente peor.
-MAE_ALERT_THRESHOLD_EUR_MWH = 150.0
+GAS_CSV_PATH = Path("data/gas.csv")
+INFORME_PATH = Path("data/informe_monitorizacion.json")
 
 
-def warn(message: str) -> None:
-    # sintaxis especial de GitHub Actions: marca un aviso visible en la
-    # UI del workflow sin fallar el job.
-    print(f"::warning::{message}")
-    print(f"AVISO: {message}")
+def main() -> int:
+    catalogo = cargar_catalogo()
+    informe = generar_informe(GAS_CSV_PATH, catalogo)
 
+    with open(INFORME_PATH, "w", encoding="utf-8") as f:
+        json.dump(informe, f, ensure_ascii=False, indent=2)
+        f.write("\n")
 
-def main() -> None:
-    conn = sqlite3.connect(DB_PATH)
-    catalog = load_catalog()
+    desactualizado = informe["periodo_desactualizado"]
+    if desactualizado is not None:
+        print(f"::warning::{desactualizado['detalle']}")
 
-    gaps = check_gaps(conn, catalog)
-    stale = check_stale_indicators(conn, catalog)
-    out_of_range = check_out_of_range(conn, catalog)
-    error_7d = recent_error(conn, PREDICTIONS_LOG_PATH, days=7)
+    validacion = informe["ultima_validacion"]
+    if validacion is not None:
+        for aviso in validacion["avisos"]:
+            print(f"::warning::{validacion['periodo']}: {aviso}")
+        if not validacion["es_valido"]:
+            # No debería pasar nunca (ingest_month.py no deja escribir
+            # un periodo inválido), pero si pasa -- p.ej. alguien tocó
+            # el CSV a mano -- es una señal fuerte, no un simple aviso.
+            print(f"::warning::El periodo más reciente ({validacion['periodo']}) ya escrito en gas.csv NO revalida limpio -- revisar manualmente.")
 
-    conn.close()
-
-    for p in gaps:
-        warn(
-            f"Hueco de datos: indicador {p['indicator_id']} ({p['nombre']}) - "
-            f"{p['filas_encontradas']}/{p['filas_esperadas_aprox']} filas en las últimas 72h"
-        )
-    for p in stale:
-        detalle = p.get("horas_sin_actualizar", "sin ningún dato")
-        warn(f"Indicador obsoleto: {p['indicator_id']} ({p['nombre']}) - {detalle}")
-    for p in out_of_range:
-        warn(
-            f"Valores fuera de rango: indicador {p['indicator_id']} ({p['nombre']}) - "
-            f"{p['filas_fuera_de_rango']} filas fuera de {p['rango_esperado']}"
-        )
-    if error_7d["mae"] is not None and error_7d["mae"] > MAE_ALERT_THRESHOLD_EUR_MWH:
-        warn(
-            f"MAE de los últimos 7 días ({error_7d['mae']:.2f} EUR/MWh) "
-            f"supera el umbral de alerta ({MAE_ALERT_THRESHOLD_EUR_MWH})"
-        )
-
-    n_problems = len(gaps) + len(stale) + len(out_of_range)
-    print(f"\n{n_problems} problema(s) de calidad de datos.")
-    print(f"Error real (7 días): {error_7d}")
-
-    report = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "gaps": gaps,
-        "stale_indicators": stale,
-        "out_of_range": out_of_range,
-        "error_ultimos_7_dias": error_7d,
-        "mae_alert_threshold_eur_mwh": MAE_ALERT_THRESHOLD_EUR_MWH,
-    }
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"\nInforme guardado: {OUTPUT_PATH}")
+    print(f"Informe de monitorización escrito en {INFORME_PATH}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

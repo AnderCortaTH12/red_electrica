@@ -1,116 +1,90 @@
-// Carga de datos: fetch con manejo de error explícito (nunca una
-// pantalla en blanco si un JSON falta o el fetch falla) y caché en
-// memoria para no repetir peticiones del mismo mensual al navegar.
+// Carga y consulta de los datos del observatorio. El dataset completo
+// (docs/data/serie.json) son unos pocos miles de filas con 6 meses de
+// 2026 -- cabe de sobra cargarlo entero en memoria, a diferencia de un
+// proyecto con series horarias de años (ahí sí haría falta paginar por
+// mes, ver el proyecto de forecasting eléctrico anterior).
 
-import { addDays, madridDateStr, yearMonthFromDateStr } from "./utils.js";
-
-const monthlyCache = new Map();
-
-export class DataError extends Error {}
+let _catalogo = null;
+let _catalogoPorId = null;
+let _serie = null;
+let _ultimo = null;
+let _periodos = null;
 
 async function fetchJson(path) {
-  let response;
-  try {
-    response = await fetch(path, { cache: "no-cache" });
-  } catch (err) {
-    throw new DataError(`No se pudo conectar para cargar ${path}`);
-  }
-  if (!response.ok) {
-    throw new DataError(`${path} respondió ${response.status}`);
-  }
-  try {
-    return await response.json();
-  } catch (err) {
-    throw new DataError(`${path} no es JSON válido`);
-  }
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`No se pudo cargar ${path}: HTTP ${res.status}`);
+  return res.json();
 }
 
-export async function loadLatest() {
-  return fetchJson("data/latest.json");
+export async function cargarDatos() {
+  const [catalogo, serie, ultimo] = await Promise.all([
+    fetchJson("data/catalogo.json"),
+    fetchJson("data/serie.json"),
+    fetchJson("data/ultimo.json"),
+  ]);
+
+  _catalogo = catalogo;
+  _catalogoPorId = Object.fromEntries(catalogo.map((m) => [m.metrica_id, m]));
+  _ultimo = ultimo;
+
+  // De {columns, rows} a objetos, y un índice por
+  // metrica_id|dimension|agregacion|periodo para lookups O(1).
+  const cols = serie.columns;
+  _serie = serie.rows.map((row) => Object.fromEntries(cols.map((c, i) => [c, row[i]])));
+
+  _periodos = [...new Set(_serie.map((r) => r.periodo))].sort();
+
+  return { catalogo: _catalogo, serie: _serie, ultimo: _ultimo, periodos: _periodos };
 }
 
-export async function loadModelPerformance() {
-  return fetchJson("data/model_performance.json");
+export function catalogo() {
+  return _catalogo;
 }
 
-export async function loadSummary() {
-  const raw = await fetchJson("data/summary.json");
-  // transpone {columns, rows} a un array de objetos, mas comodo para
-  // el resto del codigo
-  const { columns, rows } = raw;
-  return rows.map((row) => {
-    const obj = {};
-    columns.forEach((col, i) => {
-      obj[col] = row[i];
-    });
-    return obj;
-  });
+export function metrica(metricaId) {
+  return _catalogoPorId[metricaId];
 }
 
-export async function loadMonth(yearMonth) {
-  if (monthlyCache.has(yearMonth)) return monthlyCache.get(yearMonth);
-  const raw = await fetchJson(`data/monthly/${yearMonth}.json`);
-  // {columns, rows} (una fila por hora, formato git-friendly) -> arrays
-  // paralelos por columna, que es lo que consumen los graficos
-  const { columns, rows } = raw;
-  const data = { year_month: raw.year_month };
-  columns.forEach((col, i) => {
-    data[col] = rows.map((row) => row[i]);
-  });
-  monthlyCache.set(yearMonth, data);
-  return data;
+export function periodos() {
+  return _periodos;
 }
 
-const DAY_KEYS = [
-  "datetime_utc",
-  "precio_real",
-  "precio_modelo",
-  "precio_baseline",
-  "demanda_real",
-  "gen_eolica",
-  "gen_solar_fv",
-  "gen_solar_termica",
-  "gen_nuclear",
-  "gen_hidraulica",
-  "gen_ciclo_combinado",
-  "gen_carbon",
-];
-
-/** Extrae las 24h de un día natural ESPAÑOL (YYYY-MM-DD en
- * Europe/Madrid) de uno o varios JSON mensuales ya cargados.
- *
- * Recibe varios meses porque un día de Madrid empieza a las 22:00Z o
- * 23:00Z del día UTC anterior (según horario de verano): el día 1 de
- * cada mes tiene sus primeras horas en el fichero del mes anterior. */
-export function extractDay(monthDatas, dateStr) {
-  const months = Array.isArray(monthDatas) ? monthDatas : [monthDatas];
-  const day = {};
-  DAY_KEYS.forEach((k) => (day[k] = []));
-
-  months.filter(Boolean).forEach((monthData) => {
-    monthData.datetime_utc.forEach((t, i) => {
-      if (madridDateStr(t) !== dateStr) return;
-      DAY_KEYS.forEach((k) => day[k].push(monthData[k][i]));
-    });
-  });
-
-  return day.datetime_utc.length === 0 ? null : day;
+export function ultimoPeriodo() {
+  return _periodos[_periodos.length - 1];
 }
 
-/** Carga los meses necesarios y devuelve el día de Madrid ya extraído. */
-export async function loadDay(dateStr) {
-  const yearMonth = yearMonthFromDateStr(dateStr);
-  const prevMonth = yearMonthFromDateStr(addDays(dateStr, -1));
+export function ultimo() {
+  return _ultimo;
+}
 
-  const months = [await loadMonth(yearMonth)];
-  if (prevMonth !== yearMonth) {
-    // el mes anterior puede no existir (inicio de la serie): que falte
-    // no debe impedir mostrar el resto del día
-    try {
-      months.unshift(await loadMonth(prevMonth));
-    } catch (err) {
-      /* sin mes previo: se muestran las horas disponibles */
-    }
-  }
-  return extractDay(months, dateStr);
+/** Todas las filas de una métrica para una agregación dada (todas las
+ * dimensiones y periodos), o filtradas por periodo si se pasa. */
+export function filasDe(metricaId, agregacion, periodo = null) {
+  return _serie.filter(
+    (r) => r.metrica_id === metricaId && r.agregacion === agregacion && (periodo === null || r.periodo === periodo)
+  );
+}
+
+/** Valor escalar (dimension = null) de una métrica en un periodo y
+ * agregación concretos. */
+export function valorEscalar(metricaId, agregacion, periodo) {
+  const fila = _serie.find(
+    (r) => r.metrica_id === metricaId && r.agregacion === agregacion && r.periodo === periodo && r.dimension === null
+  );
+  return fila ? { valor: fila.valor, var_pct_interanual: fila.var_pct_interanual } : { valor: null, var_pct_interanual: null };
+}
+
+/** Serie temporal [[periodo, valor], ...] de una métrica escalar para
+ * una agregación, en todos los periodos disponibles. */
+export function serieTemporal(metricaId, agregacion) {
+  return _periodos.map((p) => [p, valorEscalar(metricaId, agregacion, p).valor]);
+}
+
+/** Hijos directos (por `padre`) de una métrica en el catálogo. */
+export function hijosDe(metricaId) {
+  return _catalogo.filter((m) => m.padre === metricaId);
+}
+
+export function raicesJerarquia() {
+  return _catalogo.filter((m) => m.padre === null && m.dimension === null && !m.metrica_id.startsWith("tvb_") && !m.metrica_id.startsWith("planta_"));
 }

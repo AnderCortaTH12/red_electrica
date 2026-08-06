@@ -1,0 +1,105 @@
+name: mensual-pipeline
+
+# Cron diario (no mensual, pese al nombre del pipeline) a las 07:00 UTC:
+# probar dos URLs con HEAD cuesta nada y es mucho mas robusto que
+# intentar adivinar el dia exacto en que Enagas publica cada mes (que
+# varia). Solo se llama a la API de Claude cuando aparece un PDF nuevo
+# -- en un dia sin publicacion el coste es cero (ver
+# src/ingestion/enagas_source.py y scripts/ingest_month.py).
+#
+# workflow_dispatch permite lanzarlo a mano desde la pestana "Actions"
+# para reprocesar un periodo concreto (input "periodo") o forzar una
+# revision de Enagas ya ingerida (input "force").
+#
+# Sin actions/cache: a diferencia del proyecto anterior (SQLite de
+# ~230MB), aqui el estado entero vive en git como texto (data/gas.csv,
+# manifiesto, extracciones) -- ver decision 1.1 del diseno. Nada que
+# persistir entre ejecuciones aparte de lo que ya se comitea.
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+    inputs:
+      periodo:
+        description: "Periodo a procesar (YYYY-MM). Vacio = todos los pendientes."
+        required: false
+        type: string
+      force:
+        description: "Reprocesar aunque ya exista en el CSV (revision de Enagas)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: observatorio-gas-pipeline
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Falla pronto y con un mensaje claro en vez de dejar que reviente
+      # dentro del SDK de Anthropic con un traceback poco legible.
+      - name: Comprobar que existe el secret ANTHROPIC_API_KEY
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::Falta el secret ANTHROPIC_API_KEY. Configuralo en Settings -> Secrets and variables -> Actions -> New repository secret (nombre exacto: ANTHROPIC_API_KEY). Tiene que ser un *secret*, no una *variable*."
+            exit 1
+          fi
+
+      - run: pip install -r requirements.txt
+
+      # Ingesta: descarga (si hay PDF nuevo), extrae con Claude, normaliza
+      # y valida. Si la validacion de algun periodo falla, este paso
+      # devuelve exit code 1 y el job se pone en rojo -- sin
+      # continue-on-error, un dato invalido no debe pasar en silencio.
+      - name: Ingesta del periodo (o de todos los pendientes)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.periodo }}" ]; then
+            ARGS="$ARGS --periodo ${{ inputs.periodo }}"
+          fi
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          python -m scripts.ingest_month $ARGS
+
+      - name: Monitorizacion (informe de periodo desactualizado + ultima validacion)
+        run: python -m scripts.monitor
+
+      # El dashboard (docs/data/*.json) se genera en la Fase 6 del
+      # proyecto; continue-on-error para que un fallo aqui no tumbe el
+      # pipeline de datos, que es la fuente de verdad (mismo patron que
+      # el proyecto anterior).
+      - name: Exportar datos del dashboard (docs/data/*.json)
+        id: export_dashboard
+        continue-on-error: true
+        run: python -m scripts.export_dashboard
+
+      - name: Commit de resultados
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/gas.csv data/extracciones/ data/manifiesto.json data/metricas_desconocidas.json data/informe_monitorizacion.json
+          if [ "${{ steps.export_dashboard.outcome }}" = "success" ]; then
+            git add docs/data/
+          else
+            echo "::warning::La exportacion del dashboard fallo o el script aun no existe, no se comitea docs/data/ en este run"
+          fi
+          git diff --cached --quiet || git commit -m "Actualizacion mensual automatica [skip ci]"
+          git pull --rebase origin main
+          git push

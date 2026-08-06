@@ -5,18 +5,15 @@ venv/
 # Secretos
 .env
 
-# Datos (se regeneran con los scripts de ingesta, no van al repo)
-/data/*
-!/data/.gitkeep
-# Excepción: catálogo de indicadores (pequeño, es documentación, caro de rehacer)
-!/data/esios_indicators_catalog.json
-# Excepción: informe de monitorización diaria (JSON pequeño, lo comitea el workflow)
-!/data/monitoring_report.json
+# PDFs descargados (pesan y son recuperables: se vuelven a descargar
+# de las URLs de Enagás en cualquier momento)
+/data/raw/*
+!/data/raw/.gitkeep
 
-# Bases de datos
-*.db
-*.sqlite
-*.sqlite3
+# El dataset canónico (data/gas.csv), el catálogo de métricas, las
+# extracciones auditables (data/extracciones/), el manifiesto y el
+# informe de monitorización SÍ se versionan en git a propósito (ver
+# sección 1.1 del diseño): son pequeños y dan historial auditable.
 
 # Python
 __pycache__/
@@ -24,18 +21,13 @@ __pycache__/
 *.pyo
 .pytest_cache/
 
-# Modelos entrenados (versionados aparte, no en git por peso)
-/models/*
-!/models/.gitkeep
-# Excepción: metricas del baseline (JSON pequeño, es documentación)
-!/models/baseline_metrics.json
-!/models/lightgbm_metrics.json
-# Excepción: metadata del modelo activo (JSON pequeño, lo comitea el workflow diario)
-!/models/model_metadata.json
-
-# Notebooks: checkpoints de Jupyter
-.ipynb_checkpoints/
-
 # IDE
 .vscode/
 .idea/
+
+# Skills de Claude Code instaladas localmente (herramienta del editor,
+# no del proyecto)
+/.agents/
+/.claude/skills/
+/skills-lock.json
+/data/skills/

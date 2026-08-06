@@ -1,0 +1,107 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "2,2",
+        "acumulado_anual": "28,6",
+        "tam": "50,7"
+      },
+      "var_pct_interanual": {
+        "mes": "-6,3%",
+        "acumulado_anual": "-3,2%",
+        "tam": "-1,9%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "13,8",
+        "acumulado_anual": "68,7",
+        "tam": "165,4"
+      },
+      "var_pct_interanual": {
+        "mes": "-0,7%",
+        "acumulado_anual": "-3,3%",
+        "tam": "-1,4%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,0",
+        "acumulado_anual": "5,2",
+        "tam": "12,5"
+      },
+      "var_pct_interanual": {
+        "mes": "-5,5%",
+        "acumulado_anual": "0,4%",
+        "tam": "0,2%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 17,0 TWh; acumulado anual: 102,6 TWh; TAM: 228,5 TWh; var mes: -1,7%; var acumulado: -3,1%; var TAM: -1,4%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 7,2 TWh; acumulado anual: 37,2 TWh; TAM: 105,3 TWh; var mes: 0,7%; var acumulado: 17,9%; var TAM: 5,7%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 24,2 TWh; acumulado anual: 139,8 TWh; TAM: 333,9 TWh; var mes: -1,0%; var acumulado: 1,7%; var TAM: 0,7%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh - may 2026 con variación vs año anterior",
+      "valor_aprox": "16.964 GWh; -1,7% vs may 2025; acumulado Ene-may 2026: 102.551 GWh; -3,1%; TAM may26-jun25: 228.518 GWh; -1,4%",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Cisternas GNL - variación mercado de cisternas respecto mismo mes año anterior",
+      "valor_aprox": "-5,5%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL - variación número de pedidos respecto mismo mes año anterior",
+      "valor_aprox": "-216 pedidos",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda para generación eléctrica - Gas natural sector eléctrico mayo 2026",
+      "valor_aprox": "7,2 TWh (g)",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Demanda eléctrica total mayo 2026 vs mayo 2025",
+      "valor_aprox": "2025: 18,3 TWh; 2026: 18,5 TWh; delta: +0,2 TWh; %delta: +1,3%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural mayo 2026 vs mayo 2025 - España convencional",
+      "valor_aprox": "17 mil TWh (2025), 17 mil TWh (2026); -1%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural mayo 2026 vs mayo 2025 - España eléctrico",
+      "valor_aprox": "7 mil TWh (2025), 7 mil TWh (2026)",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1014
+  }
+}

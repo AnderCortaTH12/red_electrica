@@ -1,0 +1,86 @@
+{
+  "2026-06": {
+    "boletin": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/boletin-estadistico-del-gas/Bolet%C3%ADn%20Estad%C3%ADstico_jun26.pdf",
+      "sha256": "8238f91281c7b21b792fd1bfd0b16aa1902153a94056e3bd455e0859139cc186",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    },
+    "progreso": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/demanda-de-gas/demanda-mensual/Progreso_junio26.pdf",
+      "sha256": "6d45c3b47c1b4f581e91337f38fe293f2d29cb3e74ee8a6f050de8f843e647af",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    }
+  },
+  "2026-01": {
+    "progreso": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/demanda-de-gas/demanda-mensual/Progreso_enero26.pdf",
+      "sha256": "e4e876368b56a1acd0d94771b9dfa5c76fbd55834e497a45cc516c5b42088d2f",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    },
+    "boletin": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/boletin-estadistico-del-gas/Bolet%C3%ADn%20Estad%C3%ADstico_ene26rev.pdf",
+      "sha256": "8ac50a226308e9bc65814491d898a60de79adb517e579fc6f18cbcd5595c69c5",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    }
+  },
+  "2026-02": {
+    "progreso": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/demanda-de-gas/demanda-mensual/Progreso_febrero26.pdf",
+      "sha256": "44d79570147769a45cde1314abcb64e4c7a3aa9c49a26e50902f50e61cc59d13",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    },
+    "boletin": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/boletin-estadistico-del-gas/Bolet%C3%ADn%20Estad%C3%ADstico_feb26_rev.pdf",
+      "sha256": "00e3a9b3a70e1093385f950b731cb16c8bc987ed97617698a7ae2b109ac6ab0c",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    }
+  },
+  "2026-03": {
+    "progreso": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/demanda-de-gas/demanda-mensual/Progreso_marzo26.pdf",
+      "sha256": "5adbab20cbee2fb97e3904e24a7a655a4f34fd150c6b1f8ca53e847b50293b85",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    },
+    "boletin": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/boletin-estadistico-del-gas/Bolet%C3%ADn%20Estad%C3%ADstico_mar26_rev.pdf",
+      "sha256": "d5175fd0105f0f8d5fc83eea8431fbb6aee90e0f4fa462d662f2dc0fda09ee83",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    }
+  },
+  "2026-04": {
+    "boletin": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/boletin-estadistico-del-gas/Bolet%C3%ADn%20Estad%C3%ADstico_abr26.pdf",
+      "sha256": "44f98402d243e77ea94dcfc341b0034bb1a93ada0f893e4905459c245622a8a6",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    },
+    "progreso": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/demanda-de-gas/demanda-mensual/Progreso_abril26.pdf",
+      "sha256": "c36d5f16ed103729061e10040314bd74dd4fe1b04e8e82ea1c6d9b5ba5a904b6",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    }
+  },
+  "2026-05": {
+    "boletin": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/boletin-estadistico-del-gas/Bolet%C3%ADn%20Estad%C3%ADstico_may26.pdf",
+      "sha256": "73e64da2a087845d79844a9a5c02a6e08c9cbe9ef6ac3ba9be8587a582dfad06",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    },
+    "progreso": {
+      "url": "https://www.enagas.es/content/dam/enagas/es/ficheros/gestion-tecnica-sistema/energy-data/publicaciones/demanda-de-gas/demanda-mensual/Progreso_mayo26.pdf",
+      "sha256": "0e99326ee3f848c2f6f0ca4bdbe9390c20ab70758d1d52866a7b9d5a19b541e2",
+      "descargado_el": "2026-08-06",
+      "extraido_el": "2026-08-06"
+    }
+  }
+}

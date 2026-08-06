@@ -1,0 +1,138 @@
+{
+  "periodo": "2026-06",
+  "generado_el": "2026-08-06T12:36:15Z",
+  "kpis": [
+    {
+      "metrica_id": "total_salidas",
+      "nombre": "Total salidas del sistema gasista",
+      "unidad": "GWh",
+      "valor": 26231.0,
+      "var_pct_interanual": -6.0,
+      "sparkline": [
+        [
+          "2026-01",
+          40026.0
+        ],
+        [
+          "2026-02",
+          31295.0
+        ],
+        [
+          "2026-03",
+          32445.0
+        ],
+        [
+          "2026-04",
+          27669.0
+        ],
+        [
+          "2026-05",
+          28328.0
+        ],
+        [
+          "2026-06",
+          26231.0
+        ]
+      ]
+    },
+    {
+      "metrica_id": "demanda_nacional",
+      "nombre": "Demanda nacional",
+      "unidad": "GWh",
+      "valor": 23840.0,
+      "var_pct_interanual": -6.7,
+      "sparkline": [
+        [
+          "2026-01",
+          36172.0
+        ],
+        [
+          "2026-02",
+          27582.0
+        ],
+        [
+          "2026-03",
+          28765.0
+        ],
+        [
+          "2026-04",
+          23065.0
+        ],
+        [
+          "2026-05",
+          24196.0
+        ],
+        [
+          "2026-06",
+          23840.0
+        ]
+      ]
+    },
+    {
+      "metrica_id": "demanda_convencional",
+      "nombre": "Demanda convencional",
+      "unidad": "GWh",
+      "valor": 15267.0,
+      "var_pct_interanual": -2.8,
+      "sparkline": [
+        [
+          "2026-01",
+          27138.0
+        ],
+        [
+          "2026-02",
+          21088.0
+        ],
+        [
+          "2026-03",
+          20913.0
+        ],
+        [
+          "2026-04",
+          16448.0
+        ],
+        [
+          "2026-05",
+          16964.0
+        ],
+        [
+          "2026-06",
+          15267.0
+        ]
+      ]
+    },
+    {
+      "metrica_id": "demanda_sector_electrico",
+      "nombre": "Demanda del sector eléctrico",
+      "unidad": "GWh",
+      "valor": 8573.0,
+      "var_pct_interanual": -12.9,
+      "sparkline": [
+        [
+          "2026-01",
+          9034.0
+        ],
+        [
+          "2026-02",
+          6493.0
+        ],
+        [
+          "2026-03",
+          7852.0
+        ],
+        [
+          "2026-04",
+          6617.0
+        ],
+        [
+          "2026-05",
+          7232.0
+        ],
+        [
+          "2026-06",
+          8573.0
+        ]
+      ]
+    }
+  ]
+}

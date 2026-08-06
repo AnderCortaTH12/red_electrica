@@ -1,0 +1,14 @@
+{
+  "generado_el": "2026-08-06",
+  "periodo_desactualizado": null,
+  "ultima_validacion": {
+    "periodo": "2026-06",
+    "es_valido": true,
+    "n_errores": 0,
+    "n_avisos": 1,
+    "errores": [],
+    "avisos": [
+      "demanda_ccaa_convencional: suma CCAA=14320 no cuadra con demanda_convencional=15267 (esperado: Enagás no incluye todas las CCAA ni todos los consumos)"
+    ]
+  }
+}

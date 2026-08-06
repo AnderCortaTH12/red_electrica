@@ -1,147 +1,74 @@
-// Utilidades compartidas: formato, color, fechas.
-//
-// Los datos siempre viajan en UTC ("...Z"); la conversión a hora de
-// Madrid se hace SIEMPRE aquí, en el cliente, con Intl.DateTimeFormat
-// (que maneja el cambio de hora de forma nativa y correcta) — nunca a
-// mano con sumas de horas, que es como se coló el bug de DST en el
-// backend (ver README, Fase 3).
+// Utilidades compartidas: formato de números, colores por variación,
+// nombres de agregación/mes en español.
 
-export const MADRID_TZ = "Europe/Madrid";
-
-const HOUR_FORMATTER = new Intl.DateTimeFormat("es-ES", {
-  timeZone: MADRID_TZ,
-  hour: "2-digit",
-  minute: "2-digit",
-});
-
-const DATETIME_FORMATTER = new Intl.DateTimeFormat("es-ES", {
-  timeZone: MADRID_TZ,
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
-
-const DATE_FORMATTER = new Intl.DateTimeFormat("es-ES", {
-  timeZone: MADRID_TZ,
-  weekday: "short",
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
-
-const WEEKDAY_SHORT_FORMATTER = new Intl.DateTimeFormat("es-ES", {
-  timeZone: MADRID_TZ,
-  weekday: "short",
-  day: "2-digit",
-  month: "2-digit",
-});
-
-export function formatHourMadrid(isoUtc) {
-  return HOUR_FORMATTER.format(new Date(isoUtc));
-}
-
-export function formatDatetimeMadrid(isoUtc) {
-  return DATETIME_FORMATTER.format(new Date(isoUtc));
-}
-
-export function formatDateMadrid(isoUtc) {
-  return DATE_FORMATTER.format(new Date(isoUtc));
-}
-
-export function formatWeekdayShort(isoUtc) {
-  return WEEKDAY_SHORT_FORMATTER.format(new Date(isoUtc));
-}
-
-export function formatPrice(value, unit = " €/MWh") {
-  if (value === null || value === undefined || Number.isNaN(value)) return "—";
-  return `${numberFormat(value)}${unit}`;
-}
-
-export function numberFormat(value, digits = 1) {
-  if (value === null || value === undefined || Number.isNaN(value)) return "—";
-  return new Intl.NumberFormat("es-ES", {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }).format(value);
-}
-
-export function formatPercent(value, digits = 1) {
-  if (value === null || value === undefined || Number.isNaN(value)) return "—";
-  const sign = value > 0 ? "+" : "";
-  return `${sign}${numberFormat(value, digits)}%`;
-}
-
-// Paleta de generación: fija y con significado. Renovables en verdes/
-// azules, fósiles en grises/marrones, nuclear diferenciada. Mismos
-// colores en TODOS los gráficos donde aparezca cada tecnología.
-export const GEN_SERIES = [
-  { key: "gen_eolica", label: "Eólica", color: "#2FD3A6" },
-  { key: "gen_solar_fv", label: "Solar FV", color: "#F5B93F" },
-  { key: "gen_solar_termica", label: "Solar térmica", color: "#E8823C" },
-  { key: "gen_hidraulica", label: "Hidráulica", color: "#4FA3E3" },
-  { key: "gen_nuclear", label: "Nuclear", color: "#B085F0" },
-  { key: "gen_ciclo_combinado", label: "Ciclo combinado", color: "#8C7A66" },
-  { key: "gen_carbon", label: "Carbón", color: "#6B7280" },
+export const AGREGACIONES = [
+  { id: "mes", etiqueta: "Mes" },
+  { id: "acumulado_anual", etiqueta: "Acumulado del año" },
+  { id: "tam", etiqueta: "Total anual móvil" },
 ];
 
-export const RENEWABLE_KEYS = new Set(["gen_eolica", "gen_solar_fv", "gen_solar_termica", "gen_hidraulica"]);
+const MESES_CORTOS = [
+  "ene", "feb", "mar", "abr", "may", "jun",
+  "jul", "ago", "sep", "oct", "nov", "dic",
+];
 
-export const COLORS = {
-  precioReal: "#E6E9EF",
-  precioModelo: "#F5734C",
-  precioBaseline: "#5B7A99",
-  negativo: "rgba(239, 68, 68, 0.12)",
-  regimeNormal: "rgba(79, 163, 255, 0.08)",
-  regimeTopeGas: "rgba(245, 169, 35, 0.10)",
-  regimePostTope: "rgba(239, 68, 68, 0.08)",
-  green: "#29D398",
-  amber: "#F5A623",
-  red: "#EF4444",
-};
-
-export function isDarkMode() {
-  const stored = document.documentElement.getAttribute("data-theme");
-  if (stored === "dark") return true;
-  if (stored === "light") return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+export function nombreMes(periodo) {
+  if (!periodo) return "";
+  const [anio, mes] = periodo.split("-").map(Number);
+  return `${MESES_CORTOS[mes - 1]}-${String(anio).slice(2)}`;
 }
 
-export function chartTextColor() {
-  return isDarkMode() ? "#8a93a6" : "#5b6470";
+export function formatoNumero(valor, decimales = 0) {
+  if (valor === null || valor === undefined || Number.isNaN(valor)) return "—";
+  return new Intl.NumberFormat("es-ES", {
+    minimumFractionDigits: decimales,
+    maximumFractionDigits: decimales,
+  }).format(valor);
 }
 
-export function chartGridColor() {
-  return isDarkMode() ? "#1a212c" : "#e3e6ea";
+export function formatoPct(valor, decimales = 1) {
+  if (valor === null || valor === undefined || Number.isNaN(valor)) return "—";
+  const signo = valor > 0 ? "+" : "";
+  return `${signo}${formatoNumero(valor, decimales)}%`;
 }
 
-// YYYY-MM-DD en calendario ESPAÑOL (Europe/Madrid), que es el que usa
-// OMIE y con el que agrega el backend (ver build_summary_rows). Se
-// obtiene con Intl ("en-CA" da directamente formato YYYY-MM-DD), nunca
-// con aritmética manual de horas: Intl aplica el cambio de horario
-// solo, que es justo donde se coló el bug de DST del backend.
-const ISO_DATE_MADRID_FORMATTER = new Intl.DateTimeFormat("en-CA", {
-  timeZone: MADRID_TZ,
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
-
-/** Día natural de Madrid al que pertenece un instante. */
-export function madridDateStr(date) {
-  return ISO_DATE_MADRID_FORMATTER.format(new Date(date));
+export function claseVariacion(valor) {
+  if (valor === null || valor === undefined || Number.isNaN(valor)) return "neutral";
+  if (valor > 0) return "positive";
+  if (valor < 0) return "negative";
+  return "neutral";
 }
 
-/** Suma días sobre un YYYY-MM-DD tratándolo como fecha de calendario.
- * Se ancla a mediodía UTC para que sumar/restar días nunca cruce por
- * accidente una frontera de día por el cambio de hora. */
-export function addDays(dateStr, days) {
-  const d = new Date(`${dateStr}T12:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + days);
-  return d.toISOString().slice(0, 10);
+const PALETA = [
+  "var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)",
+  "var(--chart-5)", "var(--chart-6)", "var(--chart-7)", "var(--chart-8)",
+];
+
+export function colorPorIndice(i) {
+  return PALETA[i % PALETA.length].startsWith("var")
+    ? getComputedStyle(document.documentElement).getPropertyValue(PALETA[i % PALETA.length].slice(4, -1)).trim()
+    : PALETA[i % PALETA.length];
 }
 
-export function yearMonthFromDateStr(dateStr) {
-  return dateStr.slice(0, 7);
+export function esModoOscuro() {
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+export function temaEcharts() {
+  const estilo = getComputedStyle(document.documentElement);
+  return {
+    textColor: estilo.getPropertyValue("--text").trim(),
+    subTextColor: estilo.getPropertyValue("--text-secondary").trim(),
+    borderColor: estilo.getPropertyValue("--border").trim(),
+    bgElevado: estilo.getPropertyValue("--bg-elevated").trim(),
+  };
+}
+
+// Debounce simple para el redimensionado de gráficos ECharts.
+export function debounce(fn, ms = 120) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), ms);
+  };
 }

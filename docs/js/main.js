@@ -1,269 +1,324 @@
-import { loadLatest, loadDay, loadModelPerformance, loadSummary, DataError } from "./data.js";
-import {
-  formatDatetimeMadrid,
-  formatPercent,
-  formatPrice,
-  numberFormat,
-  madridDateStr,
-  addDays,
-} from "./utils.js";
-import { renderPriceChart } from "./charts/priceChart.js";
-import { renderDayChart } from "./charts/dayChart.js";
-import { renderMixDonut } from "./charts/mixDonut.js";
-import { renderLongTermChart } from "./charts/longTermChart.js";
-import { renderErrorByYearChart, renderScatterChart } from "./charts/performanceChart.js";
+import { cargarDatos, periodos, ultimoPeriodo, ultimo, catalogo, valorEscalar, filasDe, metrica } from "./data.js";
+import { AGREGACIONES, nombreMes, formatoNumero, formatoPct, claseVariacion, debounce } from "./utils.js";
+import { pintarSparkline } from "./charts/sparkline.js";
+import * as Desglose from "./charts/desglose.js";
+import * as Comparativa from "./charts/comparativa.js";
+import * as Aprovisionamiento from "./charts/aprovisionamiento.js";
+import * as Infraestructuras from "./charts/infraestructuras.js";
 
-const charts = []; // para resize()
+const KPI_METRICAS = ["total_salidas", "demanda_nacional", "demanda_convencional", "demanda_sector_electrico"];
+const CCAA_COLUMNAS = [
+  { id: "demanda_ccaa_convencional", etiqueta: "Convencional" },
+  { id: "demanda_ccaa_sector_electrico", etiqueta: "Sector eléctrico" },
+  { id: "demanda_ccaa_cisternas", etiqueta: "Cisternas" },
+];
 
-function trackChart(instance) {
-  if (instance) charts.push(instance);
-}
+const estado = {
+  agregacion: "mes",
+  periodo: null,
+  vista: "resumen",
+  comparativaSeleccion: new Set(KPI_METRICAS),
+  ordenTerritorio: { columna: "demanda_ccaa_convencional", asc: false },
+};
 
-window.addEventListener("resize", () => {
-  charts.forEach((c) => {
-    try {
-      c.resize();
-    } catch (err) {
-      // el contenedor pudo haberse vaciado (chart-empty); ignorar
-    }
-  });
-});
-
-function sectionError(el, message) {
-  el.innerHTML = `<p class="chart-empty">⚠ ${message}</p>`;
-}
-
-// ---- Cabecera de estado ----
-
-function renderStatusBar(latest) {
-  const bar = document.getElementById("status-bar");
-  const { status, kpis } = latest;
-
-  const healthClass =
-    status.health === "green" ? "health-green" : status.health === "amber" ? "health-amber" : "health-red";
-
-  const deltaClass =
-    kpis.delta_vs_ayer_pct === null ? "" : kpis.delta_vs_ayer_pct >= 0 ? "delta-up" : "delta-down";
-
-  let flagsHtml = "";
-  if (status.quality_flags && status.quality_flags.length > 0) {
-    flagsHtml =
-      '<div class="quality-flags">' +
-      status.quality_flags
-        .map((f) => `<span class="quality-flag">⚠ ${f.nombre ? f.nombre + ": " : ""}${f.detalle}</span>`)
-        .join("") +
-      "</div>";
-  }
-
-  bar.innerHTML = `
-    <span class="brand">Forecasting Eléctrico</span>
-    <span class="status-item">
-      <span class="value price tabular">${formatPrice(kpis.precio_actual)}</span>
-    </span>
-    <span class="status-item">
-      <span class="label">vs ayer</span>
-      <span class="value tabular ${deltaClass}">${formatPercent(kpis.delta_vs_ayer_pct)}</span>
-    </span>
-    <span class="status-item">
-      <span class="label">Actualizado</span>
-      <span class="value">${status.last_run_at ? formatDatetimeMadrid(status.last_run_at) : "—"}</span>
-    </span>
-    <span class="status-item">
-      <span class="label">Modelo</span>
-      <span class="value">${status.model_type || "—"} · ${
-    status.model_version ? formatDatetimeMadrid(status.model_version) : "sin entrenar"
-  }</span>
-    </span>
-    <span class="status-item">
-      <span class="health-dot ${healthClass}"></span>
-      <span class="value">${status.health === "green" ? "OK" : status.health === "amber" ? "Avisos" : "Fallo"}</span>
-    </span>
-    ${flagsHtml}
-  `;
-}
-
-/** Explica el estado real de la predicción. El mercado diario (OMIE)
- * publica de golpe las 24h del día siguiente sobre las 13:00 CET, así
- * que hay ventanas del día en las que no queda ninguna hora sin
- * publicar que predecir -- y eso hay que decirlo, no dejar un hueco
- * mudo que parezca un fallo. */
-function renderForecastNote(latest) {
-  const el = document.getElementById("forecast-note");
-  const pred = latest.prediccion_24h;
-  const n = pred && pred.datetime_utc ? pred.datetime_utc.length : 0;
-
-  if (n > 0) {
-    el.textContent = `Predicción activa: ${n} h todavía no publicadas por OMIE, desde las ${formatDatetimeMadrid(
-      pred.datetime_utc[0]
-    )}.`;
-    return;
-  }
-  el.textContent =
-    "Ahora mismo no hay ninguna hora que predecir: OMIE ya ha publicado el precio de " +
-    "todas las horas para las que hay previsiones disponibles. La predicción vuelve a " +
-    "aparecer cuando ESIOS publica las previsiones del día siguiente.";
-}
-
-// ---- Sección día: estado compartido ----
-
-const dayState = { currentDate: null };
-
-function renderDayKpis(day) {
-  const el = document.getElementById("day-kpis");
-  if (!day) {
-    el.innerHTML = "";
-    return;
-  }
-  const prices = day.precio_real.filter((v) => v !== null && v !== undefined);
-  const min = prices.length ? Math.min(...prices) : null;
-  const max = prices.length ? Math.max(...prices) : null;
-  const mean = prices.length ? prices.reduce((a, b) => a + b, 0) / prices.length : null;
-
-  el.innerHTML = `
-    <div><div class="kpi-value tabular">${formatPrice(min, "")}</div><div class="kpi-label">Mín €/MWh</div></div>
-    <div><div class="kpi-value tabular">${formatPrice(mean, "")}</div><div class="kpi-label">Media €/MWh</div></div>
-    <div><div class="kpi-value tabular">${formatPrice(max, "")}</div><div class="kpi-label">Máx €/MWh</div></div>
-  `;
-}
-
-async function loadAndRenderDay(dateStr) {
-  dayState.currentDate = dateStr;
-  const picker = document.getElementById("day-picker");
-  if (picker.value !== dateStr) picker.value = dateStr;
-
-  const loadingEl = document.getElementById("day-loading");
-  const dayChartEl = document.getElementById("day-chart");
-  const donutEl = document.getElementById("mix-donut");
-  loadingEl.hidden = false;
-
+async function iniciar() {
   try {
-    const day = await loadDay(dateStr);
-
-    if (!day) {
-      sectionError(dayChartEl, "No hay datos para este día todavía.");
-      donutEl.innerHTML = "";
-      renderDayKpis(null);
-      return;
-    }
-
-    trackChart(renderDayChart(dayChartEl, day));
-    trackChart(renderMixDonut(donutEl, day));
-    renderDayKpis(day);
+    await cargarDatos();
   } catch (err) {
-    const message = err instanceof DataError ? err.message : "Error inesperado cargando el día.";
-    sectionError(dayChartEl, message);
-    donutEl.innerHTML = "";
-    renderDayKpis(null);
-  } finally {
-    loadingEl.hidden = true;
+    document.querySelector("main").innerHTML = `<div class="empty-state">No se pudieron cargar los datos: ${err.message}</div>`;
+    return;
   }
+
+  estado.periodo = ultimoPeriodo();
+
+  construirSegmentedControl();
+  construirSelectorPeriodo();
+  construirTabs();
+  pintarFooter();
+
+  renderVistaActiva();
+
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      Desglose.resize();
+      Comparativa.resize();
+      Aprovisionamiento.resize();
+      Infraestructuras.resize();
+    }, 150)
+  );
 }
 
-function setupDayControls(latestDateStr) {
-  const picker = document.getElementById("day-picker");
-  picker.max = latestDateStr;
-  picker.value = latestDateStr;
-  picker.addEventListener("change", () => {
-    if (picker.value) loadAndRenderDay(picker.value);
-  });
+// ---------- Controles globales ----------
 
-  document.querySelectorAll(".quick-buttons button").forEach((btn) => {
+function construirSegmentedControl() {
+  const cont = document.getElementById("segmented-agregacion");
+  cont.innerHTML = "";
+  for (const { id, etiqueta } of AGREGACIONES) {
+    const btn = document.createElement("button");
+    btn.textContent = etiqueta;
+    btn.className = id === estado.agregacion ? "active" : "";
     btn.addEventListener("click", () => {
-      const kind = btn.dataset.quick;
-      let target = latestDateStr;
-      if (kind === "ayer") target = addDays(latestDateStr, -1);
-      else if (kind === "7d") target = addDays(latestDateStr, -7);
-      else if (kind === "año") target = addDays(latestDateStr, -365);
-      loadAndRenderDay(target);
+      estado.agregacion = id;
+      [...cont.children].forEach((b) => b.classList.toggle("active", b === btn));
+      renderVistaActiva();
+    });
+    cont.appendChild(btn);
+  }
+}
+
+function construirSelectorPeriodo() {
+  const sel = document.getElementById("selector-periodo");
+  sel.innerHTML = "";
+  for (const p of periodos()) {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = nombreMes(p);
+    sel.appendChild(opt);
+  }
+  sel.value = estado.periodo;
+  sel.addEventListener("change", () => {
+    estado.periodo = sel.value;
+    renderVistaActiva();
+  });
+}
+
+function construirTabs() {
+  const botones = document.querySelectorAll(".tab-btn");
+  botones.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      botones.forEach((b) => b.classList.toggle("active", b === btn));
+      document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === `view-${btn.dataset.view}`));
+      estado.vista = btn.dataset.view;
+      renderVistaActiva();
     });
   });
 }
 
-// ---- Sección rendimiento ----
+function renderVistaActiva() {
+  switch (estado.vista) {
+    case "resumen":
+      renderResumen();
+      break;
+    case "desglose":
+      renderDesglose();
+      break;
+    case "comparativa":
+      renderComparativa();
+      break;
+    case "territorio":
+      renderTerritorio();
+      break;
+    case "aprovisionamiento":
+      renderAprovisionamiento();
+      break;
+    case "infraestructuras":
+      renderInfraestructuras();
+      break;
+  }
+}
 
-function renderHonestyBlock(performance) {
-  const el = document.getElementById("honesty-block");
-  const holdout = performance.holdout || {};
+// ---------- Vista: Resumen ----------
 
-  if (!holdout.mae_modelo) {
-    el.innerHTML =
-      "Todavía no hay una evaluación de holdout registrada para el modelo actual.";
+function renderResumen() {
+  const cont = document.getElementById("kpi-grid");
+  cont.innerHTML = "";
+
+  for (const metricaId of KPI_METRICAS) {
+    const info = metrica(metricaId);
+    const { valor, var_pct_interanual } = valorEscalar(metricaId, estado.agregacion, estado.periodo);
+
+    const card = document.createElement("div");
+    card.className = "card kpi-card";
+    card.innerHTML = `
+      <div class="kpi-label">${info.nombre}</div>
+      <div class="kpi-value">${formatoNumero(valor)} <span class="kpi-unit">${info.unidad_canonica}</span></div>
+      <span class="kpi-delta ${claseVariacion(var_pct_interanual)}">${formatoPct(var_pct_interanual)} interanual</span>
+      <div class="kpi-sparkline"></div>
+    `;
+    cont.appendChild(card);
+
+    const puntos = periodos().map((p) => [p, valorEscalar(metricaId, estado.agregacion, p).valor]);
+    const dom = card.querySelector(".kpi-sparkline");
+    requestAnimationFrame(() => pintarSparkline(dom, puntos, var_pct_interanual === null ? null : var_pct_interanual >= 0));
+  }
+}
+
+// ---------- Vista: Desglose ----------
+
+function renderDesglose() {
+  const dom = document.getElementById("chart-desglose");
+  Desglose.pintarDesglose(dom, estado.agregacion, estado.periodo);
+}
+
+// ---------- Vista: Comparativa ----------
+
+function metricasComparables() {
+  return catalogo().filter((m) => m.dimension === null);
+}
+
+function renderComparativa() {
+  const chips = document.getElementById("chips-comparativa");
+  if (chips.childElementCount === 0) {
+    for (const m of metricasComparables()) {
+      const chip = document.createElement("button");
+      chip.className = "chip" + (estado.comparativaSeleccion.has(m.metrica_id) ? " selected" : "");
+      chip.textContent = m.nombre;
+      chip.addEventListener("click", () => {
+        if (estado.comparativaSeleccion.has(m.metrica_id)) {
+          estado.comparativaSeleccion.delete(m.metrica_id);
+        } else {
+          estado.comparativaSeleccion.add(m.metrica_id);
+        }
+        chip.classList.toggle("selected");
+        dibujarComparativa();
+      });
+      chips.appendChild(chip);
+    }
+  }
+  dibujarComparativa();
+}
+
+function dibujarComparativa() {
+  const dom = document.getElementById("chart-comparativa");
+  const seleccion = [...estado.comparativaSeleccion];
+  if (seleccion.length === 0) {
+    dom.parentElement.querySelector(".empty-state")?.remove();
+    const vacio = document.createElement("div");
+    vacio.className = "empty-state";
+    vacio.textContent = "Elige al menos una métrica para comparar.";
+    dom.replaceWith(vacio);
     return;
   }
+  Comparativa.pintarComparativa(dom, seleccion, estado.agregacion);
+}
 
-  const peor = holdout.mae_modelo > holdout.mae_baseline;
-  const diferenciaPct = ((holdout.mae_modelo - holdout.mae_baseline) / holdout.mae_baseline) * 100;
+// ---------- Vista: Territorio ----------
 
+// El Boletín solo publica el desglose por CCAA en columna mensual (sin
+// acumulado/TAM, a diferencia del resto de métricas) -- esta vista
+// ignora a propósito el control global de agregación y lo deja fijo en
+// "mes", en vez de mostrar una tabla vacía cuando se elige otra.
+const AGREGACION_TERRITORIO = "mes";
+
+function filaCCAA(nombreCCAA) {
+  const fila = { ccaa: nombreCCAA };
+  for (const { id } of CCAA_COLUMNAS) {
+    const encontrada = filasDe(id, AGREGACION_TERRITORIO, estado.periodo).find((f) => f.dimension === nombreCCAA);
+    fila[id] = encontrada ? encontrada.valor : null;
+    fila[`${id}_var`] = encontrada ? encontrada.var_pct_interanual : null;
+  }
+  return fila;
+}
+
+function renderTerritorio() {
+  document.getElementById("aviso-agregacion-territorio").style.display =
+    estado.agregacion === AGREGACION_TERRITORIO ? "none" : "block";
+
+  const nombresCCAA = [
+    ...new Set(
+      CCAA_COLUMNAS.flatMap(({ id }) => filasDe(id, AGREGACION_TERRITORIO, estado.periodo).map((f) => f.dimension))
+    ),
+  ].filter(Boolean);
+
+  let filas = nombresCCAA.map(filaCCAA);
+
+  const { columna, asc } = estado.ordenTerritorio;
+  filas.sort((a, b) => {
+    const va = columna === "ccaa" ? a.ccaa : a[columna] ?? -Infinity;
+    const vb = columna === "ccaa" ? b.ccaa : b[columna] ?? -Infinity;
+    if (typeof va === "string") return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return asc ? va - vb : vb - va;
+  });
+
+  const thead = document.getElementById("territorio-thead");
+  const columnas = [{ id: "ccaa", etiqueta: "Comunidad autónoma" }, ...CCAA_COLUMNAS];
+  thead.innerHTML =
+    "<tr>" +
+    columnas
+      .map(({ id, etiqueta }) => {
+        const clases = ["th-orden"];
+        if (columna === id) clases.push("sorted", asc ? "asc" : "");
+        return `<th data-col="${id}" class="${clases.join(" ")}">${etiqueta}</th>`;
+      })
+      .join("") +
+    "</tr>";
+  thead.querySelectorAll("th").forEach((th) => {
+    th.addEventListener("click", () => {
+      const col = th.dataset.col;
+      estado.ordenTerritorio =
+        estado.ordenTerritorio.columna === col
+          ? { columna: col, asc: !estado.ordenTerritorio.asc }
+          : { columna: col, asc: false };
+      renderTerritorio();
+    });
+  });
+
+  const tbody = document.getElementById("territorio-tbody");
+  if (filas.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="${columnas.length}" class="empty-state">Sin datos por CCAA para este periodo.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filas
+    .map(
+      (f) => `
+      <tr>
+        <td>${f.ccaa}</td>
+        ${CCAA_COLUMNAS.map(
+          ({ id }) => `
+          <td>${formatoNumero(f[id])} GWh
+            ${f[`${id}_var`] !== null ? `<br/><span class="kpi-delta ${claseVariacion(f[`${id}_var`])}" style="font-size:.72rem">${formatoPct(f[`${id}_var`])}</span>` : ""}
+          </td>`
+        ).join("")}
+      </tr>`
+    )
+    .join("");
+}
+
+// ---------- Vista: Aprovisionamiento ----------
+
+// pct_total_gn/pct_total_gnl (el donut) solo vienen en columna mensual
+// en el Boletín, a diferencia de aprovisionamiento_gn/gnl y los saldos
+// por conexión, que sí traen las 3 agregaciones -- mismo patrón que
+// Territorio e Infraestructuras (ver AGREGACION_TERRITORIO).
+const AGREGACION_DONUT = "mes";
+
+function renderAprovisionamiento() {
+  document.getElementById("aviso-agregacion-donut").style.display =
+    estado.agregacion === AGREGACION_DONUT ? "none" : "block";
+
+  Aprovisionamiento.pintarPaises(document.getElementById("chart-paises"), estado.agregacion);
+  Aprovisionamiento.pintarDonutOrigen(document.getElementById("chart-donut-origen"), AGREGACION_DONUT, estado.periodo);
+  Aprovisionamiento.pintarSaldosConexion(document.getElementById("chart-saldos"), estado.agregacion, estado.periodo);
+}
+
+// ---------- Vista: Infraestructuras ----------
+
+// Igual que el desglose por CCAA: ni las plantas de regasificación ni
+// el TVB traen columna de acumulado/TAM en el Boletín, solo mensual.
+const AGREGACION_INFRAESTRUCTURAS = "mes";
+
+function renderInfraestructuras() {
+  document.getElementById("aviso-agregacion-infraestructuras").style.display =
+    estado.agregacion === AGREGACION_INFRAESTRUCTURAS ? "none" : "block";
+
+  Infraestructuras.pintarPlantas(document.getElementById("chart-plantas"), AGREGACION_INFRAESTRUCTURAS, estado.periodo);
+  Infraestructuras.pintarTvb(document.getElementById("chart-tvb"), AGREGACION_INFRAESTRUCTURAS, estado.periodo);
+}
+
+// ---------- Pie de página ----------
+
+function pintarFooter() {
+  const info = ultimo();
+  const el = document.getElementById("footer-info");
+  const fecha = info.generado_el ? new Date(info.generado_el).toLocaleString("es-ES", { dateStyle: "medium", timeStyle: "short" }) : "—";
   el.innerHTML = `
-    <strong>El modelo actual (${holdout.modelo_tipo || "placeholder"}) ${
-    peor ? "pierde contra" : "supera al"
-  } baseline naive.</strong>
-    En el holdout de evaluación (${holdout.test_start ? formatDatetimeMadrid(holdout.test_start).slice(0, 10) : "—"}
-    en adelante, régimen ${holdout.regimen || "post_tope"}): MAE del modelo
-    ${numberFormat(holdout.mae_modelo)} €/MWh frente a ${numberFormat(holdout.mae_baseline)} €/MWh del baseline
-    (${peor ? "+" : ""}${numberFormat(diferenciaPct, 0)}% ${peor ? "peor" : "mejor"}).
-    ${
-      peor
-        ? "Los modelos de árboles (como LightGBM) no pueden predecir por encima del precio " +
-          "máximo visto en entrenamiento -- las predicciones quedan ancladas cerca de ese techo " +
-          "mientras el precio real sigue subiendo. Por eso el modelo combina una tendencia lineal " +
-          "(que sí extrapola) con un LightGBM sobre el residuo (ver README, Limitaciones conocidas)."
-        : "El modelo combina una tendencia lineal (que extrapola más allá del rango visto en " +
-          "entrenamiento) con un LightGBM sobre el residuo, precisamente para evitar quedarse " +
-          "anclado cuando el precio sube fuera de ese rango."
-    }
+    Último periodo cargado: <strong>${nombreMes(info.periodo)}</strong> ·
+    Última actualización: <strong>${fecha}</strong><br/>
+    Los datos de Enagás son un <strong>AVANCE</strong> provisional sujeto a revisión en publicaciones posteriores.
+    Fuentes: <a href="https://www.enagas.es/es/gestion-tecnica-sistema/energy-data/publicaciones/boletin-estadistico-gas/" target="_blank" rel="noopener">Boletín Estadístico del Gas</a>
+    y <a href="https://www.enagas.es/es/gestion-tecnica-sistema/energy-data/publicaciones/demanda-gas/" target="_blank" rel="noopener">Progreso mensual de la demanda</a>.
   `;
 }
 
-// ---- Arranque ----
-
-async function main() {
-  // 1) latest.json: siempre, bloquea el primer pintado util
-  let latest;
-  try {
-    latest = await loadLatest();
-    renderStatusBar(latest);
-    renderForecastNote(latest);
-    trackChart(renderPriceChart(document.getElementById("price-chart"), latest));
-  } catch (err) {
-    sectionError(document.getElementById("price-chart"), "No se pudo cargar el estado actual.");
-    document.getElementById("status-bar").innerHTML =
-      '<span class="brand">Forecasting Eléctrico</span><span class="status-item">⚠ Sin datos</span>';
-  }
-
-  // 2) selector de dia: arranca en la ultima hora conocida de latest.json
-  // .slice(0,10) daria el dia UTC, que a partir de las 22:00/23:00 Madrid
-  // ya es el dia siguiente: hay que preguntar el dia de Madrid
-  const latestDateStr =
-    latest && latest.horas_72h && latest.horas_72h.datetime_utc.length
-      ? madridDateStr(latest.horas_72h.datetime_utc[latest.horas_72h.datetime_utc.length - 1])
-      : madridDateStr(new Date());
-  setupDayControls(latestDateStr);
-  loadAndRenderDay(latestDateStr);
-
-  // 3) largo plazo: no bloquea el resto
-  loadSummary()
-    .then((rows) => trackChart(renderLongTermChart(document.getElementById("longterm-chart"), rows)))
-    .catch((err) =>
-      sectionError(
-        document.getElementById("longterm-chart"),
-        err instanceof DataError ? err.message : "Error cargando la vista de largo plazo."
-      )
-    );
-
-  // 4) rendimiento del modelo: no bloquea el resto
-  loadModelPerformance()
-    .then((performance) => {
-      trackChart(renderErrorByYearChart(document.getElementById("error-chart"), performance));
-      trackChart(renderScatterChart(document.getElementById("scatter-chart"), performance));
-      renderHonestyBlock(performance);
-    })
-    .catch((err) => {
-      const message = err instanceof DataError ? err.message : "Error cargando el rendimiento del modelo.";
-      sectionError(document.getElementById("error-chart"), message);
-      sectionError(document.getElementById("scatter-chart"), message);
-      document.getElementById("honesty-block").textContent = message;
-    });
-}
-
-main();
+iniciar();
