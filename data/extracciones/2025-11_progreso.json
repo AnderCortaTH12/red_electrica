@@ -1,0 +1,112 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "6,1",
+        "acumulado_anual": "42,9",
+        "tam": "51,6"
+      },
+      "var_pct_interanual": {
+        "mes": "34,0%",
+        "acumulado_anual": "9,8%",
+        "tam": "8,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "14,7",
+        "acumulado_anual": "153,1",
+        "tam": "168,0"
+      },
+      "var_pct_interanual": {
+        "mes": "-5,5%",
+        "acumulado_anual": "-5,5%",
+        "tam": "-5,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,1",
+        "acumulado_anual": "11,3",
+        "tam": "12,4"
+      },
+      "var_pct_interanual": {
+        "mes": "3,5%",
+        "acumulado_anual": "-0,3%",
+        "tam": "-0,3%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 21,9 TWh; acumulado anual: 207,3 TWh; TAM: 232,0 TWh; %Δ mes: 3,5%; %Δ acumulado: -2,4%; %Δ TAM: -2,2%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 9,3 TWh; acumulado anual: 88,9 TWh; TAM: 99,4 TWh; %Δ mes: 11,2%; %Δ acumulado: 38,3%; %Δ TAM: 32,9%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 31,1 TWh; acumulado anual: 296,2 TWh; TAM: 331,4 TWh; %Δ mes: 5,7%; %Δ acumulado: 7,1%; %Δ TAM: 6,3%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh con corrección por laboralidad y temperatura (nov 2025)",
+      "valor_aprox": "GWh: 21.860; %Δ vs nov 2024: 3,5%; acumulado Ene-Nov 2025: 207.329 GWh; %Δ: -2,4%; TAM dic-24 nov-25: 232.013 GWh; %TAM: -2,2%",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Demanda de cisternas TAM nov-25/dic-24 por planta: Mugardos 0,9 TWh/año; Huelva 2,4 TWh/año; Cartagena 2,2 TWh/año; Barcelona 2,5 TWh/año; Sagunto 2,3 TWh/año; Bilbao 1,3 TWh/año; Musel 0,8 TWh/año",
+      "valor_aprox": "varias cifras en TWh/año por planta",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda eléctrica (TWh e) nov 2025 vs nov 2024: 2024: 18,7; 2025: 19,5; Δ: +0,8; %Δ: +4,2%",
+      "valor_aprox": "18,7 / 19,5 TWh e",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación eólica (TWh e): 2024: 4,8; 2025: 6,8; %Δ: +42,6%",
+      "valor_aprox": "4,8 / 6,8 TWh e",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación solar (TWh e): 2024: 2,4; 2025: 3,2; %Δ: +35,6%",
+      "valor_aprox": "2,4 / 3,2 TWh e",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación hidráulica (TWh e): 2024: 3,0; 2025: 2,5; %Δ: -18,1%",
+      "valor_aprox": "3,0 / 2,5 TWh e",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación gas natural sector eléctrico (TWh e): 2024: 3,5; 2025: 3,7; %Δ: +6,4%",
+      "valor_aprox": "3,5 / 3,7 TWh e",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda gas natural noviembre 2025 vs noviembre 2024: España +5,7%; Portugal +12%; Italia 0%; Francia -7%; UK -11%; Alemania 0%",
+      "valor_aprox": "porcentajes de variación por país",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1308
+  }
+}

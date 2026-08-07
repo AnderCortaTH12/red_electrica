@@ -2,6 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
+  <script>
+    // Aplica el tema guardado antes del primer pintado, para no dar un
+    // parpadeo del tema equivocado (ver inicializarTema en main.js).
+    (function () {
+      var t = localStorage.getItem("tema");
+      if (t) document.documentElement.dataset.theme = t;
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Observatorio del Sistema Gasista Español</title>
   <meta name="description" content="Datos mensuales del sistema gasista español, extraídos automáticamente de las publicaciones de Enagás." />
@@ -17,14 +25,15 @@
       </div>
       <div class="header-controls">
         <div id="segmented-agregacion" class="segmented"></div>
-        <select id="selector-periodo" class="period-select" aria-label="Periodo"></select>
+        <div id="selector-fecha" class="period-select-group">
+          <select id="selector-anio" class="period-select" aria-label="Año"></select>
+          <select id="selector-mes" class="period-select" aria-label="Mes"></select>
+        </div>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
       </div>
     </div>
     <nav class="tabs">
       <button class="tab-btn active" data-view="resumen">Resumen</button>
-      <button class="tab-btn" data-view="desglose">Desglose de la demanda</button>
-      <button class="tab-btn" data-view="comparativa">Comparativa</button>
-      <button class="tab-btn" data-view="territorio">Territorio</button>
       <button class="tab-btn" data-view="aprovisionamiento">Aprovisionamiento</button>
       <button class="tab-btn" data-view="infraestructuras">Infraestructuras</button>
     </nav>
@@ -35,85 +44,68 @@
     <section id="view-resumen" class="view active">
       <div class="view-heading">
         <h2>Resumen</h2>
-        <p>KPIs del periodo seleccionado, con variación interanual y evolución del año.</p>
+        <p>KPIs del periodo seleccionado, con variación interanual y acumulada del año.</p>
       </div>
-      <div id="kpi-grid" class="card-grid"></div>
-    </section>
+      <div id="kpi-grid" class="card-grid card-grid-compact"></div>
 
-    <!-- Desglose de la demanda -->
-    <section id="view-desglose" class="view">
-      <div class="view-heading">
-        <h2>Desglose de la demanda</h2>
-        <p>Total → Nacional / Internacional → Convencional / Sector eléctrico → Industrial / D-C+PyMES / Cisternas. Clic en un anillo para profundizar.</p>
+      <div class="chart-row resumen-row">
+        <div class="card chart-card chart-card-tight">
+          <h3>Demanda por sector</h3>
+          <div id="chart-sectores" class="chart short"></div>
+        </div>
+        <div class="card chart-card chart-card-tight">
+          <div class="view-subheading view-subheading-tight">
+            <h3>Demanda por CCAA</h3>
+            <div id="segmented-ccaa-metrica" class="segmented segmented-sm"></div>
+          </div>
+          <div id="aviso-agregacion-territorio" class="notice notice-sm" style="display:none">
+            El Boletín solo publica el desglose por CCAA en columna mensual: se muestra siempre <strong>Mes</strong>.
+          </div>
+          <div id="chart-mapa-ccaa" class="chart mapa-chart"></div>
+        </div>
       </div>
-      <div class="card chart-card">
-        <div id="chart-desglose" class="chart tall"></div>
-      </div>
-    </section>
 
-    <!-- Comparativa -->
-    <section id="view-comparativa" class="view">
-      <div class="view-heading">
-        <h2>Comparativa</h2>
-        <p>Selecciona las métricas que quieras superponer, mes a mes.</p>
-      </div>
-      <div class="notice">
-        El histórico del observatorio empieza en 2026-01: por ahora cada métrica se ve como una única línea.
-        Cuando haya más de un año de datos, esta vista permitirá comparar años completos.
-      </div>
-      <div class="control-row">
-        <div id="chips-comparativa" class="chip-group"></div>
-      </div>
-      <div class="card chart-card">
-        <div id="chart-comparativa" class="chart tall"></div>
-      </div>
-    </section>
-
-    <!-- Territorio -->
-    <section id="view-territorio" class="view">
-      <div class="view-heading">
-        <h2>Territorio</h2>
-        <p>Demanda por comunidad autónoma en el periodo seleccionado. Clic en una columna para ordenar.</p>
-      </div>
-      <div class="notice">
-        Enagás no incluye todas las CCAA ni todos los tipos de consumo en este desglose: la suma por CCAA
-        no cuadra exactamente con el total nacional, y es la propia fuente la que lo deja así.
-      </div>
-      <div id="aviso-agregacion-territorio" class="notice" style="display:none">
-        El Boletín solo publica el desglose por CCAA en columna mensual (sin acumulado del año ni total
-        anual móvil): esta tabla muestra siempre el dato de <strong>Mes</strong>, aunque el control de arriba
-        esté en otra posición.
-      </div>
-      <div class="table-wrap">
+      <div id="filtro-ccaa-chip" class="filtro-chip" style="display:none"></div>
+      <div class="table-wrap table-wrap-scroll">
         <table>
           <thead id="territorio-thead"></thead>
           <tbody id="territorio-tbody"></tbody>
+          <tfoot id="territorio-tfoot"></tfoot>
         </table>
       </div>
+      <p class="hint-text">
+        Enagás no incluye todas las CCAA ni todos los tipos de consumo en este desglose: la suma por CCAA
+        no cuadra exactamente con el total nacional, y es la propia fuente la que lo deja así.
+      </p>
     </section>
 
     <!-- Aprovisionamiento -->
     <section id="view-aprovisionamiento" class="view">
       <div class="view-heading">
         <h2>Aprovisionamiento</h2>
-        <p>Origen del gas que entra en el sistema: países proveedores, mezcla GN/GNL y saldos por conexión internacional.</p>
+        <p>Origen del gas que entra en el sistema. El selector GN/GNL/Total filtra el país, la tabla y la evolución.</p>
       </div>
-      <div class="card chart-card">
-        <h3>Aprovisionamiento por país de origen</h3>
-        <div id="chart-paises" class="chart tall"></div>
+      <div id="aprovisionamiento-cards" class="card-grid card-grid-compact"></div>
+
+      <div class="view-subheading view-subheading-tight">
+        <h3>Países de origen</h3>
+        <div id="segmented-tipo-gas" class="segmented segmented-sm"></div>
       </div>
-      <div class="chart-row">
-        <div class="card chart-card">
-          <h3>Mezcla GN / GNL</h3>
-          <div id="aviso-agregacion-donut" class="notice" style="display:none">
-            El Boletín solo publica esta mezcla en columna mensual: se muestra siempre el dato de <strong>Mes</strong>.
-          </div>
-          <div id="chart-donut-origen" class="chart short"></div>
+      <div class="chart-row paises-row">
+        <div class="card chart-card chart-card-tight">
+          <div id="chart-paises-pie" class="chart short"></div>
         </div>
-        <div class="card chart-card">
-          <h3>Saldos por conexión internacional</h3>
-          <div id="chart-saldos" class="chart short"></div>
+        <div class="table-wrap table-wrap-scroll">
+          <table class="table-compact">
+            <thead><tr><th>País</th><th>Vol.</th><th>Anterior</th><th>Interanual</th></tr></thead>
+            <tbody id="paises-tbody"></tbody>
+          </table>
         </div>
+      </div>
+
+      <div class="card chart-card chart-card-tight">
+        <h3 id="titulo-evolucion">Evolución a lo largo del año</h3>
+        <div id="chart-evolucion-gn-gnl" class="chart xs"></div>
       </div>
     </section>
 
@@ -121,20 +113,41 @@
     <section id="view-infraestructuras" class="view">
       <div class="view-heading">
         <h2>Infraestructuras</h2>
-        <p>Actividad de las plantas de regasificación y capacidad del TVB (Terminales, Válvulas y Bombeo).</p>
+        <p>Plantas de regasificación, capacidad del TVB y saldos por conexión internacional.</p>
       </div>
-      <div id="aviso-agregacion-infraestructuras" class="notice" style="display:none">
-        El Boletín solo publica plantas y TVB en columna mensual (sin acumulado del año ni total anual
-        móvil): estos gráficos muestran siempre el dato de <strong>Mes</strong>.
+      <div id="tvb-cards" class="card-grid card-grid-compact"></div>
+      <div id="aviso-agregacion-infraestructuras" class="notice notice-sm" style="display:none">
+        El Boletín solo publica plantas y TVB en columna mensual: estos gráficos muestran siempre <strong>Mes</strong>.
       </div>
-      <div class="card chart-card">
-        <h3>Actividad por planta de regasificación</h3>
-        <div id="chart-plantas" class="chart"></div>
+
+      <div class="chart-row">
+        <div class="card chart-card chart-card-tight">
+          <h3>Mapa de plantas de regasificación</h3>
+          <div id="chart-mapa-plantas" class="chart mapa-chart"></div>
+        </div>
+        <div class="card chart-card chart-card-tight">
+          <h3>Actividad por planta</h3>
+          <div id="filtro-planta-chip" class="filtro-chip" style="display:none"></div>
+          <div id="chart-plantas" class="chart short"></div>
+        </div>
       </div>
-      <div class="card chart-card">
-        <h3>Capacidad y actividad del TVB</h3>
-        <div id="chart-tvb" class="chart short"></div>
+
+      <div class="chart-row">
+        <div class="card chart-card chart-card-tight">
+          <h3>Capacidad del TVB</h3>
+          <div id="chart-tvb" class="chart short"></div>
+        </div>
+        <div class="card chart-card chart-card-tight">
+          <h3>Saldos por conexión internacional</h3>
+          <div id="chart-saldos" class="chart short"></div>
+        </div>
       </div>
+
+      <p class="hint-text">
+        Los almacenamientos subterráneos (AASS) -- inyección y extracción -- no están todavía en el
+        catálogo de métricas del observatorio (ver "Limitaciones conocidas" en el README): hace falta una
+        pasada de extracción aparte antes de poder mostrarlos aquí con datos reales.
+      </p>
     </section>
   </main>
 

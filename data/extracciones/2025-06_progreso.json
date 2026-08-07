@@ -1,0 +1,152 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,4",
+        "acumulado_anual": "30,9",
+        "tam": "50,1"
+      },
+      "var_pct_interanual": {
+        "mes": "-7,2%",
+        "acumulado_anual": "8,2%",
+        "tam": "4,9%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "13,4",
+        "acumulado_anual": "84,4",
+        "tam": "171,2"
+      },
+      "var_pct_interanual": {
+        "mes": "-5,0%",
+        "acumulado_anual": "-6,3%",
+        "tam": "-3,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "0,9",
+        "acumulado_anual": "6,1",
+        "tam": "12,4"
+      },
+      "var_pct_interanual": {
+        "mes": "3,7%",
+        "acumulado_anual": "-1,0%",
+        "tam": "-0,5%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 15,7 TWh; acumulado anual: 121,5 TWh; TAM: 233,7 TWh; %Δ mes: -4,7%; %Δ acumulado: -2,7%; %Δ TAM: -1,4%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 9,8 TWh; acumulado anual: 41,4 TWh; TAM: 86,8 TWh; %Δ mes: 118,6%; %Δ acumulado: 41,2%; %Δ TAM: 16,2%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 25,5 TWh; acumulado anual: 162,9 TWh; TAM: 320,5 TWh; %Δ mes: 21,7%; %Δ acumulado: 5,6%; %Δ TAM: 2,8%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh con corrección por laboralidad y temperatura - jun 2025",
+      "valor_aprox": "15.709 GWh; %Δ vs jun-24: -4,7%; acumulado Ene-jun 2025: 121.517 GWh; %Δ: -2,7%; TAM jul-24 jun-25: 233.687 GWh; %TAM: -1,4%",
+      "pagina": 7
+    },
+    {
+      "descripcion": "TAM convencional (gráfico línea) jun-25 / jul-24",
+      "valor_aprox": "234 TWh",
+      "pagina": 5
+    },
+    {
+      "descripcion": "TAM industrial (gráfico línea) jun-25 / jul-24",
+      "valor_aprox": "171 TWh",
+      "pagina": 5
+    },
+    {
+      "descripcion": "TAM eléctrico (gráfico línea) jun-25 / jul-24",
+      "valor_aprox": "87 TWh",
+      "pagina": 5
+    },
+    {
+      "descripcion": "TAM DC/PyMES (gráfico línea) jun-25 / jul-24",
+      "valor_aprox": "50 TWh",
+      "pagina": 5
+    },
+    {
+      "descripcion": "Mercado de cisternas variación vs mismo mes año anterior",
+      "valor_aprox": "+3,7%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Número de pedidos cisternas junio 2025 (más que mismo mes año anterior)",
+      "valor_aprox": "141",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Gas CTCCs TWh(g) 2024",
+      "valor_aprox": "4,5 TWh(g)",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Gas CTCCs TWh(g) 2025",
+      "valor_aprox": "9,8 TWh(g)",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Demanda eléctrica junio 2025 acumulado 1 al 30 junio TWhe",
+      "valor_aprox": "2024: 18,3; 2025: 20,4; Δ: +2,1; %Δ: +11,4%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación eólica junio acumulado 1 al 30 junio TWhe",
+      "valor_aprox": "2024: 4,2; 2025: 3,0; Δ: -1,2; %Δ: -28,8%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación solar junio acumulado 1 al 30 junio TWhe",
+      "valor_aprox": "2024: 5,4; 2025: 6,6; Δ: +1,2; %Δ: +22,8%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación hidráulica junio acumulado 1 al 30 junio TWhe",
+      "valor_aprox": "2024: 2,9; 2025: 2,8; Δ: -0,1; %Δ: -2,6%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación nuclear junio acumulado 1 al 30 junio TWhe",
+      "valor_aprox": "2024: 4,4; 2025: 4,1; Δ: -0,3; %Δ: -6,2%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación gas natural junio acumulado 1 al 30 junio TWhe",
+      "valor_aprox": "2024: 1,5; 2025: 4,0; Δ: +2,4; %Δ: +157,8%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural junio 2025 vs junio 2024 por país",
+      "valor_aprox": "España +21,7%; Portugal +34%; Italia +2%; Francia -12%; UK -14%; Alemania -14%",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1549
+  }
+}

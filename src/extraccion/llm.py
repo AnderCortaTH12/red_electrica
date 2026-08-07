@@ -67,6 +67,14 @@ de cada porción y empareja ese mismo color con su cuadradito en la \
 leyenda antes de asignar el porcentaje a la categoría -- es el error más \
 fácil de cometer en este tipo de gráfico y produce un número plausible \
 pero cruzado con otra categoría.
+10. TABLAS CON FILA/COLUMNA "Total": para una métrica con dimensión (CCAA, \
+país, planta, conexión, tecnología...), NO devuelvas una extracción con \
+`dimension_valor` = "Total" (o "TOTAL", "Total general", etc.) aunque la \
+tabla del PDF traiga esa fila/columna de suma. El total lo calcula el \
+propio pipeline sumando las filas individuales que sí extraigas; una fila \
+"Total" adicional no es una categoría real y descuadra la validación de \
+rangos y las sumas cruzadas. Extrae únicamente las filas con un nombre de \
+categoría real (BARCELONA, Argelia, Almería...).
 
 CATÁLOGO DE MÉTRICAS PARA ESTE DOCUMENTO (fuente: {fuente}):
 {catalogo_json}

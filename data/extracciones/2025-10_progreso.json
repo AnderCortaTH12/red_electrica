@@ -1,0 +1,202 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "2,1",
+        "acumulado_anual": "36,8",
+        "tam": "50,1"
+      },
+      "var_pct_interanual": {
+        "mes": "-7,8%",
+        "acumulado_anual": "6,6%",
+        "tam": "4,8%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "14,7",
+        "acumulado_anual": "138,5",
+        "tam": "168,8"
+      },
+      "var_pct_interanual": {
+        "mes": "0,3%",
+        "acumulado_anual": "-5,5%",
+        "tam": "-4,6%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,1",
+        "acumulado_anual": "10,3",
+        "tam": "12,4"
+      },
+      "var_pct_interanual": {
+        "mes": "5,8%",
+        "acumulado_anual": "-0,7%",
+        "tam": "-0,6%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 17,9 TWh; acumulado anual: 185,5 TWh; TAM: 231,3 TWh; var mes: -0,4%; var acum: -3,1%; var TAM: -2,5%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 11,3 TWh; acumulado anual: 79,6 TWh; TAM: 98,4 TWh; var mes: 88,5%; var acum: 42,3%; var TAM: 31,7%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 29,2 TWh; acumulado anual: 265,1 TWh; TAM: 329,7 TWh; var mes: 21,9%; var acum: 7,2%; var TAM: 5,7%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+      "valor_aprox": "oct 2025: 17.887 GWh; %vs oct 2024: -0,4%; Ene-oct 2025: 185.470 GWh; %vs: -3,1%; TAM nov-24 oct-25: 231.268 GWh; %TAM: -2,5%",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Cisternas de GNL: mercado de cisternas variación mensual",
+      "valor_aprox": "+5,8% respecto al mismo mes del año anterior",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas de GNL: número de pedidos octubre 2025",
+      "valor_aprox": "218",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Mugardos",
+      "valor_aprox": "0,9 TWh/año; 3,2 mil cargas; 24% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Huelva",
+      "valor_aprox": "2,4 TWh/año; 8,3 mil cargas; 37% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Cartagena",
+      "valor_aprox": "2,2 TWh/año; 7,8 mil cargas; 35% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Barcelona",
+      "valor_aprox": "2,5 TWh/año; 9,0 mil cargas; 40% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Sagunto",
+      "valor_aprox": "2,3 TWh/año; 8,0 mil cargas; 59% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Bilbao",
+      "valor_aprox": "1,3 TWh/año; 4,5 mil cargas; 70% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Musel",
+      "valor_aprox": "0,8 TWh/año; 2,6 mil cargas; 23% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda eléctrica octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 19,0; 2025: 18,9; delta: -0,1; %delta: -0,7%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación eólica octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 5,6; 2025: 4,4; delta: -1,2; %delta: -22,0%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación solar octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 2,9; 2025: 4,2; delta: +1,4; %delta: +47,3%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación hidráulica octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 3,2; 2025: 2,2; delta: -1,0; %delta: -31,3%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación resto renovables octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 0,5; 2025: 0,5; delta: +0,0; %delta: +3,9%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación cogeneración octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 1,2; 2025: 1,4; delta: +0,1; %delta: +10,9%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación nuclear octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 4,6; 2025: 3,7; delta: -0,9; %delta: -20,3%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación carbón octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 0,3; 2025: 0,0; delta: -0,3; %delta: -93,7%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación gas natural (CTCCs) octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: 2,3; 2025: 4,5; delta: +2,3; %delta: +99,6%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Saldos internacionales octubre 2025 vs 2024 (TWhe)",
+      "valor_aprox": "2024: -0,9 exportacion; 2025: -1,3 exportacion; delta: -0,4; %delta: +42,9%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: España",
+      "valor_aprox": "+21,9%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Portugal",
+      "valor_aprox": "+19%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Italia",
+      "valor_aprox": "+7%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Francia",
+      "valor_aprox": "+6%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: UK",
+      "valor_aprox": "0%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Alemania",
+      "valor_aprox": "+8%",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 2131
+  }
+}

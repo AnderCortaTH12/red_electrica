@@ -1,0 +1,1530 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_nacional",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "31.124",
+        "acumulado_anual": "296.204",
+        "tam": "331.368"
+      },
+      "var_pct_interanual": {
+        "mes": "5,7%",
+        "acumulado_anual": "7,1%",
+        "tam": "6,3%"
+      }
+    },
+    {
+      "metrica_id": "demanda_convencional",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "21.860",
+        "acumulado_anual": "207.329",
+        "tam": "232.013"
+      },
+      "var_pct_interanual": {
+        "mes": "3,5%",
+        "acumulado_anual": "-2,4%",
+        "tam": "-2,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_sector_electrico",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "9.265",
+        "acumulado_anual": "88.875",
+        "tam": "99.354"
+      },
+      "var_pct_interanual": {
+        "mes": "11,2%",
+        "acumulado_anual": "38,3%",
+        "tam": "32,9%"
+      }
+    },
+    {
+      "metrica_id": "demanda_internacional",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1.959",
+        "acumulado_anual": "38.160",
+        "tam": "39.762"
+      },
+      "var_pct_interanual": {
+        "mes": "-34,9%",
+        "acumulado_anual": "16,0%",
+        "tam": "15,2%"
+      }
+    },
+    {
+      "metrica_id": "salidas_conexiones_internacionales",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1.234",
+        "acumulado_anual": "27.472",
+        "tam": "28.578"
+      },
+      "var_pct_interanual": {
+        "mes": "-13,7%",
+        "acumulado_anual": "28,6%",
+        "tam": "27,2%"
+      }
+    },
+    {
+      "metrica_id": "cargas_buques",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "725",
+        "acumulado_anual": "10.688",
+        "tam": "11.184"
+      },
+      "var_pct_interanual": {
+        "mes": "-54,1%",
+        "acumulado_anual": "-7,4%",
+        "tam": "-7,1%"
+      }
+    },
+    {
+      "metrica_id": "total_salidas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "33.083",
+        "acumulado_anual": "334.364",
+        "tam": "371.129"
+      },
+      "var_pct_interanual": {
+        "mes": "1,9%",
+        "acumulado_anual": "8,0%",
+        "tam": "7,2%"
+      }
+    },
+    {
+      "metrica_id": "correccion_laboralidad",
+      "dimension_valor": null,
+      "pagina": 5,
+      "valores": {
+        "mes": "0,0%",
+        "acumulado_anual": "-0,5%",
+        "tam": "-0,4%"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "correccion_temperatura",
+      "dimension_valor": null,
+      "pagina": 5,
+      "valores": {
+        "mes": "7,4%",
+        "acumulado_anual": "1,8%",
+        "tam": "1,6%"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "demanda_convencional_corregida",
+      "dimension_valor": null,
+      "pagina": 5,
+      "valores": {
+        "mes": "-3,8%",
+        "acumulado_anual": "-3,8%",
+        "tam": "-3,4%"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "delta_temperatura",
+      "dimension_valor": null,
+      "pagina": 5,
+      "valores": {
+        "mes": "-1,96"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Eólica",
+      "pagina": 6,
+      "valores": {
+        "mes": "6,8"
+      },
+      "var_pct_interanual": {
+        "mes": "+42,6%"
+      }
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Solar",
+      "pagina": 6,
+      "valores": {
+        "mes": "3,2"
+      },
+      "var_pct_interanual": {
+        "mes": "+35,6%"
+      }
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Hidráulica",
+      "pagina": 6,
+      "valores": {
+        "mes": "2,5"
+      },
+      "var_pct_interanual": {
+        "mes": "-18,1%"
+      }
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Resto renovables",
+      "pagina": 6,
+      "valores": {
+        "mes": "0,5"
+      },
+      "var_pct_interanual": {
+        "mes": "-4,5%"
+      }
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Cogeneración",
+      "pagina": 6,
+      "valores": {
+        "mes": "1,2"
+      },
+      "var_pct_interanual": {
+        "mes": "-20,7%"
+      }
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Nuclear",
+      "pagina": 6,
+      "valores": {
+        "mes": "3,7"
+      },
+      "var_pct_interanual": {
+        "mes": "+1,0%"
+      }
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Carbón",
+      "pagina": 6,
+      "valores": {
+        "mes": "0,0"
+      },
+      "var_pct_interanual": {
+        "mes": "-98,9%"
+      }
+    },
+    {
+      "metrica_id": "generacion_electrica",
+      "dimension_valor": "Gas natural",
+      "pagina": 6,
+      "valores": {
+        "mes": "3,7"
+      },
+      "var_pct_interanual": {
+        "mes": "+6,4%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Andalucía",
+      "pagina": 7,
+      "valores": {
+        "mes": "2.256"
+      },
+      "var_pct_interanual": {
+        "mes": "-6,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Aragón",
+      "pagina": 7,
+      "valores": {
+        "mes": "1.171"
+      },
+      "var_pct_interanual": {
+        "mes": "-4,5%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Asturias",
+      "pagina": 7,
+      "valores": {
+        "mes": "479"
+      },
+      "var_pct_interanual": {
+        "mes": "-8,7%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Baleares",
+      "pagina": 7,
+      "valores": {
+        "mes": "80"
+      },
+      "var_pct_interanual": {
+        "mes": "13,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Cantabria",
+      "pagina": 7,
+      "valores": {
+        "mes": "233"
+      },
+      "var_pct_interanual": {
+        "mes": "19,3%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Castilla - La Mancha",
+      "pagina": 7,
+      "valores": {
+        "mes": "1.014"
+      },
+      "var_pct_interanual": {
+        "mes": "-5,4%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Castilla y León",
+      "pagina": 7,
+      "valores": {
+        "mes": "1.887"
+      },
+      "var_pct_interanual": {
+        "mes": "11,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Cataluña",
+      "pagina": 7,
+      "valores": {
+        "mes": "3.791"
+      },
+      "var_pct_interanual": {
+        "mes": "1,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Comunidad Valenciana",
+      "pagina": 7,
+      "valores": {
+        "mes": "2.212"
+      },
+      "var_pct_interanual": {
+        "mes": "7,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Extremadura",
+      "pagina": 7,
+      "valores": {
+        "mes": "195"
+      },
+      "var_pct_interanual": {
+        "mes": "13,9%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Galicia",
+      "pagina": 7,
+      "valores": {
+        "mes": "976"
+      },
+      "var_pct_interanual": {
+        "mes": "17,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "La Rioja",
+      "pagina": 7,
+      "valores": {
+        "mes": "249"
+      },
+      "var_pct_interanual": {
+        "mes": "12,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Madrid",
+      "pagina": 7,
+      "valores": {
+        "mes": "2.835"
+      },
+      "var_pct_interanual": {
+        "mes": "21,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Murcia",
+      "pagina": 7,
+      "valores": {
+        "mes": "1.170"
+      },
+      "var_pct_interanual": {
+        "mes": "-5,7%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "Navarra",
+      "pagina": 7,
+      "valores": {
+        "mes": "546"
+      },
+      "var_pct_interanual": {
+        "mes": "3,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_convencional",
+      "dimension_valor": "País Vasco",
+      "pagina": 7,
+      "valores": {
+        "mes": "1.678"
+      },
+      "var_pct_interanual": {
+        "mes": "-2,4%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Andalucía",
+      "pagina": 7,
+      "valores": {
+        "mes": "2.673"
+      },
+      "var_pct_interanual": {
+        "mes": "84,4%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Aragón",
+      "pagina": 7,
+      "valores": {
+        "mes": "405"
+      },
+      "var_pct_interanual": {
+        "mes": "8,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Asturias",
+      "pagina": 7,
+      "valores": {
+        "mes": "756"
+      },
+      "var_pct_interanual": {
+        "mes": "69,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Baleares",
+      "pagina": 7,
+      "valores": {
+        "mes": "683"
+      },
+      "var_pct_interanual": {
+        "mes": "12,5%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Cantabria",
+      "pagina": 7,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Castilla - La Mancha",
+      "pagina": 7,
+      "valores": {
+        "mes": "345"
+      },
+      "var_pct_interanual": {
+        "mes": "-15,5%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Castilla y León",
+      "pagina": 7,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Cataluña",
+      "pagina": 7,
+      "valores": {
+        "mes": "1.343"
+      },
+      "var_pct_interanual": {
+        "mes": "2,4%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Comunidad Valenciana",
+      "pagina": 7,
+      "valores": {
+        "mes": "486"
+      },
+      "var_pct_interanual": {
+        "mes": "-43,9%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Extremadura",
+      "pagina": 7,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Galicia",
+      "pagina": 7,
+      "valores": {
+        "mes": "505"
+      },
+      "var_pct_interanual": {
+        "mes": "-6,7%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "La Rioja",
+      "pagina": 7,
+      "valores": {
+        "mes": "137"
+      },
+      "var_pct_interanual": {
+        "mes": "-49,1%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Madrid",
+      "pagina": 7,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Murcia",
+      "pagina": 7,
+      "valores": {
+        "mes": "1.034"
+      },
+      "var_pct_interanual": {
+        "mes": "20,8%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "Navarra",
+      "pagina": 7,
+      "valores": {
+        "mes": "383"
+      },
+      "var_pct_interanual": {
+        "mes": "-37,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_sector_electrico",
+      "dimension_valor": "País Vasco",
+      "pagina": 7,
+      "valores": {
+        "mes": "514"
+      },
+      "var_pct_interanual": {
+        "mes": "-12,6%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Andalucía",
+      "pagina": 7,
+      "valores": {
+        "mes": "149"
+      },
+      "var_pct_interanual": {
+        "mes": "-13,7%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Aragón",
+      "pagina": 7,
+      "valores": {
+        "mes": "47"
+      },
+      "var_pct_interanual": {
+        "mes": "-18,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Asturias",
+      "pagina": 7,
+      "valores": {
+        "mes": "32"
+      },
+      "var_pct_interanual": {
+        "mes": "2,9%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Baleares",
+      "pagina": 7,
+      "valores": {
+        "mes": "2"
+      },
+      "var_pct_interanual": {
+        "mes": "4,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Cantabria",
+      "pagina": 7,
+      "valores": {
+        "mes": "26"
+      },
+      "var_pct_interanual": {
+        "mes": "3,8%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Castilla - La Mancha",
+      "pagina": 7,
+      "valores": {
+        "mes": "59"
+      },
+      "var_pct_interanual": {
+        "mes": "2,5%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Castilla y León",
+      "pagina": 7,
+      "valores": {
+        "mes": "46"
+      },
+      "var_pct_interanual": {
+        "mes": "-27,6%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Cataluña",
+      "pagina": 7,
+      "valores": {
+        "mes": "88"
+      },
+      "var_pct_interanual": {
+        "mes": "-25,0%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Comunidad Valenciana",
+      "pagina": 7,
+      "valores": {
+        "mes": "70"
+      },
+      "var_pct_interanual": {
+        "mes": "-32,7%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Extremadura",
+      "pagina": 7,
+      "valores": {
+        "mes": "37"
+      },
+      "var_pct_interanual": {
+        "mes": "-26,1%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Galicia",
+      "pagina": 7,
+      "valores": {
+        "mes": "51"
+      },
+      "var_pct_interanual": {
+        "mes": "-11,1%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "La Rioja",
+      "pagina": 7,
+      "valores": {
+        "mes": "9"
+      },
+      "var_pct_interanual": {
+        "mes": "110,8%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Madrid",
+      "pagina": 7,
+      "valores": {
+        "mes": "338"
+      },
+      "var_pct_interanual": {
+        "mes": "83,3%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Murcia",
+      "pagina": 7,
+      "valores": {
+        "mes": "44"
+      },
+      "var_pct_interanual": {
+        "mes": "-9,5%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "Navarra",
+      "pagina": 7,
+      "valores": {
+        "mes": "8"
+      },
+      "var_pct_interanual": {
+        "mes": "-37,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_ccaa_cisternas",
+      "dimension_valor": "País Vasco",
+      "pagina": 7,
+      "valores": {
+        "mes": "35"
+      },
+      "var_pct_interanual": {
+        "mes": "68,4%"
+      }
+    },
+    {
+      "metrica_id": "aprovisionamiento_gn",
+      "dimension_valor": "Argelia",
+      "pagina": 9,
+      "valores": {
+        "mes": "9.671",
+        "acumulado_anual": "98.185",
+        "tam": "107.949"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Argelia",
+      "pagina": 9,
+      "valores": {
+        "mes": "3.899",
+        "acumulado_anual": "21.325",
+        "tam": "21.325"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Estados Unidos",
+      "pagina": 9,
+      "valores": {
+        "mes": "7.240",
+        "acumulado_anual": "105.609",
+        "tam": "108.128"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Rusia",
+      "pagina": 9,
+      "valores": {
+        "mes": "3.305",
+        "acumulado_anual": "36.020",
+        "tam": "41.505"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Nigeria",
+      "pagina": 9,
+      "valores": {
+        "mes": "1.023",
+        "acumulado_anual": "25.277",
+        "tam": "28.377"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Angola",
+      "pagina": 9,
+      "valores": {
+        "mes": "2.051",
+        "acumulado_anual": "18.605",
+        "tam": "18.605"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gn",
+      "dimension_valor": "Francia",
+      "pagina": 9,
+      "valores": {
+        "mes": "1.041",
+        "acumulado_anual": "7.877",
+        "tam": "9.660"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gn",
+      "dimension_valor": "Qatar",
+      "pagina": 9,
+      "valores": {
+        "mes": "0",
+        "acumulado_anual": "5.636",
+        "tam": "7.382"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Portugal",
+      "pagina": 9,
+      "valores": {
+        "mes": "266",
+        "acumulado_anual": "5.877",
+        "tam": "6.514"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Perú",
+      "pagina": 9,
+      "valores": {
+        "mes": null,
+        "acumulado_anual": "5.444",
+        "tam": "5.444"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Noruega",
+      "pagina": 9,
+      "valores": {
+        "mes": null,
+        "acumulado_anual": "2.144",
+        "tam": "2.144"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Trinidad y Tobago",
+      "pagina": 9,
+      "valores": {
+        "mes": "827",
+        "acumulado_anual": "2.673",
+        "tam": "3.857"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Congo",
+      "pagina": 9,
+      "valores": {
+        "mes": "685",
+        "acumulado_anual": "2.490",
+        "tam": "2.490"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Guinea Ecuatorial",
+      "pagina": 9,
+      "valores": {
+        "mes": null,
+        "acumulado_anual": "1.129",
+        "tam": "1.129"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Egipto",
+      "pagina": 9,
+      "valores": {
+        "mes": null,
+        "acumulado_anual": "1.034",
+        "tam": "1.034"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Camerún",
+      "pagina": 9,
+      "valores": {
+        "mes": null,
+        "acumulado_anual": "979",
+        "tam": "979"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gnl",
+      "dimension_valor": "Jamaica",
+      "pagina": 9,
+      "valores": {
+        "mes": null,
+        "acumulado_anual": "168",
+        "tam": "168"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gn",
+      "dimension_valor": "Yacimientos nacionales",
+      "pagina": 9,
+      "valores": {
+        "mes": "63",
+        "acumulado_anual": "333",
+        "tam": "412"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "aprovisionamiento_gn",
+      "dimension_valor": "Biometano nacional",
+      "pagina": 9,
+      "valores": {
+        "mes": "36",
+        "acumulado_anual": "390",
+        "tam": "419"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "pct_total_gn",
+      "dimension_valor": null,
+      "pagina": 9,
+      "valores": {
+        "mes": "36,8%"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "pct_total_gnl",
+      "dimension_valor": null,
+      "pagina": 9,
+      "valores": {
+        "mes": "63,2%"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "conexion_internacional_saldo",
+      "dimension_valor": "Tarifa",
+      "pagina": 11,
+      "valores": {
+        "mes": "-840",
+        "acumulado_anual": "-9.459",
+        "tam": "-10.114"
+      },
+      "var_pct_interanual": {
+        "mes": "-9,5%",
+        "acumulado_anual": "4,5%",
+        "tam": "4,2%"
+      }
+    },
+    {
+      "metrica_id": "conexion_internacional_saldo",
+      "dimension_valor": "Almería",
+      "pagina": 11,
+      "valores": {
+        "mes": "9.671",
+        "acumulado_anual": "98.185",
+        "tam": "107.949"
+      },
+      "var_pct_interanual": {
+        "mes": "2,6%",
+        "acumulado_anual": "3,4%",
+        "tam": "3,1%"
+      }
+    },
+    {
+      "metrica_id": "conexion_internacional_saldo",
+      "dimension_valor": "VIP Ibérico",
+      "pagina": 11,
+      "valores": {
+        "mes": "-40",
+        "acumulado_anual": "1.665",
+        "tam": "1.984"
+      },
+      "var_pct_interanual": {
+        "mes": "<100%",
+        "acumulado_anual": "-79,0%",
+        "tam": "-76,0%"
+      }
+    },
+    {
+      "metrica_id": "conexion_internacional_saldo",
+      "dimension_valor": "VIP Pirineos",
+      "pagina": 11,
+      "valores": {
+        "mes": "986",
+        "acumulado_anual": "-5.853",
+        "tam": "-4.203"
+      },
+      "var_pct_interanual": {
+        "mes": ">100%",
+        "acumulado_anual": "<100%",
+        "tam": "<100%"
+      }
+    },
+    {
+      "metrica_id": "conexion_internacional_saldo",
+      "dimension_valor": "Yacimiento Nacionales",
+      "pagina": 11,
+      "valores": {
+        "mes": "63",
+        "acumulado_anual": "333",
+        "tam": "412"
+      },
+      "var_pct_interanual": {
+        "mes": ">100%",
+        "acumulado_anual": ">100%",
+        "tam": "82,8%"
+      }
+    },
+    {
+      "metrica_id": "conexion_internacional_saldo",
+      "dimension_valor": "Biometano",
+      "pagina": 11,
+      "valores": {
+        "mes": "36",
+        "acumulado_anual": "390",
+        "tam": "418"
+      },
+      "var_pct_interanual": {
+        "mes": "28,7%",
+        "acumulado_anual": "35,7%",
+        "tam": "32,5%"
+      }
+    },
+    {
+      "metrica_id": "biometano_transporte",
+      "dimension_valor": null,
+      "pagina": 13,
+      "valores": {
+        "mes": "11,3",
+        "acumulado_anual": "176,7",
+        "tam": "193,3"
+      },
+      "var_pct_interanual": {
+        "mes": "-23,9%",
+        "acumulado_anual": "9,5%",
+        "tam": "8,6%"
+      }
+    },
+    {
+      "metrica_id": "biometano_distribucion",
+      "dimension_valor": null,
+      "pagina": 13,
+      "valores": {
+        "mes": "24,4",
+        "acumulado_anual": "213,2",
+        "tam": "225,0"
+      },
+      "var_pct_interanual": {
+        "mes": "89,4%",
+        "acumulado_anual": "69,4%",
+        "tam": "63,4%"
+      }
+    },
+    {
+      "metrica_id": "tvb_capacidad_regasificacion_total",
+      "dimension_valor": null,
+      "pagina": 15,
+      "valores": {
+        "mes": "58.350"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "tvb_capacidad_regasificacion_contratada",
+      "dimension_valor": null,
+      "pagina": 15,
+      "valores": {
+        "mes": "13.887"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "tvb_capacidad_regasificacion_disponible",
+      "dimension_valor": null,
+      "pagina": 15,
+      "valores": {
+        "mes": "44.463"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "tvb_regasificacion_comercial",
+      "dimension_valor": null,
+      "pagina": 15,
+      "valores": {
+        "mes": "20.959"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "planta_descargas_buques",
+      "dimension_valor": "BARCELONA",
+      "pagina": 17,
+      "valores": {
+        "mes": "2.672"
+      },
+      "var_pct_interanual": {
+        "mes": "-20,3%"
+      }
+    },
+    {
+      "metrica_id": "planta_descargas_buques",
+      "dimension_valor": "HUELVA",
+      "pagina": 17,
+      "valores": {
+        "mes": "927"
+      },
+      "var_pct_interanual": {
+        "mes": "-15,1%"
+      }
+    },
+    {
+      "metrica_id": "planta_descargas_buques",
+      "dimension_valor": "CARTAGENA",
+      "pagina": 17,
+      "valores": {
+        "mes": "4.491"
+      },
+      "var_pct_interanual": {
+        "mes": ">100%"
+      }
+    },
+    {
+      "metrica_id": "planta_descargas_buques",
+      "dimension_valor": "BILBAO",
+      "pagina": 17,
+      "valores": {
+        "mes": "4.233"
+      },
+      "var_pct_interanual": {
+        "mes": "-22,8%"
+      }
+    },
+    {
+      "metrica_id": "planta_descargas_buques",
+      "dimension_valor": "SAGUNTO",
+      "pagina": 17,
+      "valores": {
+        "mes": "3.111"
+      },
+      "var_pct_interanual": {
+        "mes": "-2,5%"
+      }
+    },
+    {
+      "metrica_id": "planta_descargas_buques",
+      "dimension_valor": "MUGARDOS",
+      "pagina": 17,
+      "valores": {
+        "mes": "2.623"
+      },
+      "var_pct_interanual": {
+        "mes": "27,3%"
+      }
+    },
+    {
+      "metrica_id": "planta_descargas_buques",
+      "dimension_valor": "MUSEL",
+      "pagina": 17,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "planta_n_buques_descargados",
+      "dimension_valor": "BARCELONA",
+      "pagina": 17,
+      "valores": {
+        "mes": "3"
+      },
+      "var_pct_interanual": {
+        "mes": "-25,0%"
+      }
+    },
+    {
+      "metrica_id": "planta_n_buques_descargados",
+      "dimension_valor": "HUELVA",
+      "pagina": 17,
+      "valores": {
+        "mes": "1"
+      },
+      "var_pct_interanual": {
+        "mes": "0,0%"
+      }
+    },
+    {
+      "metrica_id": "planta_n_buques_descargados",
+      "dimension_valor": "CARTAGENA",
+      "pagina": 17,
+      "valores": {
+        "mes": "5"
+      },
+      "var_pct_interanual": {
+        "mes": "66,7%"
+      }
+    },
+    {
+      "metrica_id": "planta_n_buques_descargados",
+      "dimension_valor": "BILBAO",
+      "pagina": 17,
+      "valores": {
+        "mes": "4"
+      },
+      "var_pct_interanual": {
+        "mes": "-20,0%"
+      }
+    },
+    {
+      "metrica_id": "planta_n_buques_descargados",
+      "dimension_valor": "SAGUNTO",
+      "pagina": 17,
+      "valores": {
+        "mes": "4"
+      },
+      "var_pct_interanual": {
+        "mes": "33,3%"
+      }
+    },
+    {
+      "metrica_id": "planta_n_buques_descargados",
+      "dimension_valor": "MUGARDOS",
+      "pagina": 17,
+      "valores": {
+        "mes": "3"
+      },
+      "var_pct_interanual": {
+        "mes": "50,0%"
+      }
+    },
+    {
+      "metrica_id": "planta_n_buques_descargados",
+      "dimension_valor": "MUSEL",
+      "pagina": 17,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "planta_cargas_buques",
+      "dimension_valor": "BARCELONA",
+      "pagina": 17,
+      "valores": {
+        "mes": "43"
+      },
+      "var_pct_interanual": {
+        "mes": "-86,2%"
+      }
+    },
+    {
+      "metrica_id": "planta_cargas_buques",
+      "dimension_valor": "HUELVA",
+      "pagina": 17,
+      "valores": {
+        "mes": "477"
+      },
+      "var_pct_interanual": {
+        "mes": "-62,4%"
+      }
+    },
+    {
+      "metrica_id": "planta_cargas_buques",
+      "dimension_valor": "CARTAGENA",
+      "pagina": 17,
+      "valores": {
+        "mes": "174"
+      },
+      "var_pct_interanual": {
+        "mes": ">100%"
+      }
+    },
+    {
+      "metrica_id": "planta_cargas_buques",
+      "dimension_valor": "BILBAO",
+      "pagina": 17,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "planta_cargas_buques",
+      "dimension_valor": "SAGUNTO",
+      "pagina": 17,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {
+        "mes": ">100%"
+      }
+    },
+    {
+      "metrica_id": "planta_cargas_buques",
+      "dimension_valor": "MUGARDOS",
+      "pagina": 17,
+      "valores": {
+        "mes": "31"
+      },
+      "var_pct_interanual": {
+        "mes": ">100%"
+      }
+    },
+    {
+      "metrica_id": "planta_cargas_buques",
+      "dimension_valor": "MUSEL",
+      "pagina": 17,
+      "valores": {
+        "mes": "0"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "planta_carga_cisternas",
+      "dimension_valor": "BARCELONA",
+      "pagina": 17,
+      "valores": {
+        "mes": "209"
+      },
+      "var_pct_interanual": {
+        "mes": "-2,3%"
+      }
+    },
+    {
+      "metrica_id": "planta_carga_cisternas",
+      "dimension_valor": "HUELVA",
+      "pagina": 17,
+      "valores": {
+        "mes": "192"
+      },
+      "var_pct_interanual": {
+        "mes": "3,1%"
+      }
+    },
+    {
+      "metrica_id": "planta_carga_cisternas",
+      "dimension_valor": "CARTAGENA",
+      "pagina": 17,
+      "valores": {
+        "mes": "207"
+      },
+      "var_pct_interanual": {
+        "mes": "3,3%"
+      }
+    },
+    {
+      "metrica_id": "planta_carga_cisternas",
+      "dimension_valor": "BILBAO",
+      "pagina": 17,
+      "valores": {
+        "mes": "113"
+      },
+      "var_pct_interanual": {
+        "mes": "6,4%"
+      }
+    },
+    {
+      "metrica_id": "planta_carga_cisternas",
+      "dimension_valor": "SAGUNTO",
+      "pagina": 17,
+      "valores": {
+        "mes": "200"
+      },
+      "var_pct_interanual": {
+        "mes": "6,0%"
+      }
+    },
+    {
+      "metrica_id": "planta_carga_cisternas",
+      "dimension_valor": "MUGARDOS",
+      "pagina": 17,
+      "valores": {
+        "mes": "85"
+      },
+      "var_pct_interanual": {
+        "mes": "1,1%"
+      }
+    },
+    {
+      "metrica_id": "planta_carga_cisternas",
+      "dimension_valor": "MUSEL",
+      "pagina": 17,
+      "valores": {
+        "mes": "72"
+      },
+      "var_pct_interanual": {
+        "mes": "16,3%"
+      }
+    },
+    {
+      "metrica_id": "destino_cargas_pct",
+      "dimension_valor": "EU",
+      "pagina": 18,
+      "valores": {
+        "mes": "64,7%",
+        "acumulado_anual": "50,8%"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "destino_cargas_pct",
+      "dimension_valor": "non EU",
+      "pagina": 18,
+      "valores": {
+        "mes": "24,2%",
+        "acumulado_anual": "16,5%"
+      },
+      "var_pct_interanual": {}
+    },
+    {
+      "metrica_id": "destino_cargas_pct",
+      "dimension_valor": "Bunkering",
+      "pagina": 18,
+      "valores": {
+        "mes": "11,1%",
+        "acumulado_anual": "32,7%"
+      },
+      "var_pct_interanual": {}
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda eléctrica total (TWh) - 1 al 30 de noviembre 2024 vs 2025",
+      "valor_aprox": "18,7 vs 19,5 (+4,2%)",
+      "pagina": 6
+    },
+    {
+      "descripcion": "Saldos internacionales eléctricos: Francia exportación 0,2 TWh, Portugal exportación -0,4 TWh, Marruecos -0,1 TWh (nov 2025)",
+      "valor_aprox": "Francia: 0,2; Portugal: -0,4; Marruecos: -0,1",
+      "pagina": 6
+    },
+    {
+      "descripcion": "Existencias finales útiles AASS Noviembre-24: 33.563 GWh (93% llenado); Noviembre-25: 28.610 GWh (80% llenado); variación -14,8%",
+      "valor_aprox": "33.563 / 28.610 / -14,8%",
+      "pagina": 20
+    },
+    {
+      "descripcion": "Inyección/Extracción neta AASS: Noviembre-24: 2.502,2 GWh/mes; Noviembre-25: 2.601,1 GWh/mes; variación +4,0%",
+      "valor_aprox": "2.502,2 / 2.601,1 / +4,0%",
+      "pagina": 20
+    },
+    {
+      "descripcion": "Capacidad máxima almacenamiento TVB: 3.316.500 m³",
+      "valor_aprox": "3.316.500 m³",
+      "pagina": 15
+    },
+    {
+      "descripcion": "Capacidad máxima regasificación TVB: 1.945 GWh/día",
+      "valor_aprox": "1.945 GWh/día",
+      "pagina": 15
+    },
+    {
+      "descripcion": "Promedio existencias TVB a 30 noviembre-25 representa el 89% del promedio de la capacidad contratada",
+      "valor_aprox": "89%",
+      "pagina": 15
+    },
+    {
+      "descripcion": "Capacidad útil AASS: 35.926 GWh; Existencias estratégicas + operativas sistema: 19.586 GWh",
+      "valor_aprox": "35.926 GWh / 19.586 GWh",
+      "pagina": 20
+    },
+    {
+      "descripcion": "% s TOTAL aprovisionamiento GN Noviembre 2024 (donut): Total GN 39,0%, Total GNL 61,0%",
+      "valor_aprox": "39,0% GN / 61,0% GNL",
+      "pagina": 9
+    },
+    {
+      "descripcion": "Conexiones internacionales Nov-24 vs Nov-25 (gráficos de barras): Almería importación Nov-24: 9.428, Nov-25: 9.671 (+3%); VIP Ibérico importación Nov-24: 875, Nov-25: 266 (-70%); VIP Pirineos importación Nov-24: 640, Nov-25: 1.041 (+63%); Tarifa exportación Nov-24: 928, Nov-25: 840 (-9%); VIP Ibérico exportación Nov-24: 249, Nov-25: 306 (+23%); VIP Pirineos exportación Nov-24: 247, Nov-25: 88 (-64%)",
+      "valor_aprox": "varios",
+      "pagina": 10
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "boletin",
+    "input_tokens": 40059,
+    "output_tokens": 8750
+  }
+}

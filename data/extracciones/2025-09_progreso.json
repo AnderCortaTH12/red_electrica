@@ -1,0 +1,162 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,5",
+        "acumulado_anual": "34,7",
+        "tam": "50,2"
+      },
+      "var_pct_interanual": {
+        "mes": "1,4%",
+        "acumulado_anual": "7,6%",
+        "tam": "5,1%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "13,6",
+        "acumulado_anual": "123,8",
+        "tam": "168,8"
+      },
+      "var_pct_interanual": {
+        "mes": "-4,0%",
+        "acumulado_anual": "-6,1%",
+        "tam": "-4,6%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,1",
+        "acumulado_anual": "9,2",
+        "tam": "12,3"
+      },
+      "var_pct_interanual": {
+        "mes": "4,6%",
+        "acumulado_anual": "-1,5%",
+        "tam": "-1,1%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 16,1 TWh; acumulado anual: 167,6 TWh; TAM: 231,3 TWh; var mes: -3,0%; var acum: -3,3%; var TAM: -2,4%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 8,5 TWh; acumulado anual: 68,3 TWh; TAM: 93,1 TWh; var mes: 40,3%; var acum: 36,8%; var TAM: 24,6%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 24,6 TWh; acumulado anual: 235,9 TWh; TAM: 324,5 TWh; var mes: 8,5%; var acum: 5,6%; var TAM: 4,0%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+      "valor_aprox": "mes sep2025: 16.139 GWh; var -3,0%; acumulado Ene-sep2025: 167.583 GWh; var -3,3%; TAM oct-24 sep-25: 231.343 GWh; var -2,4%",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Cisternas de GNL: variación mensual respecto año anterior",
+      "valor_aprox": "+4,6%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas de GNL: número de pedidos septiembre 2025",
+      "valor_aprox": "170",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de Cisternas septiembre 2024: porcentaje Transporte",
+      "valor_aprox": "21,4%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de Cisternas septiembre 2024: porcentaje Resto",
+      "valor_aprox": "78,6%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de Cisternas septiembre 2025: porcentaje Transporte",
+      "valor_aprox": "9,2%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de Cisternas septiembre 2025: porcentaje Resto",
+      "valor_aprox": "90,8%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL desagregación por tipo septiembre-25 (GWh/mes): Monocliente",
+      "valor_aprox": "899 GWh/mes",
+      "pagina": 9
+    },
+    {
+      "descripcion": "Cisternas GNL desagregación por tipo septiembre-25 (GWh/mes): DCPyMES",
+      "valor_aprox": "99 GWh/mes",
+      "pagina": 9
+    },
+    {
+      "descripcion": "Cisternas GNL desagregación por tipo septiembre-25 (GWh/mes): Transporte",
+      "valor_aprox": "77 GWh/mes",
+      "pagina": 9
+    },
+    {
+      "descripcion": "Demanda eléctrica septiembre 2024 (1 al 30)",
+      "valor_aprox": "18,6 TWhe",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Demanda eléctrica septiembre 2025 (1 al 30)",
+      "valor_aprox": "19,2 TWhe; var +3,5%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: España",
+      "valor_aprox": "+8,5%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Portugal",
+      "valor_aprox": "+19%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Italia",
+      "valor_aprox": "-3%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Francia",
+      "valor_aprox": "-5%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: UK",
+      "valor_aprox": "-8%",
+      "pagina": 13
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Alemania",
+      "valor_aprox": "-1%",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1395
+  }
+}

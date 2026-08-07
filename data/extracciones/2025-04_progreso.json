@@ -1,0 +1,72 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "3,4",
+        "acumulado_anual": "27,2",
+        "tam": "50,3"
+      },
+      "var_pct_interanual": {
+        "mes": "-1,7%",
+        "acumulado_anual": "10,2%",
+        "tam": "5,3%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "13,2",
+        "acumulado_anual": "57,1",
+        "tam": "172,7"
+      },
+      "var_pct_interanual": {
+        "mes": "-3,1%",
+        "acumulado_anual": "-6,8%",
+        "tam": "-2,3%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "0,9",
+        "acumulado_anual": "4,2",
+        "tam": "12,3"
+      },
+      "var_pct_interanual": {
+        "mes": "-7,6%",
+        "acumulado_anual": "-2,4%",
+        "tam": "-0,8%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 17,6 TWh; acumulado anual: 88,5 TWh; TAM: 235,4 TWh; var mes: -3,1%; var acumulado: -1,9%; var TAM: -0,7%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 5,5 TWh; acumulado anual: 24,4 TWh; TAM: 78,6 TWh; var mes: 24,4%; var acumulado: 18,7%; var TAM: 5,1%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 23,1 TWh; acumulado anual: 112,9 TWh; TAM: 314,0 TWh; var mes: 2,4%; var acumulado: 1,9%; var TAM: 0,7%",
+      "pagina": 3
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 582
+  }
+}

@@ -53,9 +53,12 @@ class BoletinSource(DataSource):
     biometano, TVB, plantas de regasificación, almacenamientos
     subterráneos, mix de generación eléctrica.
 
-    Patrón de nombrado verificado estable (jun26, may26, abr26): un
-    único nombre de fichero por periodo, sin variantes históricas
-    conocidas (a diferencia del Progreso).
+    Patrón de nombrado verificado sobre 2026 (jun26, may26, abr26): un
+    único nombre de fichero por periodo. Verificado también sobre 2025
+    (oct25, nov25, dic25) al intentar el backfill de ese año: el
+    nombrado histórico usa además un sufijo "_v1" que no aparece en
+    2026 -- otra inconsistencia real de Enagás, no un patrón fijo por
+    año (oct25 no lo lleva, nov25 y dic25 sí).
     """
 
     name = "boletin"
@@ -68,16 +71,19 @@ class BoletinSource(DataSource):
     def candidate_urls(self, year: int, month: int) -> list[str]:
         mmm = MESES_ABREV[month - 1]
         yy = f"{year % 100:02d}"
-        # Verificado sobre datos reales (2026-01/02/03): cuando Enagás
-        # revisa un Boletín ya publicado, el fichero se renombra con un
-        # sufijo "rev" -- e inconsistente en el propio formato del
-        # sufijo (visto "ene26rev.pdf" sin guion bajo, "feb26_rev.pdf"
-        # y "mar26_rev.pdf" con guion bajo). Se prueban las tres formas;
-        # el nombre sin "rev" va primero por ser el caso normal.
+        # Verificado sobre datos reales: cuando Enagás revisa un
+        # Boletín ya publicado, el fichero se renombra con un sufijo
+        # "rev" -- inconsistente en su propio formato ("ene26rev.pdf"
+        # sin guion bajo, "feb26_rev.pdf" y "mar26_rev.pdf" con guion
+        # bajo). Y en 2025 aparece además un sufijo "_v1"/"_v2" que no
+        # se ha visto en 2026 (nov25, dic25 lo llevan; oct25 no). El
+        # nombre sin sufijo va primero por ser el caso normal.
         nombres = [
             f"Boletín Estadístico_{mmm}{yy}.pdf",
             f"Boletín Estadístico_{mmm}{yy}_rev.pdf",
             f"Boletín Estadístico_{mmm}{yy}rev.pdf",
+            f"Boletín Estadístico_{mmm}{yy}_v1.pdf",
+            f"Boletín Estadístico_{mmm}{yy}_v2.pdf",
         ]
         # quote() codifica el espacio como %20 y la í como %C3%AD,
         # igual que la URL real publicada por Enagás.

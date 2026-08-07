@@ -53,6 +53,13 @@ export function ultimoPeriodo() {
   return _periodos[_periodos.length - 1];
 }
 
+/** Periodos de un año concreto ("2025"), ordenados. Para gráficas que
+ * muestran la evolución mes a mes de UN año (p.ej. Aprovisionamiento):
+ * deben reaccionar al selector de año pero no al de mes. */
+export function periodosDelAnio(anio) {
+  return _periodos.filter((p) => p.startsWith(`${anio}-`));
+}
+
 export function ultimo() {
   return _ultimo;
 }
@@ -80,11 +87,42 @@ export function serieTemporal(metricaId, agregacion) {
   return _periodos.map((p) => [p, valorEscalar(metricaId, agregacion, p).valor]);
 }
 
-/** Hijos directos (por `padre`) de una métrica en el catálogo. */
-export function hijosDe(metricaId) {
-  return _catalogo.filter((m) => m.padre === metricaId);
+/** Reconstruye el valor del mismo mes del año anterior a partir del
+ * var_pct_interanual que ya trae cada fila (publicado por el propio
+ * Boletín/Progreso de Enagás): valor_actual = valor_año_anterior · (1 + var/100).
+ * No inventa datos nuevos: solo despeja en la otra dirección el mismo
+ * porcentaje que ya se muestra en el dashboard. Se usa para las
+ * variaciones interanuales de las tarjetas (Resumen, Aprovisionamiento)
+ * aunque el histórico propio del observatorio solo tenga un año. */
+export function valorAnioAnterior(metricaId, agregacion, periodo) {
+  const { valor, var_pct_interanual } = valorEscalar(metricaId, agregacion, periodo);
+  if (valor === null || var_pct_interanual === null || var_pct_interanual === undefined) return null;
+  const divisor = 1 + var_pct_interanual / 100;
+  if (divisor === 0) return null;
+  return valor / divisor;
 }
 
-export function raicesJerarquia() {
-  return _catalogo.filter((m) => m.padre === null && m.dimension === null && !m.metrica_id.startsWith("tvb_") && !m.metrica_id.startsWith("planta_"));
+/** Periodo inmediatamente anterior en el histórico cargado (para
+ * variaciones mes a mes calculadas por el propio dashboard, no
+ * publicadas por Enagás). */
+export function periodoAnterior(periodo) {
+  const idx = _periodos.indexOf(periodo);
+  return idx > 0 ? _periodos[idx - 1] : null;
+}
+
+/** Suma de todas las filas con dimensión (p.ej. países, plantas) de una
+ * métrica en un periodo/agregación dados. */
+export function sumaDimension(metricaId, agregacion, periodo) {
+  return filasDe(metricaId, agregacion, periodo)
+    .filter((f) => f.valor !== null)
+    .reduce((acc, f) => acc + f.valor, 0);
+}
+
+/** Igual que sumaDimension pero reconstruyendo el año anterior fila a
+ * fila (ver valorAnioAnterior) antes de sumar -- para no perder precisión
+ * promediando porcentajes ya agregados. */
+export function sumaDimensionAnioAnterior(metricaId, agregacion, periodo) {
+  return filasDe(metricaId, agregacion, periodo)
+    .filter((f) => f.valor !== null && f.var_pct_interanual !== null && f.var_pct_interanual !== undefined)
+    .reduce((acc, f) => acc + f.valor / (1 + f.var_pct_interanual / 100), 0);
 }

@@ -1,0 +1,157 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "9,4",
+        "acumulado_anual": "9,4",
+        "tam": "48,5"
+      },
+      "var_pct_interanual": {
+        "mes": "6,3%",
+        "acumulado_anual": "6,3%",
+        "tam": "1,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "15,3",
+        "acumulado_anual": "15,3",
+        "tam": "175,3"
+      },
+      "var_pct_interanual": {
+        "mes": "-8,5%",
+        "acumulado_anual": "-8,5%",
+        "tam": "-0,8%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,1",
+        "acumulado_anual": "1,1",
+        "tam": "12,4"
+      },
+      "var_pct_interanual": {
+        "mes": "-2,2%",
+        "acumulado_anual": "-2,2%",
+        "tam": "-0,2%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "25,8 TWh (mes/acumulado), 236,2 TWh (TAM), variación -3,4% (mes/acumulado), -0,4% (TAM)",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "7,0 TWh (mes/acumulado), 74,8 TWh (TAM), variación +1,1% (mes/acumulado), +0,1% (TAM)",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "32,8 TWh (mes/acumulado), 311,0 TWh (TAM), variación -2,4% (mes/acumulado), -0,3% (TAM)",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh (tabla detallada con laboralidad y temperatura)",
+      "valor_aprox": "25.846 GWh (Enero 2025), 25.846 GWh (acumulado Ene-Ene 2025), 236.220 GWh (TAM Ene25-Feb24), variación -3,4% (mes/acumulado), -0,4% (TAM)",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Demanda de cisternas variación interanual mensual",
+      "valor_aprox": "-2,2%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Número de pedidos de cisternas variación vs año anterior",
+      "valor_aprox": "+221",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Desagregación cisternas enero-25 por tipo: Monocliente 814 GWh/mes, DCPyMES 210 GWh/mes, Transporte 118 GWh/mes",
+      "valor_aprox": "814 / 210 / 118 GWh/mes",
+      "pagina": 9
+    },
+    {
+      "descripcion": "Demanda eléctrica total enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "21,0 (2024) vs 21,6 (2025), +0,6, +2,8%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación eólica enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "5,8 vs 7,5, +1,8, +31,2%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación solar enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "2,1 vs 2,5, +0,4, +19,3%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación hidráulica enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "4,5 vs 3,6, -0,9, -20,1%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación resto renovables enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "0,3 vs 0,3, +0,1, +19,1%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Cogeneración enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "1,9 vs 1,6, -0,3, -14,3%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Nuclear enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "5,2 vs 5,2, +0,0, +0,9%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Carbón enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "0,3 vs 0,3, +0,0, +7,4%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Gas natural para generación eléctrica enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "2,6 vs 2,7, +0,0, +1,6%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Saldos internacionales enero 2024 vs 2025 (TWhe)",
+      "valor_aprox": "-0,5 exportacion vs -1,1 exportacion, -0,7, +135,9%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Gas CTCCs 2024 enero",
+      "valor_aprox": "6,9 TWh (g)",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Gas CTCCs 2025 enero",
+      "valor_aprox": "7 TWh (g)",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural enero 2025 vs enero 2024 por país: España -2,6%, Portugal -1,0%, Italia +2%, Francia +21%, UK +8%, Alemania +1%",
+      "valor_aprox": "-2,6% / -1,0% / +2% / +21% / +8% / +1%",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1532
+  }
+}

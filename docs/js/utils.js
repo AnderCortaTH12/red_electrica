@@ -18,6 +18,26 @@ export function nombreMes(periodo) {
   return `${MESES_CORTOS[mes - 1]}-${String(anio).slice(2)}`;
 }
 
+/** Solo el mes, sin año -- para ejes de gráficas que ya están acotadas
+ * a un único año (ver periodosDelAnio en data.js) y no necesitan
+ * repetirlo en cada etiqueta. */
+export function mesCorto(periodo) {
+  if (!periodo) return "";
+  const mes = Number(periodo.split("-")[1]);
+  return MESES_CORTOS[mes - 1];
+}
+
+const MESES_LARGOS = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+];
+
+/** Nombre de mes completo a partir de su número ("01".."12") -- para el
+ * selector de mes del selector de fecha (año + mes por separado). */
+export function nombreMesLargo(mesStr) {
+  return MESES_LARGOS[Number(mesStr) - 1] ?? mesStr;
+}
+
 export function formatoNumero(valor, decimales = 0) {
   if (valor === null || valor === undefined || Number.isNaN(valor)) return "—";
   return new Intl.NumberFormat("es-ES", {

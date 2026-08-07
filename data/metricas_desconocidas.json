@@ -2119,5 +2119,3260 @@
     "descripcion": "Comparativa europea demanda gas natural marzo 2026 vs marzo 2025 por país (variaciones %)",
     "valor_aprox": "España: +1,3%; Portugal: +11%; Italia: -4%; Francia: -12%; UK: -7%; Alemania: -6%",
     "pagina": 13
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) - 1 al 30 de noviembre 2024 vs 2025",
+    "valor_aprox": "18,7 vs 19,5 (+4,2%)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos: Francia exportación 0,2 TWh, Portugal exportación -0,4 TWh, Marruecos -0,1 TWh (nov 2025)",
+    "valor_aprox": "Francia: 0,2; Portugal: -0,4; Marruecos: -0,1",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Noviembre-24: 33.563 GWh (93% llenado); Noviembre-25: 28.610 GWh (80% llenado); variación -14,8%",
+    "valor_aprox": "33.563 / 28.610 / -14,8%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS: Noviembre-24: 2.502,2 GWh/mes; Noviembre-25: 2.601,1 GWh/mes; variación +4,0%",
+    "valor_aprox": "2.502,2 / 2.601,1 / +4,0%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima almacenamiento TVB: 3.316.500 m³",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB: 1.945 GWh/día",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB a 30 noviembre-25 representa el 89% del promedio de la capacidad contratada",
+    "valor_aprox": "89%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS: 35.926 GWh; Existencias estratégicas + operativas sistema: 19.586 GWh",
+    "valor_aprox": "35.926 GWh / 19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "% s TOTAL aprovisionamiento GN Noviembre 2024 (donut): Total GN 39,0%, Total GNL 61,0%",
+    "valor_aprox": "39,0% GN / 61,0% GNL",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "boletin",
+    "descripcion": "Conexiones internacionales Nov-24 vs Nov-25 (gráficos de barras): Almería importación Nov-24: 9.428, Nov-25: 9.671 (+3%); VIP Ibérico importación Nov-24: 875, Nov-25: 266 (-70%); VIP Pirineos importación Nov-24: 640, Nov-25: 1.041 (+63%); Tarifa exportación Nov-24: 928, Nov-25: 840 (-9%); VIP Ibérico exportación Nov-24: 249, Nov-25: 306 (+23%); VIP Pirineos exportación Nov-24: 247, Nov-25: 88 (-64%)",
+    "valor_aprox": "varios",
+    "pagina": 10
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 21,9 TWh; acumulado anual: 207,3 TWh; TAM: 232,0 TWh; %Δ mes: 3,5%; %Δ acumulado: -2,4%; %Δ TAM: -2,2%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 9,3 TWh; acumulado anual: 88,9 TWh; TAM: 99,4 TWh; %Δ mes: 11,2%; %Δ acumulado: 38,3%; %Δ TAM: 32,9%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 31,1 TWh; acumulado anual: 296,2 TWh; TAM: 331,4 TWh; %Δ mes: 5,7%; %Δ acumulado: 7,1%; %Δ TAM: 6,3%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh con corrección por laboralidad y temperatura (nov 2025)",
+    "valor_aprox": "GWh: 21.860; %Δ vs nov 2024: 3,5%; acumulado Ene-Nov 2025: 207.329 GWh; %Δ: -2,4%; TAM dic-24 nov-25: 232.013 GWh; %TAM: -2,2%",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas TAM nov-25/dic-24 por planta: Mugardos 0,9 TWh/año; Huelva 2,4 TWh/año; Cartagena 2,2 TWh/año; Barcelona 2,5 TWh/año; Sagunto 2,3 TWh/año; Bilbao 1,3 TWh/año; Musel 0,8 TWh/año",
+    "valor_aprox": "varias cifras en TWh/año por planta",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica (TWh e) nov 2025 vs nov 2024: 2024: 18,7; 2025: 19,5; Δ: +0,8; %Δ: +4,2%",
+    "valor_aprox": "18,7 / 19,5 TWh e",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Generación eólica (TWh e): 2024: 4,8; 2025: 6,8; %Δ: +42,6%",
+    "valor_aprox": "4,8 / 6,8 TWh e",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Generación solar (TWh e): 2024: 2,4; 2025: 3,2; %Δ: +35,6%",
+    "valor_aprox": "2,4 / 3,2 TWh e",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Generación hidráulica (TWh e): 2024: 3,0; 2025: 2,5; %Δ: -18,1%",
+    "valor_aprox": "3,0 / 2,5 TWh e",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Generación gas natural sector eléctrico (TWh e): 2024: 3,5; 2025: 3,7; %Δ: +6,4%",
+    "valor_aprox": "3,5 / 3,7 TWh e",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-11",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda gas natural noviembre 2025 vs noviembre 2024: España +5,7%; Portugal +12%; Italia 0%; Francia -7%; UK -11%; Alemania 0%",
+    "valor_aprox": "porcentajes de variación por país",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) - 1 al 30 de diciembre 2025 vs 2024",
+    "valor_aprox": "21,3 TWh (2025) vs 20,4 TWh (2024), +4,3%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos: Francia, Portugal, Marruecos (TWh) dic 2025",
+    "valor_aprox": "Francia -0,2 TWh exportación; Portugal +0,9 TWh; Marruecos -0,25 TWh",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Mix generación eléctrica 2024 gas sector eléctrico total",
+    "valor_aprox": "10,5 TWh (g)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Mix generación eléctrica 2025 gas sector eléctrico total",
+    "valor_aprox": "10,8 TWh (g)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Diciembre-24 y Diciembre-25 con % llenado",
+    "valor_aprox": "29.699 GWh (83%) Dic-24; 24.408 GWh (68%) Dic-25; variación -17,8%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS Diciembre-24 y Diciembre-25",
+    "valor_aprox": "3.860,3 GWh/mes (Dic-24); 4.204,3 GWh/mes (Dic-25); variación +8,9%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB a 31 diciembre-25 representa el 67% del promedio de la capacidad contratada",
+    "valor_aprox": "67%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento (GN+GNL) Dic-2025 acumulado mensual",
+    "valor_aprox": "31.304 GWh",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento (GN+GNL) acumulado anual Ene-Dic 2025",
+    "valor_aprox": "372.498 GWh",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Total descargas de buques por planta - Total Dic-25",
+    "valor_aprox": "18.422 GWh, variación +34,6%",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Total nº buques descargados - Total Dic-25",
+    "valor_aprox": "18, variación +28,6%",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Total cargas de buques por planta - Total Dic-25",
+    "valor_aprox": "1.057 GWh, variación >100%",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "boletin",
+    "descripcion": "Total carga de cisternas por planta - Total Dic-25",
+    "valor_aprox": "1.122 GWh, variación +5,3%",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 24,4 TWh; acumulado anual: 231,8 TWh; TAM: 231,8 TWh; var mes: -1,0%; var acumulado: -2,2%; var TAM: -2,2%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (entregas gas generación eléctrica)",
+    "valor_aprox": "mes: 10,8 TWh; acumulado anual: 99,7 TWh; TAM: 99,7 TWh; var mes: 3,1%; var acumulado: 33,4%; var TAM: 33,4%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 35,2 TWh; acumulado anual: 331,5 TWh; TAM: 331,5 TWh; var mes: 0,2%; var acumulado: 6,3%; var TAM: 6,3%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "TAM convencional últimos 12 meses (gráfico)",
+    "valor_aprox": "232 TWh (dic-25)",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "TAM industrial últimos 12 meses (gráfico)",
+    "valor_aprox": "168 TWh (dic-25)",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "TAM eléctrico últimos 12 meses (gráfico)",
+    "valor_aprox": "100 TWh (dic-25)",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "TAM DC/PyMES últimos 12 meses (gráfico)",
+    "valor_aprox": "52 TWh (dic-25)",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional diciembre 2025 en GWh con variación temperatura y laboralidad",
+    "valor_aprox": "24.431 GWh; var -1,0% vs dic 2024; acumulado 231.783 GWh -2,2%; TAM 231.783 GWh -2,2%",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL mercado: variación mensual vs año anterior",
+    "valor_aprox": "+5,3%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Número de pedidos cisternas diciembre 2025",
+    "valor_aprox": "219",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Demanda cisternas TAM acumulados últimos 12 meses por planta: Mugardos 0,9 TWh/año, Huelva 2,4 TWh/año, Cartagena 2,2 TWh/año, Barcelona 2,5 TWh/año, Sagunto 2,3 TWh/año, Bilbao 1,3 TWh/año, Musel 0,8 TWh/año",
+    "valor_aprox": "varios",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Desagregación cisternas diciembre-25 por tipo: Monocliente 803 GWh/mes, DCPyMES 205 GWh/mes, Transporte 114 GWh/mes",
+    "valor_aprox": "803, 205, 114 GWh/mes",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Demanda para generación eléctrica diciembre 2025 (1 al 30 dic): demanda eléctrica total 21,3 TWhe; eólica 5,3; solar 2,3; hidráulica 3,6; resto renovables 0,5; cogeneración 1,4; nuclear 4,8; carbón 0,0; gas natural 4,5",
+    "valor_aprox": "varios TWhe",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-12",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda gas natural diciembre 2025 vs diciembre 2024: España +0,2%; Portugal -6%; Italia -2%; Francia -9%; UK -3%; Alemania -10%",
+    "valor_aprox": "varios %",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) enero 2025 vs enero 2024",
+    "valor_aprox": "21,6 TWh (2025) vs 21,0 TWh (2024), +2,8%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje mix generación eléctrica 2024: gas CTCCs sobre total",
+    "valor_aprox": "6,8 TWh (g), gas natural 12%, carbón 1%, nuclear 23%, cogeneración 8%, resto renovables 1%, hidráulica 20%, solar 9%, eólica 26%, no renovable 44%, renovable 56%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje mix generación eléctrica 2025: gas CTCCs sobre total",
+    "valor_aprox": "6,9 TWh (g), gas natural 11%, carbón 1%, nuclear 22%, cogeneración 7%, resto renovables 1%, hidráulica 15%, solar 11%, eólica 32%, no renovable 41%, renovable 59%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Destino de las cargas acumulado Enero24-Enero25: Bunkering, Puesta en frío, EU, non EU",
+    "valor_aprox": "Bunkering 49,9%, Puesta en frío 20,5%, EU 29,4%, non EU 0,2%",
+    "pagina": 18
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Enero-25 y % llenado",
+    "valor_aprox": "25.986 GWh, 72% llenado (vs 27.922 GWh, 79% en Enero-24), variación -6,9%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS Enero-25",
+    "valor_aprox": "3.672 GWh/mes (vs 3.334 GWh/mes Enero-24), +10,1%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB enero-25 representa el 77% del promedio de la capacidad contratada",
+    "valor_aprox": "77%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales generación eléctrica Francia exportación",
+    "valor_aprox": "-0,5 TWh (2024), -0,2 TWh (2025)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales generación eléctrica Portugal exportación",
+    "valor_aprox": "-0,2 TWh (2024), -0,5 TWh (2025)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales generación eléctrica Marruecos exportación",
+    "valor_aprox": "0,0 TWh (2024), -0,1 TWh (2025)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento origen de suministros Ene-2025",
+    "valor_aprox": "35.627 GWh (mensual y acumulado anual), TAM 343.646 GWh",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "25,8 TWh (mes/acumulado), 236,2 TWh (TAM), variación -3,4% (mes/acumulado), -0,4% (TAM)",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "7,0 TWh (mes/acumulado), 74,8 TWh (TAM), variación +1,1% (mes/acumulado), +0,1% (TAM)",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "32,8 TWh (mes/acumulado), 311,0 TWh (TAM), variación -2,4% (mes/acumulado), -0,3% (TAM)",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla detallada con laboralidad y temperatura)",
+    "valor_aprox": "25.846 GWh (Enero 2025), 25.846 GWh (acumulado Ene-Ene 2025), 236.220 GWh (TAM Ene25-Feb24), variación -3,4% (mes/acumulado), -0,4% (TAM)",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas variación interanual mensual",
+    "valor_aprox": "-2,2%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Número de pedidos de cisternas variación vs año anterior",
+    "valor_aprox": "+221",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Desagregación cisternas enero-25 por tipo: Monocliente 814 GWh/mes, DCPyMES 210 GWh/mes, Transporte 118 GWh/mes",
+    "valor_aprox": "814 / 210 / 118 GWh/mes",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica total enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "21,0 (2024) vs 21,6 (2025), +0,6, +2,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Generación eólica enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "5,8 vs 7,5, +1,8, +31,2%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Generación solar enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "2,1 vs 2,5, +0,4, +19,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Generación hidráulica enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "4,5 vs 3,6, -0,9, -20,1%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Generación resto renovables enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "0,3 vs 0,3, +0,1, +19,1%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Cogeneración enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "1,9 vs 1,6, -0,3, -14,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Nuclear enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "5,2 vs 5,2, +0,0, +0,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Carbón enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "0,3 vs 0,3, +0,0, +7,4%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Gas natural para generación eléctrica enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "2,6 vs 2,7, +0,0, +1,6%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Saldos internacionales enero 2024 vs 2025 (TWhe)",
+    "valor_aprox": "-0,5 exportacion vs -1,1 exportacion, -0,7, +135,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs 2024 enero",
+    "valor_aprox": "6,9 TWh (g)",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs 2025 enero",
+    "valor_aprox": "7 TWh (g)",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-01",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural enero 2025 vs enero 2024 por país: España -2,6%, Portugal -1,0%, Italia +2%, Francia +21%, UK +8%, Alemania +1%",
+    "valor_aprox": "-2,6% / -1,0% / +2% / +21% / +8% / +1%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) - página 6",
+    "valor_aprox": "19,0 TWh (2025 1 al 28 de febrero)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs 2024 en TWh(g)",
+    "valor_aprox": "4,3 TWh (g)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs 2025 en TWh(g)",
+    "valor_aprox": "6,5 TWh (g)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB en m3",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Cap. máxima regasificación TVB en GWh/día",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Feb-24 en GWh y % llenado",
+    "valor_aprox": "27.163 GWh / 77%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Feb-25 en GWh y % llenado",
+    "valor_aprox": "23.436 GWh / 65%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS en GWh",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS en GWh",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS Feb-24 en GWh/mes",
+    "valor_aprox": "755 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS Feb-25 en GWh/mes",
+    "valor_aprox": "2.547 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje GN total aprovisionamiento Feb-2024 (donut inferior)",
+    "valor_aprox": "67,8%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje GNL total aprovisionamiento Feb-2024 (donut inferior)",
+    "valor_aprox": "32,2%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 22,1 TWh; acumulado anual: 47,9 TWh; TAM: 234,9 TWh; var mes: -5,5%; var acumulado: -4,4%; var TAM: -0,9%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico",
+    "valor_aprox": "mes: 6,5 TWh; acumulado anual: 13,5 TWh; TAM: 76,9 TWh; var mes: 46,9%; var acumulado: 19,1%; var TAM: 2,9%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Demanda TOTAL gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 28,6 TWh; acumulado anual: 61,4 TWh; TAM: 311,8 TWh; var mes: 2,9%; var acumulado: 0,0%; var TAM: 0,0%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+    "valor_aprox": "mes Feb 2025: 22.088 GWh (-5,5% vs Feb 2024); acumulado Ene-Feb 2025: 47.934 GWh (-4,4%); TAM Feb25-Mar24: 234.927 GWh (-0,9%)",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: variación mensual respecto mismo mes año anterior",
+    "valor_aprox": "-4,3%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: variación número de pedidos respecto mismo mes año anterior",
+    "valor_aprox": "-159",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica sector eléctrico (TWhe) feb 2024 vs feb 2025",
+    "valor_aprox": "2024: 18,9 TWhe; 2025: 19,0 TWhe; delta: +0,1; %delta: +0,7%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Generación eólica (TWhe) feb 2024 vs feb 2025",
+    "valor_aprox": "2024: 7,0; 2025: 3,8; delta: -3,2; %delta: -45,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Generación solar (TWhe) feb 2024 vs feb 2025",
+    "valor_aprox": "2024: 2,7; 2025: 3,4; delta: +0,7; %delta: +25,7%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Generación hidráulica (TWhe) feb 2024 vs feb 2025",
+    "valor_aprox": "2024: 3,6; 2025: 4,6; delta: +0,9; %delta: +25,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Generación gas natural CTCCs (TWh(g)) feb 2025",
+    "valor_aprox": "2024: 4,3 TWh(g); 2025: 6,5 TWh(g)",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-02",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural España marco europeo feb 2025 vs feb 2024",
+    "valor_aprox": "+2,9%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) - página 6, tabla generación eléctrica",
+    "valor_aprox": "20,3",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales generación eléctrica (TWh): Francia -1,3, Portugal -0,1, Marruecos -0,2",
+    "valor_aprox": "-1,6 exportacion",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs 2024: 4,7 TWh (g); Gas CTCCs 2025: 5,3 TWh (g) - consumo gas ciclos combinados en TWh eléctricos",
+    "valor_aprox": "5,3 TWh (g)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB: 3.316.500 m3",
+    "valor_aprox": "3.316.500 m3",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de regasificación TVB: 1.945 GWh/día",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB marzo-25 representa el 68% del promedio de la capacidad contratada",
+    "valor_aprox": "68%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Marzo-24: 27.838 GWh (79% llenado); Marzo-25: 22.642 GWh (63% llenado)",
+    "valor_aprox": "22.642 GWh / 63%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS: 35.926 GWh",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS: 19.586 GWh",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Inyección(-)/Extracción(+) neta AASS Marzo-24: -692 GWh/mes; Marzo-25: 749 GWh/mes",
+    "valor_aprox": "749 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento Mar-2025: 36.530 GWh; Ene-Mar 2025: 98.476 GWh; TAM: 345.986 GWh",
+    "valor_aprox": "36.530",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "boletin",
+    "descripcion": "Total biometano (transporte + distribución) Mar-2025: 30,7 GWh; Ene-Mar 2025: 86,0 GWh; TAM: 319,3 GWh",
+    "valor_aprox": "30,7",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 23,1 TWh; acumulado anual: 71,0 TWh; TAM: 235,9 TWh; %Δ mes: 4,6%; %Δ acumulado: -1,6%; %Δ TAM: -0,5%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 5,3 TWh; acumulado anual: 18,8 TWh; TAM: 77,5 TWh; %Δ mes: 12,2%; %Δ acumulado: 17,1%; %Δ TAM: 3,7%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 28,4 TWh; acumulado anual: 89,8 TWh; TAM: 313,4 TWh; %Δ mes: 6,0%; %Δ acumulado: 1,8%; %Δ TAM: 0,5%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad) - Marzo 2025",
+    "valor_aprox": "23.054 GWh; %Δ vs 2024: 4,6%; Acumulado Ene-Mar 2025: 70.988 GWh; %Δ: -1,6%; TAM Mar25-Abr24: 235.941 GWh; %Δ TAM: -0,5%",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL - variación mensual respecto año anterior",
+    "valor_aprox": "+4,4%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL - número de pedidos adicionales respecto año anterior",
+    "valor_aprox": "+167",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas marzo 2024 - porcentaje Transporte",
+    "valor_aprox": "22,5%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas marzo 2024 - porcentaje Resto",
+    "valor_aprox": "77,5%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas marzo 2025 - porcentaje Transporte",
+    "valor_aprox": "12,3%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas marzo 2025 - porcentaje Resto",
+    "valor_aprox": "87,7%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Mugardos",
+    "valor_aprox": "0,9 TWh/año; 3,2 mil cargas; 24% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Huelva",
+    "valor_aprox": "2,6 TWh/año; 9 mil cargas; 40% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Cartagena",
+    "valor_aprox": "2,2 TWh/año; 7,8 mil cargas; 35% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Barcelona",
+    "valor_aprox": "2,4 TWh/año; 8,6 mil cargas; 38% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Sagunto",
+    "valor_aprox": "2,3 TWh/año; 8 mil cargas; 58% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Bilbao",
+    "valor_aprox": "1,3 TWh/año; 4,5 mil cargas; 69% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Musel",
+    "valor_aprox": "0,7 TWh/año; 2,5 mil cargas; 21% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica total España marzo 2024 vs 2025 (TWhe)",
+    "valor_aprox": "2024: 19,2 TWhe; 2025: 20,3 TWhe; Δ: +1,1; %Δ: +5,6%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Gas natural para generación eléctrica (gas CTCCs) 2024",
+    "valor_aprox": "4,7 TWh (g)",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Gas natural para generación eléctrica (gas CTCCs) 2025",
+    "valor_aprox": "5,3 TWh (g)",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-03",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural marco europeo - variación mensual marzo 2025 vs 2024 por país",
+    "valor_aprox": "España: +6%; Portugal: -4%; Italia: +11%; Francia: +1%; UK: +2%; Alemania: +6%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) - 1 al 30 de abril 2025 vs 2024",
+    "valor_aprox": "17,0 vs 17,8 (-0,8, -4,4%)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2024",
+    "valor_aprox": "4,5",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2025",
+    "valor_aprox": "5,5",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Abr-24",
+    "valor_aprox": "29.701 GWh (84% llenado)",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Abr-25",
+    "valor_aprox": "24.772 GWh (69% llenado)",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS Abr-24",
+    "valor_aprox": "-1.885 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS Abr-25",
+    "valor_aprox": "-2.210 GWh/mes (17,3%)",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos Francia Abr-25",
+    "valor_aprox": "-0,9 TWh exportación",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos Portugal Abr-25",
+    "valor_aprox": "-0,1 TWh exportación",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos Marruecos Abr-25",
+    "valor_aprox": "-0,2 TWh exportación",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento (GWh) Abr-2025",
+    "valor_aprox": "32.903",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento (GWh) Abr-2024",
+    "valor_aprox": "26.804",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento acumulado anual Ene-Abr 2025 (GWh)",
+    "valor_aprox": "131.378",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento TAM May2024-Abr2025 (GWh)",
+    "valor_aprox": "352.084",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total descargas buques plantas Abr-24",
+    "valor_aprox": "16.126 GWh",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total descargas buques plantas Abr-25",
+    "valor_aprox": "22.442 GWh (39,2%)",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total nº buques descargados Abr-24",
+    "valor_aprox": "17",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total nº buques descargados Abr-25",
+    "valor_aprox": "22 (29,4%)",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total cargas buques plantas Abr-24",
+    "valor_aprox": "453 GWh",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total cargas buques plantas Abr-25",
+    "valor_aprox": "1.008 GWh (>100%)",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total carga cisternas plantas Abr-24",
+    "valor_aprox": "1.004 GWh",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "boletin",
+    "descripcion": "Total carga cisternas plantas Abr-25",
+    "valor_aprox": "928 GWh (-7,6%)",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 17,6 TWh; acumulado anual: 88,5 TWh; TAM: 235,4 TWh; var mes: -3,1%; var acumulado: -1,9%; var TAM: -0,7%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 5,5 TWh; acumulado anual: 24,4 TWh; TAM: 78,6 TWh; var mes: 24,4%; var acumulado: 18,7%; var TAM: 5,1%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-04",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 23,1 TWh; acumulado anual: 112,9 TWh; TAM: 314,0 TWh; var mes: 2,4%; var acumulado: 1,9%; var TAM: 0,7%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total acumulada enero-mayo 2025 en TWh",
+    "valor_aprox": "18,0",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh (g) 2024",
+    "valor_aprox": "4,3",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh (g) 2025",
+    "valor_aprox": "7,2",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje Total GN Mayo 2025 en gráfico de tarta",
+    "valor_aprox": "70,1%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje Total GNL Mayo 2025 en gráfico de tarta",
+    "valor_aprox": "29,9%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje Total GN Mayo 2024 en gráfico de tarta",
+    "valor_aprox": "62,5%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje Total GNL Mayo 2024 en gráfico de tarta",
+    "valor_aprox": "37,5%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB en m3",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB en GWh/día",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB representa el 83% del promedio de la capacidad contratada durante mayo-25",
+    "valor_aprox": "83%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS en GWh",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS en GWh",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Mayo-24 en GWh",
+    "valor_aprox": "31.721",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Mayo-25 en GWh",
+    "valor_aprox": "26.265",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "% llenado AASS Mayo-24",
+    "valor_aprox": "90%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "% llenado AASS Mayo-25",
+    "valor_aprox": "73%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS Mayo-24 en GWh/mes",
+    "valor_aprox": "-2.045",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS Mayo-25 en GWh/mes",
+    "valor_aprox": "-1.525",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Destino cargas acumulado Enero25-Abril25: Bunkering",
+    "valor_aprox": "50,7%",
+    "pagina": 18
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Destino cargas acumulado Enero25-Abril25: EU",
+    "valor_aprox": "8,4%",
+    "pagina": 18
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "boletin",
+    "descripcion": "Destino cargas acumulado Enero25-Abril25: non EU",
+    "valor_aprox": "40,9%",
+    "pagina": 18
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 17,3 TWh; acumulado anual: 105,8 TWh; TAM: 234,5 TWh; var mes: -5,1%; var acumulado: -2,4%; var TAM: -1,1%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (entregas gas generación eléctrica)",
+    "valor_aprox": "mes: 7,2 TWh; acumulado anual: 31,6 TWh; TAM: 81,5 TWh; var mes: 68,2%; var acumulado: 27,2%; var TAM: 9,0%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 24,4 TWh; acumulado anual: 137,4 TWh; TAM: 315,9 TWh; var mes: 8,9%; var acumulado: 3,1%; var TAM: 1,3%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+    "valor_aprox": "mes Mayo 2025: 17.262 GWh (-5,1% vs may-24); acumulado Ene-May 2025: 105.808 GWh (-2,4%); TAM May25-Jun24: 234.464 GWh (-1,1%)",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica (mercado eléctrico) 1 al 31 mayo 2024 vs 2025",
+    "valor_aprox": "2024: 18,2 TWh; 2025: 18,0 TWh; delta: -0,2; %delta: -1,1%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación eólica mercado eléctrico mayo",
+    "valor_aprox": "2024: 4,2 TWh; 2025: 3,4 TWh; delta: -0,8; %delta: -19,6%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación solar mercado eléctrico mayo",
+    "valor_aprox": "2024: 5,7 TWh; 2025: 5,4 TWh; delta: -0,3; %delta: -4,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación hidráulica mercado eléctrico mayo",
+    "valor_aprox": "2024: 3,6 TWh; 2025: 4,2 TWh; delta: +0,6; %delta: +18,0%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación resto renovables mercado eléctrico mayo",
+    "valor_aprox": "2024: 0,3 TWh; 2025: 0,3 TWh; delta: +0,0; %delta: +5,0%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación cogeneración mercado eléctrico mayo",
+    "valor_aprox": "2024: 1,5 TWh; 2025: 1,3 TWh; delta: -0,2; %delta: -13,2%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación nuclear mercado eléctrico mayo",
+    "valor_aprox": "2024: 3,5 TWh; 2025: 3,1 TWh; delta: -0,5; %delta: -12,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación carbón mercado eléctrico mayo",
+    "valor_aprox": "2024: 0,2 TWh; 2025: 0,1 TWh; delta: -0,1; %delta: -32,6%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Generación gas natural (CTCCs) mercado eléctrico mayo",
+    "valor_aprox": "2024: 1,4 TWh; 2025: 2,6 TWh; delta: +1,1; %delta: +80,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Saldos internacionales mercado eléctrico mayo",
+    "valor_aprox": "2024: -1,0 TWh exportacion; 2025: -1,1 TWh exportacion; delta: -0,1; %delta: +8,4%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-05",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural mayo 2025 vs mayo 2024 por país",
+    "valor_aprox": "España +8,9%; Portugal +42%; Italia -2%; Francia -14%; UK -10%; Alemania +3%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) - 1 al 30 de junio 2024 vs 2025",
+    "valor_aprox": "18,3 (2024) / 20,4 (2025), +11,4%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2024",
+    "valor_aprox": "4,5",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2025",
+    "valor_aprox": "9,8",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos Francia/Portugal/Marruecos (TWh)",
+    "valor_aprox": "Francia 0,6/0,6; Portugal -1,6/-1,2; Marruecos -0,2/-0,4",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB como % de capacidad contratada en junio-25",
+    "valor_aprox": "84%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS junio-24",
+    "valor_aprox": "34.136 GWh (97% llenado)",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS junio-25",
+    "valor_aprox": "26.644 GWh (74% llenado)",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS junio-24",
+    "valor_aprox": "-2.466 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS junio-25",
+    "valor_aprox": "-345 GWh/mes, -86,0%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento (GN+GNL) mensual Jun-2025",
+    "valor_aprox": "27.628 GWh",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento acumulado anual Ene-May 2025",
+    "valor_aprox": "189.808 GWh",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento TAM Jul2024-Jun2025",
+    "valor_aprox": "352.623 GWh",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje GNL Junio 2024 (donut)",
+    "valor_aprox": "60,0%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje GN Junio 2024 (donut)",
+    "valor_aprox": "40,0%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 15,7 TWh; acumulado anual: 121,5 TWh; TAM: 233,7 TWh; %Δ mes: -4,7%; %Δ acumulado: -2,7%; %Δ TAM: -1,4%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 9,8 TWh; acumulado anual: 41,4 TWh; TAM: 86,8 TWh; %Δ mes: 118,6%; %Δ acumulado: 41,2%; %Δ TAM: 16,2%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 25,5 TWh; acumulado anual: 162,9 TWh; TAM: 320,5 TWh; %Δ mes: 21,7%; %Δ acumulado: 5,6%; %Δ TAM: 2,8%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh con corrección por laboralidad y temperatura - jun 2025",
+    "valor_aprox": "15.709 GWh; %Δ vs jun-24: -4,7%; acumulado Ene-jun 2025: 121.517 GWh; %Δ: -2,7%; TAM jul-24 jun-25: 233.687 GWh; %TAM: -1,4%",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "TAM convencional (gráfico línea) jun-25 / jul-24",
+    "valor_aprox": "234 TWh",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "TAM industrial (gráfico línea) jun-25 / jul-24",
+    "valor_aprox": "171 TWh",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "TAM eléctrico (gráfico línea) jun-25 / jul-24",
+    "valor_aprox": "87 TWh",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "TAM DC/PyMES (gráfico línea) jun-25 / jul-24",
+    "valor_aprox": "50 TWh",
+    "pagina": 5
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Mercado de cisternas variación vs mismo mes año anterior",
+    "valor_aprox": "+3,7%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Número de pedidos cisternas junio 2025 (más que mismo mes año anterior)",
+    "valor_aprox": "141",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs TWh(g) 2024",
+    "valor_aprox": "4,5 TWh(g)",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs TWh(g) 2025",
+    "valor_aprox": "9,8 TWh(g)",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica junio 2025 acumulado 1 al 30 junio TWhe",
+    "valor_aprox": "2024: 18,3; 2025: 20,4; Δ: +2,1; %Δ: +11,4%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Generación eólica junio acumulado 1 al 30 junio TWhe",
+    "valor_aprox": "2024: 4,2; 2025: 3,0; Δ: -1,2; %Δ: -28,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Generación solar junio acumulado 1 al 30 junio TWhe",
+    "valor_aprox": "2024: 5,4; 2025: 6,6; Δ: +1,2; %Δ: +22,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Generación hidráulica junio acumulado 1 al 30 junio TWhe",
+    "valor_aprox": "2024: 2,9; 2025: 2,8; Δ: -0,1; %Δ: -2,6%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Generación nuclear junio acumulado 1 al 30 junio TWhe",
+    "valor_aprox": "2024: 4,4; 2025: 4,1; Δ: -0,3; %Δ: -6,2%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Generación gas natural junio acumulado 1 al 30 junio TWhe",
+    "valor_aprox": "2024: 1,5; 2025: 4,0; Δ: +2,4; %Δ: +157,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-06",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural junio 2025 vs junio 2024 por país",
+    "valor_aprox": "España +21,7%; Portugal +34%; Italia +2%; Francia -12%; UK -14%; Alemania -14%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh e) acumulado 1 al 31 de julio 2024 vs 2025",
+    "valor_aprox": "21,4 vs 21,7 (+1,8%)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos: Francia, Portugal, Marruecos (TWh e)",
+    "valor_aprox": "Francia: 1,1→0,4; Portugal: -1,7→-1,3; Marruecos: -0,3→-0,4",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2024 acumulado 1 al 31 de julio",
+    "valor_aprox": "7,1",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2025 acumulado 1 al 31 de julio",
+    "valor_aprox": "9,3",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Mix generación eléctrica 2024 porcentajes por tecnología (donut)",
+    "valor_aprox": "Gas natural 11%, Carbón 1%, Nuclear 22%, Cogeneración 7%, Resto renovables 2%, Hidráulica 11%, Solar 28%, Eólica 18%; No renovable 42%, Renovable 58%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Mix generación eléctrica 2025 porcentajes por tecnología (donut)",
+    "valor_aprox": "Gas natural 14%, Carbón 0%, Nuclear 21%, Cogeneración 6%, Resto renovables 1%, Hidráulica 10%, Solar 29%, Eólica 19%; No renovable 41%, Renovable 59%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje Total GN y Total GNL Julio 2024 (donut)",
+    "valor_aprox": "Total GN 57,0%, Total GNL 43,0%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB julio-25 representa el 96% del promedio de la capacidad contratada",
+    "valor_aprox": "96%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + Existencias operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Julio-24",
+    "valor_aprox": "35.289 GWh (98% llenado)",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Julio-25",
+    "valor_aprox": "28.631 GWh (80% llenado), variación -18,9%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS Julio-24",
+    "valor_aprox": "-1.181 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS Julio-25",
+    "valor_aprox": "-2.018 GWh/mes, variación +70,9%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 16,1 TWh; acumulado anual: 137,6 TWh; TAM: 233,2 TWh; var mes: -3,2%; var acum: -2,8%; var TAM: -1,7%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 9,3 TWh; acumulado anual: 50,7 TWh; TAM: 89,1 TWh; var mes: 31,6%; var acum: 39,3%; var TAM: 19,2%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 25,4 TWh; acumulado anual: 188,3 TWh; TAM: 322,2 TWh; var mes: 7,2%; var acum: 5,8%; var TAM: 3,3%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+    "valor_aprox": "mes jul 2025: 16.070 GWh (-3,2%); acumulado Ene-jul 2025: 137.587 GWh (-2,8%); TAM ago-24 jul-25: 233.159 GWh (-1,7%)",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: variación mensual respecto mismo mes año anterior",
+    "valor_aprox": "-6,2%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: número de pedidos menos que mismo mes año anterior",
+    "valor_aprox": "-214",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2024: porcentaje Transporte",
+    "valor_aprox": "26,1%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2024: porcentaje Resto",
+    "valor_aprox": "73,9%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2025: porcentaje Transporte",
+    "valor_aprox": "10,5%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2025: porcentaje Resto",
+    "valor_aprox": "89,5%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Mugardos",
+    "valor_aprox": "0,9 TWh/año; 3,1 mil cargas; 23% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Huelva",
+    "valor_aprox": "2,4 TWh/año; 8,5 mil cargas; 38% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Cartagena",
+    "valor_aprox": "2,2 TWh/año; 7,7 mil cargas; 35% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Barcelona",
+    "valor_aprox": "2,4 TWh/año; 8,7 mil cargas; 38% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Sagunto",
+    "valor_aprox": "2,3 TWh/año; 8,1 mil cargas; 59% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Bilbao",
+    "valor_aprox": "1,3 TWh/año; 4,4 mil cargas; 69% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Musel",
+    "valor_aprox": "0,8 TWh/año; 2,6 mil cargas; 23% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas desagregación julio-25 por tipo (GWh/mes): Monocliente",
+    "valor_aprox": "765",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas desagregación julio-25 por tipo (GWh/mes): DCPyMES",
+    "valor_aprox": "103",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas desagregación julio-25 por tipo (GWh/mes): Transporte",
+    "valor_aprox": "67",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Demanda eléctrica TWhe 1 al 31 julio 2024 vs 2025",
+    "valor_aprox": "2024: 21,4; 2025: 21,7; delta: +0,4; %delta: +1,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Eólica TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 4,1; 2025: 4,6; delta: +0,5; %delta: +13,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Solar TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 6,5; 2025: 7,0; delta: +0,5; %delta: +7,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Hidráulica TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 2,6; 2025: 2,4; delta: -0,2; %delta: -8,7%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Resto renovables TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 0,4; 2025: 0,4; delta: -0,0; %delta: -1,0%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Cogeneración TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 1,7; 2025: 1,5; delta: -0,2; %delta: -13,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Nuclear TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 5,1; 2025: 5,0; delta: -0,0; %delta: -0,4%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Carbón TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 0,2; 2025: 0,1; delta: -0,1; %delta: -51,4%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Gas natural TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 2,7; 2025: 3,5; delta: +0,8; %delta: +29,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldos internacionales TWhe 1 al 31 julio",
+    "valor_aprox": "2024: -0,9 exportacion; 2025: -1,4 exportacion; delta: -0,5; %delta: +53,2%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldo Francia TWhe",
+    "valor_aprox": "2024: 1,1; 2025: 0,4; delta: -0,7",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldo Portugal TWhe",
+    "valor_aprox": "2024: -1,7; 2025: -1,3; delta: +0,3",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldo Marruecos TWhe",
+    "valor_aprox": "2024: -0,3; 2025: -0,4; delta: -0,13",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs TWh(g) 2024",
+    "valor_aprox": "7,1",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs TWh(g) 2025",
+    "valor_aprox": "9,3",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - España variación convencional",
+    "valor_aprox": "+7,2%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Portugal variación convencional",
+    "valor_aprox": "+18%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Italia variación convencional",
+    "valor_aprox": "-4%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Francia variación total",
+    "valor_aprox": "-5%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - UK variación total",
+    "valor_aprox": "-7%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Alemania variación total",
+    "valor_aprox": "-3%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWhe) agosto 2025 vs 2024",
+    "valor_aprox": "20,6 TWhe (2025) vs 20,8 TWhe (2024), Δ -0,2, %Δ -1,1%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos: Francia, Portugal, Marruecos (TWhe)",
+    "valor_aprox": "Francia: 0,7; Portugal: -1,2; Marruecos: -0,5",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS agosto 2025 y % llenado",
+    "valor_aprox": "30.681 GWh, 85%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS agosto 2025",
+    "valor_aprox": "-2.087 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje existencias TVB sobre capacidad contratada a 31 agosto 2025",
+    "valor_aprox": "78%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 13,9 TWh; acumulado anual: 151,4 TWh; TAM: 231,8 TWh; var mes: -8,7%; var acumulado: -3,4%; var TAM: -2,2%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 9,1 TWh; acumulado anual: 59,8 TWh; TAM: 90,7 TWh; var mes: 21,7%; var acumulado: 36,3%; var TAM: 21,3%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 23,0 TWh; acumulado anual: 211,3 TWh; TAM: 322,5 TWh; var mes: 1,4%; var acumulado: 5,3%; var TAM: 3,4%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh - agosto 2025 con descomposición laboralidad/temperatura",
+    "valor_aprox": "Demanda: 13.857 GWh (-8,7% vs ago 2024); Acumulado Ene-ago 2025: 151.444 GWh (-3,4%); TAM sep-24 ago-25: 231.841 GWh (-2,2%)",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Demanda cisternas agosto 2025 variación vs año anterior",
+    "valor_aprox": "-5,2% respecto al mismo mes del año anterior",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Número de pedidos cisternas agosto 2025 variación vs año anterior",
+    "valor_aprox": "-172 menos que el mismo mes del año anterior",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Desagregación demanda cisternas agosto 2025 por tipo: Monocliente 801 GWh/mes, DCPyMES 62 GWh/mes, Transporte 90 GWh/mes",
+    "valor_aprox": "801 / 62 / 90 GWh/mes",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica agosto 2024 vs 2025 (1 al 31 agosto)",
+    "valor_aprox": "2024: 20,8 TWhe; 2025: 20,6 TWhe; delta: -0,2; %delta: -1,1%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación eólica agosto 2024 vs 2025",
+    "valor_aprox": "2024: 3,7 TWhe; 2025: 3,7 TWhe; delta: -0,1; %delta: -1,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación solar agosto 2024 vs 2025",
+    "valor_aprox": "2024: 6,1 TWhe; 2025: 6,4 TWhe; delta: +0,3; %delta: +4,7%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación hidráulica agosto 2024 vs 2025",
+    "valor_aprox": "2024: 2,3 TWhe; 2025: 2,3 TWhe; delta: +0,0; %delta: +1,0%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación resto renovables agosto 2024 vs 2025",
+    "valor_aprox": "2024: 0,3 TWhe; 2025: 0,3 TWhe; delta: +0,0; %delta: +2,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación cogeneración agosto 2024 vs 2025",
+    "valor_aprox": "2024: 1,6 TWhe; 2025: 1,4 TWhe; delta: -0,2; %delta: -13,2%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación nuclear agosto 2024 vs 2025",
+    "valor_aprox": "2024: 5,1 TWhe; 2025: 5,1 TWhe; delta: -0,0; %delta: -0,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación carbón agosto 2024 vs 2025",
+    "valor_aprox": "2024: 0,2 TWhe; 2025: 0,0 TWhe; delta: -0,2; %delta: -100,0%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Generación gas natural (CTCCs) agosto 2024 vs 2025",
+    "valor_aprox": "2024: 2,8 TWhe; 2025: 3,5 TWhe; delta: +0,6; %delta: +22,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Saldos internacionales agosto 2024 vs 2025",
+    "valor_aprox": "2024: -0,4 exportacion; 2025: -0,9 exportacion; delta: -0,6; %delta: +149,5%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-08",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural agosto 2024 vs 2025 por país",
+    "valor_aprox": "España +1,4%; Portugal +20%; Italia -12%; Francia -1%; UK +7%; Alemania +14%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) septiembre 2024 vs 2025",
+    "valor_aprox": "18,6 → 19,2 (+0,7 / +3,5%)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos (TWh): Francia, Portugal, Marruecos sep-2024 y sep-2025",
+    "valor_aprox": "Francia 0,6→1,0; Portugal -1,4→-1,2; Marruecos -0,3→-0,4",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Potencia instalada eólica (GW) y % utilización",
+    "valor_aprox": "30,0 GW / 21% (2024); 32,1 GW / 17% (2025)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Potencia instalada solar (GW) y % utilización",
+    "valor_aprox": "32,0 GW / 20% (2024); 39,0 GW / 19% (2025)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs generación eléctrica septiembre 2024 vs 2025 (TWh)",
+    "valor_aprox": "6 TWh (2024) → 8,5 TWh (2025)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS septiembre-24 y septiembre-25 con % llenado",
+    "valor_aprox": "36.070 GWh (100%) sep-24; 31.213 GWh (87%) sep-25; variación -13,5%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS septiembre-24 vs septiembre-25 (GWh/mes)",
+    "valor_aprox": "-42 (sep-24) → -511 (sep-25); variación >100%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "boletin",
+    "descripcion": "% GN y GNL aprovisionamiento septiembre 2024 (donut)",
+    "valor_aprox": "Total GN 58,9% / Total GNL 41,1%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 16,1 TWh; acumulado anual: 167,6 TWh; TAM: 231,3 TWh; var mes: -3,0%; var acum: -3,3%; var TAM: -2,4%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 8,5 TWh; acumulado anual: 68,3 TWh; TAM: 93,1 TWh; var mes: 40,3%; var acum: 36,8%; var TAM: 24,6%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 24,6 TWh; acumulado anual: 235,9 TWh; TAM: 324,5 TWh; var mes: 8,5%; var acum: 5,6%; var TAM: 4,0%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+    "valor_aprox": "mes sep2025: 16.139 GWh; var -3,0%; acumulado Ene-sep2025: 167.583 GWh; var -3,3%; TAM oct-24 sep-25: 231.343 GWh; var -2,4%",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: variación mensual respecto año anterior",
+    "valor_aprox": "+4,6%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: número de pedidos septiembre 2025",
+    "valor_aprox": "170",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda de Cisternas septiembre 2024: porcentaje Transporte",
+    "valor_aprox": "21,4%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda de Cisternas septiembre 2024: porcentaje Resto",
+    "valor_aprox": "78,6%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda de Cisternas septiembre 2025: porcentaje Transporte",
+    "valor_aprox": "9,2%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda de Cisternas septiembre 2025: porcentaje Resto",
+    "valor_aprox": "90,8%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL desagregación por tipo septiembre-25 (GWh/mes): Monocliente",
+    "valor_aprox": "899 GWh/mes",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL desagregación por tipo septiembre-25 (GWh/mes): DCPyMES",
+    "valor_aprox": "99 GWh/mes",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL desagregación por tipo septiembre-25 (GWh/mes): Transporte",
+    "valor_aprox": "77 GWh/mes",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica septiembre 2024 (1 al 30)",
+    "valor_aprox": "18,6 TWhe",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica septiembre 2025 (1 al 30)",
+    "valor_aprox": "19,2 TWhe; var +3,5%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: España",
+    "valor_aprox": "+8,5%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Portugal",
+    "valor_aprox": "+19%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Italia",
+    "valor_aprox": "-3%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Francia",
+    "valor_aprox": "-5%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: UK",
+    "valor_aprox": "-8%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-09",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural septiembre 2025 vs 2024: Alemania",
+    "valor_aprox": "-1%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh) octubre 2025 vs octubre 2024",
+    "valor_aprox": "18,9 TWh (2025) vs 19,0 TWh (2024), variación -0,7%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos por país (Francia, Portugal, Marruecos) en TWh",
+    "valor_aprox": "Francia: 0,3 exportación; Portugal: -1,3 exportación; Marruecos: -0,3",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs 2024: 6 TWh (g); Gas CTCCs 2025: 11,3 TWh (g) acumulado octubre",
+    "valor_aprox": "6 TWh (g) 2024 / 11,3 TWh (g) 2025",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS octubre 2025: 31.214 GWh (87% llenado) vs octubre 2024: 36.069 GWh (100%)",
+    "valor_aprox": "31.214 GWh / 87%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Inyección/Extracción neta AASS octubre 2025: -1,5 GWh/mes vs octubre 2024: -0,6 GWh/mes",
+    "valor_aprox": "-1,5 GWh/mes (oct-25) vs -0,6 GWh/mes (oct-24), variación >100%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje de existencias TVB respecto a capacidad contratada a 31 octubre 2025",
+    "valor_aprox": "81%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB: 3.316.500 m³",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de regasificación TVB: 1.945 GWh/día",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + operativas sistema AASS: 19.586 GWh; Capacidad útil AASS: 35.926 GWh",
+    "valor_aprox": "19.586 GWh / 35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Total descargas buques todas las plantas octubre 2025: 23.502 GWh; octubre 2024: 14.320 GWh",
+    "valor_aprox": "23.502 GWh (oct-25) vs 14.320 GWh (oct-24), variación 64,1%",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Total nº buques descargados octubre 2025: 23; octubre 2024: 17, variación 35,3%",
+    "valor_aprox": "23 (oct-25) vs 17 (oct-24)",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Total cargas buques todas las plantas octubre 2025: 1.239 GWh; octubre 2024: 424 GWh, variación >100%",
+    "valor_aprox": "1.239 GWh (oct-25) vs 424 GWh (oct-24)",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Total carga cisternas todas las plantas octubre 2025: 1.107 GWh; octubre 2024: 1.046 GWh, variación 5,8%",
+    "valor_aprox": "1.107 GWh (oct-25) vs 1.046 GWh (oct-24)",
+    "pagina": 17
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Total aprovisionamiento octubre 2025: 34.971 GWh; octubre 2024: 25.948 GWh; acumulado Ene-Oct 2025: 311.079 GWh; TAM: 367.231 GWh",
+    "valor_aprox": "34.971 / 311.079 / 367.231 GWh",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje Total GN octubre 2024: 44,8%; Total GNL octubre 2024: 55,2%",
+    "valor_aprox": "44,8% GN / 55,2% GNL (octubre 2024)",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 17,9 TWh; acumulado anual: 185,5 TWh; TAM: 231,3 TWh; var mes: -0,4%; var acum: -3,1%; var TAM: -2,5%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 11,3 TWh; acumulado anual: 79,6 TWh; TAM: 98,4 TWh; var mes: 88,5%; var acum: 42,3%; var TAM: 31,7%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 29,2 TWh; acumulado anual: 265,1 TWh; TAM: 329,7 TWh; var mes: 21,9%; var acum: 7,2%; var TAM: 5,7%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+    "valor_aprox": "oct 2025: 17.887 GWh; %vs oct 2024: -0,4%; Ene-oct 2025: 185.470 GWh; %vs: -3,1%; TAM nov-24 oct-25: 231.268 GWh; %TAM: -2,5%",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: mercado de cisternas variación mensual",
+    "valor_aprox": "+5,8% respecto al mismo mes del año anterior",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: número de pedidos octubre 2025",
+    "valor_aprox": "218",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Mugardos",
+    "valor_aprox": "0,9 TWh/año; 3,2 mil cargas; 24% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Huelva",
+    "valor_aprox": "2,4 TWh/año; 8,3 mil cargas; 37% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Cartagena",
+    "valor_aprox": "2,2 TWh/año; 7,8 mil cargas; 35% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Barcelona",
+    "valor_aprox": "2,5 TWh/año; 9,0 mil cargas; 40% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Sagunto",
+    "valor_aprox": "2,3 TWh/año; 8,0 mil cargas; 59% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Bilbao",
+    "valor_aprox": "1,3 TWh/año; 4,5 mil cargas; 70% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Cisternas GNL TAM oct-25/nov-24 por planta: Musel",
+    "valor_aprox": "0,8 TWh/año; 2,6 mil cargas; 23% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Demanda eléctrica octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 19,0; 2025: 18,9; delta: -0,1; %delta: -0,7%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación eólica octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 5,6; 2025: 4,4; delta: -1,2; %delta: -22,0%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación solar octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 2,9; 2025: 4,2; delta: +1,4; %delta: +47,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación hidráulica octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 3,2; 2025: 2,2; delta: -1,0; %delta: -31,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación resto renovables octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 0,5; 2025: 0,5; delta: +0,0; %delta: +3,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación cogeneración octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 1,2; 2025: 1,4; delta: +0,1; %delta: +10,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación nuclear octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 4,6; 2025: 3,7; delta: -0,9; %delta: -20,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación carbón octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 0,3; 2025: 0,0; delta: -0,3; %delta: -93,7%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Generación gas natural (CTCCs) octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: 2,3; 2025: 4,5; delta: +2,3; %delta: +99,6%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Saldos internacionales octubre 2025 vs 2024 (TWhe)",
+    "valor_aprox": "2024: -0,9 exportacion; 2025: -1,3 exportacion; delta: -0,4; %delta: +42,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: España",
+    "valor_aprox": "+21,9%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Portugal",
+    "valor_aprox": "+19%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Italia",
+    "valor_aprox": "+7%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Francia",
+    "valor_aprox": "+6%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: UK",
+    "valor_aprox": "0%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-10",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural octubre 2025 vs 2024: Alemania",
+    "valor_aprox": "+8%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Demanda eléctrica total (TWh e) acumulado 1 al 31 de julio 2024 vs 2025",
+    "valor_aprox": "21,4 vs 21,7 (+1,8%)",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Saldos internacionales eléctricos: Francia, Portugal, Marruecos (TWh e)",
+    "valor_aprox": "Francia: 1,1→0,4; Portugal: -1,7→-1,3; Marruecos: -0,3→-0,4",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2024 acumulado 1 al 31 de julio",
+    "valor_aprox": "7,1",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Gas CTCCs TWh(g) 2025 acumulado 1 al 31 de julio",
+    "valor_aprox": "9,3",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Mix generación eléctrica 2024 porcentajes por tecnología (donut)",
+    "valor_aprox": "Gas natural 11%, Carbón 1%, Nuclear 22%, Cogeneración 7%, Resto renovables 2%, Hidráulica 11%, Solar 28%, Eólica 18%; No renovable 42%, Renovable 58%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Mix generación eléctrica 2025 porcentajes por tecnología (donut)",
+    "valor_aprox": "Gas natural 14%, Carbón 0%, Nuclear 21%, Cogeneración 6%, Resto renovables 1%, Hidráulica 10%, Solar 29%, Eólica 19%; No renovable 41%, Renovable 59%",
+    "pagina": 6
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Porcentaje Total GN y Total GNL Julio 2024 (donut)",
+    "valor_aprox": "Total GN 57,0%, Total GNL 43,0%",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima de almacenamiento TVB",
+    "valor_aprox": "3.316.500 m³",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Capacidad máxima regasificación TVB",
+    "valor_aprox": "1.945 GWh/día",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Promedio existencias TVB julio-25 representa el 96% del promedio de la capacidad contratada",
+    "valor_aprox": "96%",
+    "pagina": 15
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Existencias estratégicas + Existencias operativas sistema AASS",
+    "valor_aprox": "19.586 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Capacidad útil AASS",
+    "valor_aprox": "35.926 GWh",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Julio-24",
+    "valor_aprox": "35.289 GWh (98% llenado)",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Existencias finales útiles AASS Julio-25",
+    "valor_aprox": "28.631 GWh (80% llenado), variación -18,9%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS Julio-24",
+    "valor_aprox": "-1.181 GWh/mes",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "boletin",
+    "descripcion": "Inyección neta AASS Julio-25",
+    "valor_aprox": "-2.018 GWh/mes, variación +70,9%",
+    "pagina": 20
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+    "valor_aprox": "mes: 16,1 TWh; acumulado anual: 137,6 TWh; TAM: 233,2 TWh; var mes: -3,2%; var acum: -2,8%; var TAM: -1,7%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+    "valor_aprox": "mes: 9,3 TWh; acumulado anual: 50,7 TWh; TAM: 89,1 TWh; var mes: 31,6%; var acum: 39,3%; var TAM: 19,2%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+    "valor_aprox": "mes: 25,4 TWh; acumulado anual: 188,3 TWh; TAM: 322,2 TWh; var mes: 7,2%; var acum: 5,8%; var TAM: 3,3%",
+    "pagina": 3
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad)",
+    "valor_aprox": "mes jul 2025: 16.070 GWh (-3,2%); acumulado Ene-jul 2025: 137.587 GWh (-2,8%); TAM ago-24 jul-25: 233.159 GWh (-1,7%)",
+    "pagina": 7
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: variación mensual respecto mismo mes año anterior",
+    "valor_aprox": "-6,2%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas de GNL: número de pedidos menos que mismo mes año anterior",
+    "valor_aprox": "-214",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2024: porcentaje Transporte",
+    "valor_aprox": "26,1%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2024: porcentaje Resto",
+    "valor_aprox": "73,9%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2025: porcentaje Transporte",
+    "valor_aprox": "10,5%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Demanda de cisternas julio 2025: porcentaje Resto",
+    "valor_aprox": "89,5%",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Mugardos",
+    "valor_aprox": "0,9 TWh/año; 3,1 mil cargas; 23% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Huelva",
+    "valor_aprox": "2,4 TWh/año; 8,5 mil cargas; 38% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Cartagena",
+    "valor_aprox": "2,2 TWh/año; 7,7 mil cargas; 35% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Barcelona",
+    "valor_aprox": "2,4 TWh/año; 8,7 mil cargas; 38% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Sagunto",
+    "valor_aprox": "2,3 TWh/año; 8,1 mil cargas; 59% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Bilbao",
+    "valor_aprox": "1,3 TWh/año; 4,4 mil cargas; 69% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas TAM jul-25/ago-24 por planta - Musel",
+    "valor_aprox": "0,8 TWh/año; 2,6 mil cargas; 23% Fut",
+    "pagina": 8
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas desagregación julio-25 por tipo (GWh/mes): Monocliente",
+    "valor_aprox": "765",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas desagregación julio-25 por tipo (GWh/mes): DCPyMES",
+    "valor_aprox": "103",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Cisternas desagregación julio-25 por tipo (GWh/mes): Transporte",
+    "valor_aprox": "67",
+    "pagina": 9
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Demanda eléctrica TWhe 1 al 31 julio 2024 vs 2025",
+    "valor_aprox": "2024: 21,4; 2025: 21,7; delta: +0,4; %delta: +1,8%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Eólica TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 4,1; 2025: 4,6; delta: +0,5; %delta: +13,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Solar TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 6,5; 2025: 7,0; delta: +0,5; %delta: +7,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Hidráulica TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 2,6; 2025: 2,4; delta: -0,2; %delta: -8,7%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Resto renovables TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 0,4; 2025: 0,4; delta: -0,0; %delta: -1,0%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Cogeneración TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 1,7; 2025: 1,5; delta: -0,2; %delta: -13,3%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Nuclear TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 5,1; 2025: 5,0; delta: -0,0; %delta: -0,4%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Carbón TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 0,2; 2025: 0,1; delta: -0,1; %delta: -51,4%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Gas natural TWhe 1 al 31 julio",
+    "valor_aprox": "2024: 2,7; 2025: 3,5; delta: +0,8; %delta: +29,9%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldos internacionales TWhe 1 al 31 julio",
+    "valor_aprox": "2024: -0,9 exportacion; 2025: -1,4 exportacion; delta: -0,5; %delta: +53,2%",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldo Francia TWhe",
+    "valor_aprox": "2024: 1,1; 2025: 0,4; delta: -0,7",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldo Portugal TWhe",
+    "valor_aprox": "2024: -1,7; 2025: -1,3; delta: +0,3",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Mercado eléctrico - Saldo Marruecos TWhe",
+    "valor_aprox": "2024: -0,3; 2025: -0,4; delta: -0,13",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs TWh(g) 2024",
+    "valor_aprox": "7,1",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Gas CTCCs TWh(g) 2025",
+    "valor_aprox": "9,3",
+    "pagina": 11
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - España variación convencional",
+    "valor_aprox": "+7,2%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Portugal variación convencional",
+    "valor_aprox": "+18%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Italia variación convencional",
+    "valor_aprox": "-4%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Francia variación total",
+    "valor_aprox": "-5%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - UK variación total",
+    "valor_aprox": "-7%",
+    "pagina": 13
+  },
+  {
+    "periodo": "2025-07",
+    "fuente": "progreso",
+    "descripcion": "Comparativa europea demanda total gas natural julio 2025 vs julio 2024 - Alemania variación total",
+    "valor_aprox": "-3%",
+    "pagina": 13
   }
 ]

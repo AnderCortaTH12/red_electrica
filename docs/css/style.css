@@ -1,7 +1,7 @@
 /* Observatorio del Sistema Gasista Español — estilos del dashboard.
-   Vanilla CSS, sin build step. Variables para tema claro/oscuro
-   (según prefers-color-scheme, sin toggle manual: es más simple y
-   GitHub Pages no tiene backend para recordar preferencia). */
+   Vanilla CSS, sin build step. Tema claro/oscuro: por defecto sigue
+   prefers-color-scheme, pero el botón de la cabecera puede forzarlo
+   con [data-theme] en <html> (ver inicializarTema en main.js). */
 
 :root {
   --bg: #f5f5f7;
@@ -48,6 +48,42 @@
     --warning-text: #ffb454;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
   }
+}
+
+/* Tema forzado manualmente (botón 🌙/☀️): gana siempre sobre
+   prefers-color-scheme, en cualquiera de las dos direcciones. */
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --bg-elevated: #1c1c1e;
+  --bg-translucent: rgba(28, 28, 30, 0.72);
+  --border: rgba(255, 255, 255, 0.1);
+  --text: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #8e8e93;
+  --accent: #2997ff;
+  --accent-soft: rgba(41, 151, 255, 0.16);
+  --positive: #32d74b;
+  --negative: #ff453a;
+  --warning-bg: #3a2c14;
+  --warning-text: #ffb454;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f5f7;
+  --bg-elevated: #ffffff;
+  --bg-translucent: rgba(255, 255, 255, 0.72);
+  --border: rgba(0, 0, 0, 0.08);
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  --accent: #0071e3;
+  --accent-soft: rgba(0, 113, 227, 0.12);
+  --positive: #1a8f4c;
+  --negative: #d5342d;
+  --warning-bg: #fff4e5;
+  --warning-text: #8a5300;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 * {
@@ -97,7 +133,7 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.9rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -162,6 +198,20 @@ button {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
+.segmented-sm {
+  padding: 1px;
+}
+
+.segmented-sm button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.period-select-group {
+  display: inline-flex;
+  gap: 0.4rem;
+}
+
 select.period-select {
   border: 1px solid var(--border);
   background: var(--bg-elevated);
@@ -172,12 +222,36 @@ select.period-select {
   cursor: pointer;
 }
 
+#selector-anio {
+  font-weight: 600;
+}
+
+.theme-toggle {
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 100ms ease;
+}
+
+.theme-toggle:active {
+  transform: scale(0.92);
+}
+
 /* Pestañas de navegación entre vistas */
 
 .tabs {
   display: flex;
   gap: 0.25rem;
-  padding: 0 1.5rem 0.6rem;
+  padding: 0 1.5rem 0.4rem;
   max-width: 1280px;
   margin: 0 auto;
   overflow-x: auto;
@@ -212,7 +286,7 @@ select.period-select {
 main {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 0.75rem 1.5rem;
 }
 
 .view {
@@ -230,17 +304,35 @@ main {
 }
 
 .view-heading {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .view-heading h2 {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
 }
 
 .view-heading p {
   color: var(--text-secondary);
   font-size: 0.88rem;
   margin: 0.2rem 0 0;
+}
+
+.view-subheading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 0.35rem;
+}
+
+.view-subheading h3 {
+  font-size: 1.05rem;
+}
+
+.view-subheading-tight {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
 }
 
 /* Tarjetas */
@@ -254,9 +346,35 @@ main {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+/* Como mucho 5 tarjetas, en una única fila en escritorio: cada una se
+   queda más estrecha que en .card-grid a secas. */
+.card-grid-compact {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-grid-compact .card {
+  padding: 0.8rem 0.9rem;
+}
+
+.card-grid-compact .kpi-value {
+  font-size: 1.4rem;
+  margin: 0.1rem 0;
+}
+
+.card-grid-compact .kpi-deltas {
+  margin-top: 0.25rem;
+}
+
+.card-grid-compact .kpi-sparkline {
+  height: 30px;
+  margin-top: 0.4rem;
 }
 
 .kpi-card .kpi-label {
@@ -297,15 +415,38 @@ main {
   margin-top: 0.6rem;
 }
 
+.kpi-deltas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+}
+
+.kpi-delta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+}
+
+.kpi-delta-tag {
+  color: var(--text-tertiary);
+  min-width: 6.5rem;
+}
+
 /* Gráficos */
 
 .chart-card {
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.6rem;
 }
 
 .chart-card h3 {
-  font-size: 1rem;
-  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+
+.chart-card-tight {
+  padding: 0.7rem 0.9rem;
 }
 
 .chart {
@@ -313,52 +454,87 @@ main {
   height: 380px;
 }
 
-.chart.tall { height: 460px; }
-.chart.short { height: 260px; }
+.chart.tall { height: 380px; }
+.chart.short { height: 220px; }
+.chart.xs { height: 150px; }
+
+.mapa-chart {
+  height: 220px;
+}
 
 .chart-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.resumen-row {
+  align-items: stretch;
 }
 
 @media (max-width: 800px) {
   .chart-row { grid-template-columns: 1fr; }
 }
 
-/* Controles de vista (multi-select, checkboxes...) */
+/* Fila pie+tabla de países en Aprovisionamiento: misma altura en las
+   dos columnas, con scroll vertical propio en la tabla si hay muchos
+   países -- así el hueco a la derecha del pie no se queda enorme. */
+.paises-row {
+  align-items: stretch;
+}
 
-.control-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.9rem;
+.paises-row .table-wrap-scroll {
+  max-height: 260px;
+}
+
+/* Tabla debajo del mapa+gráfica en Resumen: altura acotada con scroll
+   vertical propio (nunca horizontal) para no alargar la página. */
+.table-wrap-scroll {
+  max-height: 190px;
+  overflow-y: auto;
+  margin-bottom: 0.35rem;
+}
+
+.notice-sm {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.76rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Chip de filtro activo al hacer clic en un mapa (CCAA o planta) */
+.filtro-chip {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 1rem;
-}
-
-.chip-group {
-  display: flex;
-  flex-wrap: wrap;
   gap: 0.4rem;
-}
-
-.chip {
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  color: var(--text-secondary);
-  padding: 0.35rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
-}
-
-.chip:active { transform: scale(0.97); }
-
-.chip.selected {
   background: var(--accent-soft);
   color: var(--accent);
-  border-color: transparent;
+  border-radius: 999px;
+  padding: 0.3rem 0.5rem 0.3rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.filtro-chip button {
+  border: none;
+  background: rgba(120, 120, 128, 0.16);
+  color: inherit;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.7rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hint-text {
+  color: var(--text-tertiary);
+  font-size: 0.78rem;
+  margin: 0.3rem 0 0;
 }
 
 /* Aviso informativo (p.ej. "solo hay un año de datos") */
@@ -385,7 +561,16 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.86rem;
-  min-width: 560px;
+  table-layout: fixed;
+}
+
+table.table-compact {
+  font-size: 0.78rem;
+}
+
+table.table-compact th,
+table.table-compact td {
+  padding: 0.4rem 0.5rem;
 }
 
 thead th {
@@ -397,7 +582,7 @@ thead th {
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   user-select: none;
-  white-space: nowrap;
+  overflow-wrap: break-word;
 }
 
 thead th:first-child, td:first-child {
@@ -422,6 +607,7 @@ tbody td {
   padding: 0.6rem 0.9rem;
   border-bottom: 1px solid var(--border);
   font-variant-numeric: tabular-nums;
+  overflow-wrap: break-word;
 }
 
 tbody tr:last-child td {
@@ -430,6 +616,16 @@ tbody tr:last-child td {
 
 tbody tr:hover {
   background: rgba(120, 120, 128, 0.06);
+}
+
+td.positive { color: var(--positive); }
+td.negative { color: var(--negative); }
+td.neutral { color: var(--text-tertiary); }
+
+tfoot .fila-total td {
+  font-weight: 600;
+  border-top: 1px solid var(--border);
+  border-bottom: none;
 }
 
 /* Pie de página */
@@ -455,27 +651,6 @@ footer strong {
   font-size: 0.85rem;
   padding: 2rem;
   text-align: center;
-}
-
-/* Botón "volver" del sunburst de desglose */
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.6rem;
-  min-height: 1.4rem;
-}
-
-.breadcrumb button {
-  border: none;
-  background: none;
-  color: var(--accent);
-  cursor: pointer;
-  padding: 0;
-  font-size: 0.82rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

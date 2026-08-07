@@ -1,0 +1,127 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "8,8",
+        "acumulado_anual": "51,6",
+        "tam": "51,6"
+      },
+      "var_pct_interanual": {
+        "mes": "0,3%",
+        "acumulado_anual": "8,1%",
+        "tam": "8,1%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "14,5",
+        "acumulado_anual": "167,7",
+        "tam": "167,7"
+      },
+      "var_pct_interanual": {
+        "mes": "-2,2%",
+        "acumulado_anual": "-5,2%",
+        "tam": "-5,2%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,1",
+        "acumulado_anual": "12,5",
+        "tam": "12,5"
+      },
+      "var_pct_interanual": {
+        "mes": "5,3%",
+        "acumulado_anual": "0,2%",
+        "tam": "0,2%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 24,4 TWh; acumulado anual: 231,8 TWh; TAM: 231,8 TWh; var mes: -1,0%; var acumulado: -2,2%; var TAM: -2,2%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (entregas gas generación eléctrica)",
+      "valor_aprox": "mes: 10,8 TWh; acumulado anual: 99,7 TWh; TAM: 99,7 TWh; var mes: 3,1%; var acumulado: 33,4%; var TAM: 33,4%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 35,2 TWh; acumulado anual: 331,5 TWh; TAM: 331,5 TWh; var mes: 0,2%; var acumulado: 6,3%; var TAM: 6,3%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "TAM convencional últimos 12 meses (gráfico)",
+      "valor_aprox": "232 TWh (dic-25)",
+      "pagina": 5
+    },
+    {
+      "descripcion": "TAM industrial últimos 12 meses (gráfico)",
+      "valor_aprox": "168 TWh (dic-25)",
+      "pagina": 5
+    },
+    {
+      "descripcion": "TAM eléctrico últimos 12 meses (gráfico)",
+      "valor_aprox": "100 TWh (dic-25)",
+      "pagina": 5
+    },
+    {
+      "descripcion": "TAM DC/PyMES últimos 12 meses (gráfico)",
+      "valor_aprox": "52 TWh (dic-25)",
+      "pagina": 5
+    },
+    {
+      "descripcion": "Demanda convencional diciembre 2025 en GWh con variación temperatura y laboralidad",
+      "valor_aprox": "24.431 GWh; var -1,0% vs dic 2024; acumulado 231.783 GWh -2,2%; TAM 231.783 GWh -2,2%",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Cisternas GNL mercado: variación mensual vs año anterior",
+      "valor_aprox": "+5,3%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Número de pedidos cisternas diciembre 2025",
+      "valor_aprox": "219",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda cisternas TAM acumulados últimos 12 meses por planta: Mugardos 0,9 TWh/año, Huelva 2,4 TWh/año, Cartagena 2,2 TWh/año, Barcelona 2,5 TWh/año, Sagunto 2,3 TWh/año, Bilbao 1,3 TWh/año, Musel 0,8 TWh/año",
+      "valor_aprox": "varios",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Desagregación cisternas diciembre-25 por tipo: Monocliente 803 GWh/mes, DCPyMES 205 GWh/mes, Transporte 114 GWh/mes",
+      "valor_aprox": "803, 205, 114 GWh/mes",
+      "pagina": 9
+    },
+    {
+      "descripcion": "Demanda para generación eléctrica diciembre 2025 (1 al 30 dic): demanda eléctrica total 21,3 TWhe; eólica 5,3; solar 2,3; hidráulica 3,6; resto renovables 0,5; cogeneración 1,4; nuclear 4,8; carbón 0,0; gas natural 4,5",
+      "valor_aprox": "varios TWhe",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda gas natural diciembre 2025 vs diciembre 2024: España +0,2%; Portugal -6%; Italia -2%; Francia -9%; UK -3%; Alemania -10%",
+      "valor_aprox": "varios %",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1301
+  }
+}

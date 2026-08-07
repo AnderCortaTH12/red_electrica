@@ -1,0 +1,162 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "7,4",
+        "acumulado_anual": "23,8",
+        "tam": "50,4"
+      },
+      "var_pct_interanual": {
+        "mes": "26,8%",
+        "acumulado_anual": "12,2%",
+        "tam": "5,4%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "14,5",
+        "acumulado_anual": "43,9",
+        "tam": "173,2"
+      },
+      "var_pct_interanual": {
+        "mes": "-4,0%",
+        "acumulado_anual": "-7,8%",
+        "tam": "-2,1%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,1",
+        "acumulado_anual": "3,3",
+        "tam": "12,4"
+      },
+      "var_pct_interanual": {
+        "mes": "4,4%",
+        "acumulado_anual": "-0,8%",
+        "tam": "-0,2%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 23,1 TWh; acumulado anual: 71,0 TWh; TAM: 235,9 TWh; %Δ mes: 4,6%; %Δ acumulado: -1,6%; %Δ TAM: -0,5%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 5,3 TWh; acumulado anual: 18,8 TWh; TAM: 77,5 TWh; %Δ mes: 12,2%; %Δ acumulado: 17,1%; %Δ TAM: 3,7%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 28,4 TWh; acumulado anual: 89,8 TWh; TAM: 313,4 TWh; %Δ mes: 6,0%; %Δ acumulado: 1,8%; %Δ TAM: 0,5%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh (tabla temperatura y laboralidad) - Marzo 2025",
+      "valor_aprox": "23.054 GWh; %Δ vs 2024: 4,6%; Acumulado Ene-Mar 2025: 70.988 GWh; %Δ: -1,6%; TAM Mar25-Abr24: 235.941 GWh; %Δ TAM: -0,5%",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Cisternas de GNL - variación mensual respecto año anterior",
+      "valor_aprox": "+4,4%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas de GNL - número de pedidos adicionales respecto año anterior",
+      "valor_aprox": "+167",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de cisternas marzo 2024 - porcentaje Transporte",
+      "valor_aprox": "22,5%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de cisternas marzo 2024 - porcentaje Resto",
+      "valor_aprox": "77,5%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de cisternas marzo 2025 - porcentaje Transporte",
+      "valor_aprox": "12,3%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda de cisternas marzo 2025 - porcentaje Resto",
+      "valor_aprox": "87,7%",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Mugardos",
+      "valor_aprox": "0,9 TWh/año; 3,2 mil cargas; 24% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Huelva",
+      "valor_aprox": "2,6 TWh/año; 9 mil cargas; 40% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Cartagena",
+      "valor_aprox": "2,2 TWh/año; 7,8 mil cargas; 35% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Barcelona",
+      "valor_aprox": "2,4 TWh/año; 8,6 mil cargas; 38% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Sagunto",
+      "valor_aprox": "2,3 TWh/año; 8 mil cargas; 58% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Bilbao",
+      "valor_aprox": "1,3 TWh/año; 4,5 mil cargas; 69% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Cisternas GNL TAM mar-25/abr-24 por planta - Musel",
+      "valor_aprox": "0,7 TWh/año; 2,5 mil cargas; 21% Fut",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Demanda eléctrica total España marzo 2024 vs 2025 (TWhe)",
+      "valor_aprox": "2024: 19,2 TWhe; 2025: 20,3 TWhe; Δ: +1,1; %Δ: +5,6%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Gas natural para generación eléctrica (gas CTCCs) 2024",
+      "valor_aprox": "4,7 TWh (g)",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Gas natural para generación eléctrica (gas CTCCs) 2025",
+      "valor_aprox": "5,3 TWh (g)",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Demanda total gas natural marco europeo - variación mensual marzo 2025 vs 2024 por país",
+      "valor_aprox": "España: +6%; Portugal: -4%; Italia: +11%; Francia: +1%; UK: +2%; Alemania: +6%",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1635
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "extracciones": [
+    {
+      "metrica_id": "demanda_dc_pymes",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,0",
+        "acumulado_anual": "33,2",
+        "tam": "50,2"
+      },
+      "var_pct_interanual": {
+        "mes": "4,9%",
+        "acumulado_anual": "7,9%",
+        "tam": "5,1%"
+      }
+    },
+    {
+      "metrica_id": "demanda_industrial",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "11,9",
+        "acumulado_anual": "110,2",
+        "tam": "169,4"
+      },
+      "var_pct_interanual": {
+        "mes": "-10,0%",
+        "acumulado_anual": "-6,4%",
+        "tam": "-4,3%"
+      }
+    },
+    {
+      "metrica_id": "demanda_cisternas",
+      "dimension_valor": null,
+      "pagina": 3,
+      "valores": {
+        "mes": "1,0",
+        "acumulado_anual": "8,1",
+        "tam": "12,3"
+      },
+      "var_pct_interanual": {
+        "mes": "-5,2%",
+        "acumulado_anual": "-2,2%",
+        "tam": "-1,5%"
+      }
+    }
+  ],
+  "metricas_no_reconocidas": [
+    {
+      "descripcion": "Demanda convencional total (D/C+PyMES + Industrial + Cisternas)",
+      "valor_aprox": "mes: 13,9 TWh; acumulado anual: 151,4 TWh; TAM: 231,8 TWh; var mes: -8,7%; var acumulado: -3,4%; var TAM: -2,2%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda sector eléctrico (gas para generación eléctrica)",
+      "valor_aprox": "mes: 9,1 TWh; acumulado anual: 59,8 TWh; TAM: 90,7 TWh; var mes: 21,7%; var acumulado: 36,3%; var TAM: 21,3%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda total gas natural (convencional + eléctrico)",
+      "valor_aprox": "mes: 23,0 TWh; acumulado anual: 211,3 TWh; TAM: 322,5 TWh; var mes: 1,4%; var acumulado: 5,3%; var TAM: 3,4%",
+      "pagina": 3
+    },
+    {
+      "descripcion": "Demanda convencional en GWh - agosto 2025 con descomposición laboralidad/temperatura",
+      "valor_aprox": "Demanda: 13.857 GWh (-8,7% vs ago 2024); Acumulado Ene-ago 2025: 151.444 GWh (-3,4%); TAM sep-24 ago-25: 231.841 GWh (-2,2%)",
+      "pagina": 7
+    },
+    {
+      "descripcion": "Demanda cisternas agosto 2025 variación vs año anterior",
+      "valor_aprox": "-5,2% respecto al mismo mes del año anterior",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Número de pedidos cisternas agosto 2025 variación vs año anterior",
+      "valor_aprox": "-172 menos que el mismo mes del año anterior",
+      "pagina": 8
+    },
+    {
+      "descripcion": "Desagregación demanda cisternas agosto 2025 por tipo: Monocliente 801 GWh/mes, DCPyMES 62 GWh/mes, Transporte 90 GWh/mes",
+      "valor_aprox": "801 / 62 / 90 GWh/mes",
+      "pagina": 9
+    },
+    {
+      "descripcion": "Demanda eléctrica agosto 2024 vs 2025 (1 al 31 agosto)",
+      "valor_aprox": "2024: 20,8 TWhe; 2025: 20,6 TWhe; delta: -0,2; %delta: -1,1%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación eólica agosto 2024 vs 2025",
+      "valor_aprox": "2024: 3,7 TWhe; 2025: 3,7 TWhe; delta: -0,1; %delta: -1,8%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación solar agosto 2024 vs 2025",
+      "valor_aprox": "2024: 6,1 TWhe; 2025: 6,4 TWhe; delta: +0,3; %delta: +4,7%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación hidráulica agosto 2024 vs 2025",
+      "valor_aprox": "2024: 2,3 TWhe; 2025: 2,3 TWhe; delta: +0,0; %delta: +1,0%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación resto renovables agosto 2024 vs 2025",
+      "valor_aprox": "2024: 0,3 TWhe; 2025: 0,3 TWhe; delta: +0,0; %delta: +2,8%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación cogeneración agosto 2024 vs 2025",
+      "valor_aprox": "2024: 1,6 TWhe; 2025: 1,4 TWhe; delta: -0,2; %delta: -13,2%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación nuclear agosto 2024 vs 2025",
+      "valor_aprox": "2024: 5,1 TWhe; 2025: 5,1 TWhe; delta: -0,0; %delta: -0,3%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación carbón agosto 2024 vs 2025",
+      "valor_aprox": "2024: 0,2 TWhe; 2025: 0,0 TWhe; delta: -0,2; %delta: -100,0%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Generación gas natural (CTCCs) agosto 2024 vs 2025",
+      "valor_aprox": "2024: 2,8 TWhe; 2025: 3,5 TWhe; delta: +0,6; %delta: +22,9%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Saldos internacionales agosto 2024 vs 2025",
+      "valor_aprox": "2024: -0,4 exportacion; 2025: -0,9 exportacion; delta: -0,6; %delta: +149,5%",
+      "pagina": 11
+    },
+    {
+      "descripcion": "Comparativa europea demanda total gas natural agosto 2024 vs 2025 por país",
+      "valor_aprox": "España +1,4%; Portugal +20%; Italia -12%; Francia -1%; UK +7%; Alemania +14%",
+      "pagina": 13
+    }
+  ],
+  "_meta": {
+    "modelo": "claude-sonnet-4-6",
+    "fuente": "progreso",
+    "input_tokens": 23399,
+    "output_tokens": 1637
+  }
+}
